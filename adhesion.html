@@ -7,8 +7,8 @@
     <meta name="description" content="Devenez membre du Super Shaolin Bénin. Formulaire d'adhésion en ligne - 10 000 FCFA avec tee-shirt, casquette et carte de membre.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <!-- html2pdf Library -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- jsPDF pour générer le PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         .adhesion-section {
             background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
@@ -430,7 +430,7 @@
                             <div class="form-group-full">
                                 <label>Signature du parent/tuteur (cliquez et glissez pour signer)</label>
                                 <div class="signature-area">
-                                    <canvas id="signatureParentCanvas" width="400" height="120" style="width:100%; height:auto; background:white;"></canvas>
+                                    <canvas id="signatureParentCanvas" width="400" height="120" style="width:100%; height:auto; background:white; border:1px solid #ddd;"></canvas>
                                     <div>
                                         <button type="button" id="clearParentSignature" class="btn-small">Effacer</button>
                                     </div>
@@ -441,7 +441,7 @@
                         <div class="form-group-full">
                             <label>Signature de l'adhérent (cliquez et glissez pour signer)</label>
                             <div class="signature-area">
-                                <canvas id="signatureCanvas" width="400" height="120" style="width:100%; height:auto; background:white;"></canvas>
+                                <canvas id="signatureCanvas" width="400" height="120" style="width:100%; height:auto; background:white; border:1px solid #ddd;"></canvas>
                                 <div>
                                     <button type="button" id="clearSignature" class="btn-small">Effacer</button>
                                 </div>
@@ -531,7 +531,6 @@
         let isDrawing = false;
         
         function setupSignature(canvas, ctx) {
-            // Taille réelle pour le canvas (haute résolution)
             canvas.width = 400;
             canvas.height = 120;
             ctx.fillStyle = 'white';
@@ -541,13 +540,11 @@
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
             
-            // Événements souris
             canvas.addEventListener('mousedown', (e) => {
                 isDrawing = true;
                 const pos = getMousePos(canvas, e);
                 ctx.beginPath();
                 ctx.moveTo(pos.x, pos.y);
-                ctx.stroke();
             });
             
             canvas.addEventListener('mousemove', (e) => {
@@ -561,14 +558,12 @@
             canvas.addEventListener('mouseup', () => { isDrawing = false; });
             canvas.addEventListener('mouseleave', () => { isDrawing = false; });
             
-            // Événements tactiles
             canvas.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 isDrawing = true;
                 const pos = getTouchPos(canvas, e);
                 ctx.beginPath();
                 ctx.moveTo(pos.x, pos.y);
-                ctx.stroke();
             });
             
             canvas.addEventListener('touchmove', (e) => {
@@ -684,87 +679,114 @@
             return `SSB-${year}${month}${day}-${random}`;
         }
         
-        // ==================== GÉNÉRATION DU PDF ====================
-        async function generatePDF(formData, signatureDataURL, parentSignatureDataURL) {
-            const pdfContent = document.createElement('div');
-            pdfContent.style.padding = '20px';
-            pdfContent.style.fontFamily = 'Arial, sans-serif';
-            pdfContent.style.backgroundColor = 'white';
-            pdfContent.style.maxWidth = '800px';
-            pdfContent.style.margin = '0 auto';
+        // ==================== GÉNÉRATION DU PDF AVEC jspdf ====================
+        function generatePDF(formData, signatureDataURL, parentSignatureDataURL) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
             
-            pdfContent.innerHTML = `
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <h1 style="color: #E63946; margin:0;">SUPER SHAOLIN BÉNIN</h1>
-                    <h2 style="color: #FFD700; margin:5px 0;">FICHE D'ADHÉSION</h2>
-                    <p style="margin:5px 0;">Association N° 2016/141/SG/SAG/SA du 16 Novembre 2016</p>
-                    <p style="margin:5px 0; font-size:12px;">Sièges : Akpro-Missérété - Maison des Jeunes | Cotonou PK10 - Plage Von Owolobè | Centre CEMAAC Koutongbé - Porto-Novo</p>
-                    <p style="margin:5px 0; font-size:12px;">Tél : (+229) 0196236166 / 0197230546</p>
-                    <hr>
-                </div>
-                
-                <h3 style="color: #E63946; margin-top: 20px;">1. Informations personnelles</h3>
-                <table style="width: 100%; border-collapse: collapse; font-size:12px;">
-                    <tr><td style="padding: 5px; border:1px solid #ddd;"><strong>Nom :</strong></td><td style="padding: 5px; border:1px solid #ddd;">${formData.nom}</td><td style="padding: 5px; border:1px solid #ddd;"><strong>Prénoms :</strong></td><td style="padding: 5px; border:1px solid #ddd;">${formData.prenoms}</td></tr>
-                    <tr><td style="padding: 5px; border:1px solid #ddd;"><strong>Date de naissance :</strong></td><td style="padding: 5px; border:1px solid #ddd;">${formData.dateNaissance}</td><td style="padding: 5px; border:1px solid #ddd;"><strong>Lieu de naissance :</strong></td><td style="padding: 5px; border:1px solid #ddd;">${formData.lieuNaissance}</td></tr>
-                    <tr><td style="padding: 5px; border:1px solid #ddd;"><strong>Nationalité :</strong></td><td style="padding: 5px; border:1px solid #ddd;">${formData.nationalite}</td><td style="padding: 5px; border:1px solid #ddd;"><strong>Profession/École :</strong></td><td style="padding: 5px; border:1px solid #ddd;">${formData.profession}</td></tr>
-                    <tr><td style="padding: 5px; border:1px solid #ddd;"><strong>Adresse :</strong></td><td colspan="3" style="padding: 5px; border:1px solid #ddd;">${formData.adresse}</td></tr>
-                    <tr><td style="padding: 5px; border:1px solid #ddd;"><strong>Ville/Quartier :</strong></td><td style="padding: 5px; border:1px solid #ddd;">${formData.ville}</td><td style="padding: 5px; border:1px solid #ddd;"><strong>Téléphone :</strong></td><td style="padding: 5px; border:1px solid #ddd;">${formData.telephone}</td></tr>
-                    <tr><td style="padding: 5px; border:1px solid #ddd;"><strong>Email :</strong></td><td colspan="3" style="padding: 5px; border:1px solid #ddd;">${formData.email}</td></tr>
-                </table>
-                
-                <h3 style="color: #E63946; margin-top: 20px;">2. Statut du membre</h3>
-                <p style="padding: 10px; background:#f5f5f5; border-radius:5px;"><strong>${formData.statut}</strong></p>
-                
-                <h3 style="color: #E63946; margin-top: 20px;">3. Engagement de l'adhérent</h3>
-                <p>Je soussigné(e) <strong>${formData.nom} ${formData.prenoms}</strong> déclare adhérer au Super Shaolin Bénin et m'engage à respecter les règles, la discipline et les valeurs du SSB promues : Respect - Discipline - Maîtrise de soi - Excellence - Harmonie.</p>
-                <p><strong>Date d'engagement :</strong> ${formData.dateEngagement}</p>
-                
-                <h3 style="color: #E63946; margin-top: 20px;">Signatures</h3>
-                <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 10px;">
-                    <div style="flex:1; text-align:center;">
-                        <p><strong>Signature de l'adhérent</strong></p>
-                        <img src="${signatureDataURL}" style="width:200px; height:60px; border:1px solid #ddd;">
-                    </div>
-                    ${formData.mineur ? `
-                    <div style="flex:1; text-align:center;">
-                        <p><strong>Signature du parent/tuteur</strong></p>
-                        <img src="${parentSignatureDataURL}" style="width:200px; height:60px; border:1px solid #ddd;">
-                    </div>
-                    ` : ''}
-                </div>
-                
-                <div style="background: #fff9e6; padding: 15px; margin-top: 20px; border-left: 4px solid #FFD700;">
-                    <h3 style="color: #E63946; margin:0 0 10px 0;">Adhésion SUPER SHAOLIN BÉNIN - 10 000 FCFA</h3>
-                    <ul style="margin:0; padding-left:20px;">
-                        <li>✓ Un tee-shirt et une casquette SUPER SHAOLIN BÉNIN</li>
-                        <li>✓ Un cahier</li>
-                        <li>✓ Une carte de membre (accès à tous les spectacles pendant 1 an, renouvelable)</li>
-                    </ul>
-                    <p style="margin-top:10px; font-style:italic;">« La lumière dissipe les ténèbres »</p>
-                </div>
-                
-                <hr>
-                <div style="text-align: center; margin-top: 20px; font-size:11px;">
-                    <p><strong>Numéro d'adhérent :</strong> ${formData.numeroAdherent}</p>
-                    <p><strong>Date de la demande :</strong> ${new Date().toLocaleDateString()}</p>
-                    <p><strong>Demande envoyée depuis le site web Super Shaolin Bénin</strong></p>
-                </div>
-            `;
+            let y = 20;
             
-            document.body.appendChild(pdfContent);
+            // En-tête
+            doc.setFontSize(18);
+            doc.setFont(undefined, "bold");
+            doc.text("SUPER SHAOLIN BÉNIN", 105, y, { align: "center" });
+            y += 8;
+            doc.setFontSize(12);
+            doc.text("FICHE D'ADHÉSION", 105, y, { align: "center" });
+            y += 8;
+            doc.setFontSize(9);
+            doc.setFont(undefined, "normal");
+            doc.text("Association N° 2016/141/SG/SAG/SA du 16 Novembre 2016", 105, y, { align: "center" });
+            y += 6;
+            doc.text("Sièges : Akpro-Missérété - Maison des Jeunes | Cotonou PK10 - Plage Von Owolobè | Centre CEMAAC Koutongbé", 105, y, { align: "center" });
+            y += 8;
             
-            const opt = {
-                margin: [10, 10, 10, 10],
-                filename: `Adhesion_${formData.nom}_${formData.prenoms}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, logging: false },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
+            // Ligne séparatrice
+            doc.line(20, y, 190, y);
+            y += 10;
             
-            const pdfBlob = await html2pdf().from(pdfContent).set(opt).outputPdf('blob');
-            document.body.removeChild(pdfContent);
-            return pdfBlob;
+            // 1. Informations personnelles
+            doc.setFontSize(11);
+            doc.setFont(undefined, "bold");
+            doc.text("1. INFORMATIONS PERSONNELLES", 20, y);
+            y += 7;
+            doc.setFontSize(10);
+            doc.setFont(undefined, "normal");
+            doc.text(`Nom : ${formData.nom} ${formData.prenoms}`, 20, y);
+            y += 6;
+            doc.text(`Date de naissance : ${formData.dateNaissance}  |  Lieu : ${formData.lieuNaissance}`, 20, y);
+            y += 6;
+            doc.text(`Nationalité : ${formData.nationalite}  |  Profession : ${formData.profession}`, 20, y);
+            y += 6;
+            doc.text(`Adresse : ${formData.adresse}, ${formData.ville}`, 20, y);
+            y += 6;
+            doc.text(`Téléphone : ${formData.telephone}  |  Email : ${formData.email}`, 20, y);
+            y += 10;
+            
+            // 2. Statut
+            doc.setFont(undefined, "bold");
+            doc.text("2. STATUT DU MEMBRE", 20, y);
+            y += 7;
+            doc.setFont(undefined, "normal");
+            doc.text(formData.statut, 20, y);
+            y += 10;
+            
+            // 3. Engagement
+            doc.setFont(undefined, "bold");
+            doc.text("3. ENGAGEMENT DE L'ADHÉRENT", 20, y);
+            y += 7;
+            doc.setFont(undefined, "normal");
+            doc.text(`Je soussigné(e) ${formData.nom} ${formData.prenoms} déclare adhérer au Super Shaolin Bénin`, 20, y);
+            y += 6;
+            doc.text(`et m'engage à respecter les règles et valeurs du club.`, 20, y);
+            y += 6;
+            doc.text(`Date d'engagement : ${formData.dateEngagement}`, 20, y);
+            y += 10;
+            
+            // Signatures
+            doc.setFont(undefined, "bold");
+            doc.text("SIGNATURES", 20, y);
+            y += 7;
+            doc.setFont(undefined, "normal");
+            doc.text("Signature de l'adhérent :", 20, y);
+            
+            // Ajout de la signature si disponible
+            if (signatureDataURL) {
+                try {
+                    doc.addImage(signatureDataURL, 'PNG', 80, y - 5, 60, 25);
+                } catch(e) { console.log("Erreur signature"); }
+            }
+            y += 25;
+            
+            if (formData.mineur) {
+                doc.text("Signature du parent/tuteur :", 20, y);
+                if (parentSignatureDataURL) {
+                    try {
+                        doc.addImage(parentSignatureDataURL, 'PNG', 80, y - 5, 60, 25);
+                    } catch(e) { console.log("Erreur signature parent"); }
+                }
+                y += 25;
+            }
+            
+            // Avantages
+            doc.setFillColor(255, 249, 230);
+            doc.rect(20, y, 170, 35, "F");
+            doc.setFont(undefined, "bold");
+            doc.text("ADHÉSION SUPER SHAOLIN BÉNIN - 10 000 FCFA", 25, y + 8);
+            doc.setFont(undefined, "normal");
+            doc.text("✓ Un tee-shirt et une casquette SUPER SHAOLIN BÉNIN", 25, y + 16);
+            doc.text("✓ Un cahier", 25, y + 24);
+            doc.text("✓ Une carte de membre (accès à tous les spectacles pendant 1 an)", 25, y + 32);
+            y += 45;
+            
+            // Numéro adhérent
+            doc.setFont(undefined, "bold");
+            doc.text(`Numéro d'adhérent : ${formData.numeroAdherent}`, 20, y);
+            y += 8;
+            doc.text(`Date de la demande : ${new Date().toLocaleDateString()}`, 20, y);
+            
+            // Sauvegarde du PDF
+            doc.save(`Adhesion_${formData.nom}_${formData.prenoms}.pdf`);
         }
         
         // ==================== ENVOI DU FORMULAIRE ====================
@@ -772,7 +794,6 @@
         const loadingOverlay = document.getElementById('loadingOverlay');
         const formMessage = document.getElementById('formMessage');
         
-        // Fonction pour convertir canvas en DataURL
         function getSignatureDataURL(canvas) {
             return canvas.toDataURL('image/png');
         }
@@ -834,58 +855,27 @@
             loadingOverlay.classList.add('active');
             
             try {
-                // Récupérer les signatures
                 const signatureDataURL = getSignatureDataURL(signatureCanvas);
                 const parentSignatureDataURL = mineurCheckbox.checked ? getSignatureDataURL(parentCanvas) : '';
                 
-                // Générer le PDF
-                const pdfBlob = await generatePDF(formData, signatureDataURL, parentSignatureDataURL);
+                // Générer et télécharger le PDF
+                generatePDF(formData, signatureDataURL, parentSignatureDataURL);
                 
-                // Créer un formulaire pour envoyer par email via une API gratuite (FormSubmit.co)
+                // Envoyer les données par email via FormSubmit
                 const formDataToSend = new FormData();
-                formDataToSend.append('_subject', `[SUPER SHAOLIN] Nouvelle demande d'adhésion - ${formData.nom} ${formData.prenoms}`);
+                formDataToSend.append('_subject', `[SUPER SHAOLIN] Nouvelle adhésion - ${formData.nom} ${formData.prenoms}`);
                 formDataToSend.append('_template', 'table');
                 formDataToSend.append('_captcha', 'false');
                 formDataToSend.append('Nom', formData.nom);
                 formDataToSend.append('Prénoms', formData.prenoms);
-                formDataToSend.append('Date de naissance', formData.dateNaissance);
-                formDataToSend.append('Lieu de naissance', formData.lieuNaissance);
-                formDataToSend.append('Nationalité', formData.nationalite);
-                formDataToSend.append('Profession', formData.profession);
-                formDataToSend.append('Adresse', formData.adresse);
-                formDataToSend.append('Ville/Quartier', formData.ville);
                 formDataToSend.append('Téléphone', formData.telephone);
                 formDataToSend.append('Email', formData.email);
                 formDataToSend.append('Statut', formData.statut);
-                formDataToSend.append("Date d'engagement", formData.dateEngagement);
-                formDataToSend.append('Mineur', formData.mineur ? 'Oui' : 'Non');
                 formDataToSend.append("Numéro d'adhérent", formData.numeroAdherent);
-                
-                // Envoyer l'email via FormSubmit (gratuit, sans inscription)
-                const emailResponse = await fetch('https://formsubmit.co/ajax/supershaolin229@gmail.com', {
-                    method: 'POST',
-                    body: formDataToSend
-                });
-                
-                // Télécharger le PDF pour l'utilisateur (sauvegarde locale)
-                const pdfUrl = URL.createObjectURL(pdfBlob);
-                const downloadLink = document.createElement('a');
-                downloadLink.href = pdfUrl;
-                downloadLink.download = `Adhesion_${formData.nom}_${formData.prenoms}.pdf`;
-                downloadLink.click();
-                URL.revokeObjectURL(pdfUrl);
-                
-                // Envoyer aussi le PDF en pièce jointe via email (service supplémentaire)
-                // On utilise un second appel pour joindre le fichier
-                const emailData = new FormData();
-                emailData.append('_subject', `[SUPER SHAOLIN] Demande d'adhésion - ${formData.numeroAdherent}`);
-                emailData.append('_template', 'table');
-                emailData.append('_captcha', 'false');
-                emailData.append('Message', `Nouvelle demande d'adhésion reçue.\n\nNuméro adhérent: ${formData.numeroAdherent}\nNom: ${formData.nom} ${formData.prenoms}\nTéléphone: ${formData.telephone}\nEmail: ${formData.email}\nStatut: ${formData.statut}\n\nLe PDF est disponible en pièce jointe dans l'email séparé.`);
                 
                 await fetch('https://formsubmit.co/ajax/supershaolin229@gmail.com', {
                     method: 'POST',
-                    body: emailData
+                    body: formDataToSend
                 });
                 
                 loadingOverlay.classList.remove('active');
@@ -896,12 +886,11 @@
                     <i class="fas fa-check-circle"></i> 
                     <strong>Demande d'adhésion envoyée avec succès !</strong><br>
                     Numéro d'adhérent : <strong>${formData.numeroAdherent}</strong><br>
-                    Un email de confirmation a été envoyé à supershaolin229@gmail.com<br>
                     Le PDF a été téléchargé sur votre appareil.<br>
                     <br>
                     <strong>Prochaines étapes :</strong><br>
                     - Un responsable vous contactera sous 48h<br>
-                    - Vous recevrez votre kit (tee-shirt, casquette, cahier, carte) lors de votre prochain passage au club
+                    - Vous recevrez votre kit lors de votre prochain passage au club
                 `;
                 
                 // Réinitialiser le formulaire
