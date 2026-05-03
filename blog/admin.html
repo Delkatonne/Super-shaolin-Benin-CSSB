@@ -7,7 +7,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #f0f0f0; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f0f0; }
+        .header {
+            background: #2B2D42;
+            color: white;
+            padding: 1rem 5%;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo a { color: white; text-decoration: none; font-size: 1.3rem; font-weight: bold; }
+        .logo span { color: #FFD700; }
+        .admin-container { max-width: 1000px; margin: 100px auto 0; padding: 2rem; }
         .login-box {
             max-width: 400px;
             margin: 100px auto;
@@ -19,100 +31,184 @@
         }
         .login-box input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 5px;
+            font-size: 1rem;
         }
         .login-box button {
+            background: #E63946;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .login-box button:hover { background: #c1121f; }
+        .error { color: red; margin-top: 10px; }
+        .admin-panel {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #eee;
+        }
+        .btn-add {
             background: #E63946;
             color: white;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            width: 100%;
+            margin-bottom: 20px;
+            font-size: 1rem;
         }
-        .error { color: red; margin-top: 10px; }
-        .admin-panel { display: none; max-width: 1000px; margin: 100px auto; background: white; padding: 2rem; border-radius: 10px; }
-        .btn-add { background: #E63946; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-bottom: 20px; }
-        .article-form { display: none; background: #f9f9f9; padding: 1rem; margin-bottom: 20px; border-radius: 5px; }
-        .article-form input, .article-form select, .article-form textarea { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; }
-        .upload-area { border: 2px dashed #FFD700; padding: 1rem; text-align: center; cursor: pointer; margin-bottom: 10px; background: #fff9e6; }
+        .article-form {
+            display: none;
+            background: #f9f9f9;
+            padding: 1.5rem;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        .article-form input, .article-form select, .article-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+        .article-form textarea { height: 120px; resize: vertical; }
+        .upload-area {
+            border: 2px dashed #FFD700;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 10px;
+            background: #fff9e6;
+            border-radius: 5px;
+        }
         .image-preview { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
         .preview { width: 80px; height: 80px; object-fit: cover; border-radius: 5px; border: 2px solid #FFD700; }
-        .btn-submit { background: #E63946; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
-        .admin-article-item { background: #f9f9f9; padding: 1rem; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between; }
+        .btn-submit {
+            background: #E63946;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .admin-article-item {
+            background: #f9f9f9;
+            padding: 1rem;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
         .btn-edit { color: #FFD700; background: none; border: none; cursor: pointer; font-size: 1.2rem; margin-right: 10px; }
         .btn-delete { color: #E63946; background: none; border: none; cursor: pointer; font-size: 1.2rem; }
-        .logout-btn { background: #ddd; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
-        .header { background: #2B2D42; color: white; padding: 1rem; position: fixed; top: 0; width: 100%; }
-        .logo a { color: white; text-decoration: none; }
-        .footer { background: #1a1a1a; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
+        .logout-btn { background: #ddd; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; }
+        .footer { background: #1a1a1a; color: white; text-align: center; padding: 1.5rem; margin-top: 2rem; }
+        .yin-yang {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(to bottom, #FFD700 50%, #2B2D42 50%);
+            position: relative;
+            margin: 0 auto 1rem;
+            animation: rotate 10s linear infinite;
+        }
+        .yin-yang::before, .yin-yang::after { content: ''; position: absolute; width: 25%; height: 25%; border-radius: 50%; }
+        .yin-yang::before { top: 25%; left: 0; background: #FFD700; transform: translateX(50%); }
+        .yin-yang::after { bottom: 25%; right: 0; background: #2B2D42; transform: translateX(-50%); }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @media (max-width: 768px) { .admin-container { padding: 1rem; margin-top: 80px; } }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="logo">
-            <a href="../index.html">Super Shaolin Bénin</a>
+            <a href="../index.html">Super <span>Shaolin</span> Bénin</a>
         </div>
     </header>
 
-    <div id="loginSection">
-        <div class="login-box">
-            <h2>Administration</h2>
-            <p>Accès réservé au club</p>
-            <input type="password" id="adminPassword" placeholder="Mot de passe">
-            <button id="loginBtn">Se connecter</button>
-            <div id="loginError" class="error"></div>
-        </div>
-    </div>
-
-    <div id="adminPanel" class="admin-panel">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-            <h2>Espace administration</h2>
-            <button id="logoutBtn" class="logout-btn">Déconnexion</button>
-        </div>
-        
-        <button id="showAddFormBtn" class="btn-add">+ Nouvel article</button>
-        
-        <div id="articleForm" class="article-form">
-            <h3 id="formTitle">Publier un article</h3>
-            <input type="text" id="articleTitle" placeholder="Titre">
-            <select id="articleCategory">
-                <option value="Festival">Festival</option>
-                <option value="Championnat">Championnat</option>
-                <option value="Stage">Stage</option>
-                <option value="demonstration">Démonstrations</option>
-                <option value="Info">Inforations</option>
-                <option value="Entrainement">Entraînement</option>
-                <option value="Evenement">Événement</option>
-                <option value="Autre">Autre</option>
-            </select>
-            
-            <div class="upload-area" id="uploadArea">
-                <i class="fas fa-cloud-upload-alt"></i> Cliquez pour ajouter des photos
-                <input type="file" id="imageInput" multiple accept="image/*" style="display:none">
+    <div class="admin-container">
+        <!-- Login Section -->
+        <div id="loginSection">
+            <div class="login-box">
+                <div class="yin-yang"></div>
+                <h2>🔐 Administration</h2>
+                <p>Accès réservé au club</p>
+                <input type="password" id="adminPassword" placeholder="Mot de passe">
+                <button id="loginBtn">Se connecter</button>
+                <div id="loginError" class="error"></div>
             </div>
-            <div id="imagePreview" class="image-preview"></div>
-            
-            <textarea id="articleExcerpt" placeholder="Résumé" rows="3"></textarea>
-            <textarea id="articleContent" placeholder="Contenu" rows="6"></textarea>
-            <input type="hidden" id="editArticleId">
-            <button id="saveArticleBtn" class="btn-submit">Publier</button>
-            <button id="cancelFormBtn" style="margin-top:10px; background:#ddd; border:none; padding:10px; border-radius:5px; cursor:pointer;">Annuler</button>
         </div>
         
-        <h3>Articles publiés</h3>
-        <div id="articlesList">Chargement...</div>
+        <!-- Admin Panel -->
+        <div id="adminPanel" class="admin-panel">
+            <div class="admin-header">
+                <h2>👑 Espace administration</h2>
+                <button id="logoutBtn" class="logout-btn">🚪 Déconnexion</button>
+            </div>
+            
+            <button id="showAddFormBtn" class="btn-add">+ Nouvel article</button>
+            
+            <div id="articleForm" class="article-form">
+                <h3 id="formTitle">📝 Publier un article</h3>
+                <input type="text" id="articleTitle" placeholder="Titre de l'article">
+                <select id="articleCategory">
+                    <option value="Festival">🎪 Festival</option>
+                    <option value="Championnat">🏆 Championnat</option>
+                    <option value="Stage">🥋 Stage</option>
+                    <option value="Info">📢 Information</option>
+                    <option value="Événement">📅 Événement</option>
+                    <option value="spectacle">🎭 Spectacle</option>
+                    <option value="Démonstration">🥋 Démonstration</option>
+                    <option value="Entraînement">🤸 Entraînement</option>
+                </select>
+                
+                <div class="upload-area" id="uploadArea">
+                    📸 Cliquez pour choisir des photos
+                    <input type="file" id="imageInput" multiple accept="image/*" style="display:none">
+                </div>
+                <div id="imagePreview" class="image-preview"></div>
+                
+                <textarea id="articleExcerpt" placeholder="Résumé de l'article" rows="3"></textarea>
+                <textarea id="articleContent" placeholder="Contenu complet de l'article" rows="6"></textarea>
+                <input type="hidden" id="editArticleId">
+                <button id="saveArticleBtn" class="btn-submit">💾 Publier</button>
+                <button id="cancelFormBtn" style="margin-top:10px; background:#ddd; border:none; padding:8px; border-radius:5px; cursor:pointer;">Annuler</button>
+            </div>
+            
+            <h3>📰 Articles publiés</h3>
+            <div id="articlesList">Chargement...</div>
+        </div>
     </div>
 
     <footer class="footer">
-        <p>© 2026 Super Shaolin du Bénin</p>
+        <p>&copy; 2026 Super Shaolin du Bénin</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        // ===== CONFIGURATION SUPABASE =====
         const SUPABASE_URL = 'https://pngyburrixrfaxwbqsny.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_cgdu_2dYJcR7WLzYWQ4-bg_jx8uotBa';
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -120,50 +216,31 @@
         
         let currentImages = [];
         
-        // Vérifier si déjà connecté
-        if (localStorage.getItem('admin_logged_in') === 'true') {
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-            loadArticles();
+        // Fonctions Supabase
+        async function getArticles() {
+            const { data, error } = await supabase.from('articles').select('*').order('date', { ascending: false });
+            if (error) return [];
+            return data;
         }
         
-        // Bouton connexion
-        document.getElementById('loginBtn').addEventListener('click', function() {
-            const pwd = document.getElementById('adminPassword').value;
-            if (pwd === ADMIN_PASSWORD) {
-                localStorage.setItem('admin_logged_in', 'true');
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
-                loadArticles();
-            } else {
-                document.getElementById('loginError').innerHTML = 'Mot de passe incorrect';
-            }
-        });
-        
-        // Déconnexion
-        document.getElementById('logoutBtn').addEventListener('click', function() {
-            localStorage.removeItem('admin_logged_in');
-            document.getElementById('loginSection').style.display = 'block';
-            document.getElementById('adminPanel').style.display = 'none';
-        });
-        
-        async function loadArticles() {
-            const { data } = await supabase.from('articles').select('*').order('date', { ascending: false });
+        // Affichage liste articles
+        async function displayArticlesList() {
+            const articles = await getArticles();
             const container = document.getElementById('articlesList');
-            if (!data || data.length === 0) {
-                container.innerHTML = '<p>Aucun article</p>';
+            if (!articles || articles.length === 0) {
+                container.innerHTML = '<p style="text-align:center; padding:2rem;">📭 Aucun article publié</p>';
                 return;
             }
-            container.innerHTML = data.map(article => `
+            container.innerHTML = articles.map(article => `
                 <div class="admin-article-item">
                     <div>
-                        <strong>${article.title}</strong><br>
+                        <strong>${escapeHtml(article.title)}</strong><br>
                         <small>${article.category} - ${new Date(article.date).toLocaleDateString()}</small>
-                        ${article.images && article.images[0] ? `<div><img src="${article.images[0]}" style="width:50px; height:50px; object-fit:cover; margin-top:5px;"></div>` : ''}
+                        ${article.images && article.images[0] ? `<div style="margin-top:5px;"><img src="${article.images[0]}" style="width:40px; height:40px; object-fit:cover; border-radius:5px;"></div>` : ''}
                     </div>
                     <div>
-                        <button class="btn-edit" onclick="editArticle(${article.id})"><i class="fas fa-edit"></i></button>
-                        <button class="btn-delete" onclick="deleteArticle(${article.id})"><i class="fas fa-trash"></i></button>
+                        <button class="btn-edit" onclick="editArticle(${article.id})">✏️</button>
+                        <button class="btn-delete" onclick="deleteArticle(${article.id})">🗑️</button>
                     </div>
                 </div>
             `).join('');
@@ -179,8 +256,8 @@
                 document.getElementById('articleContent').value = article.content;
                 currentImages = article.images || [];
                 updatePreview();
-                document.getElementById('formTitle').innerHTML = 'Modifier l\'article';
-                document.getElementById('saveArticleBtn').innerHTML = 'Mettre à jour';
+                document.getElementById('formTitle').innerHTML = '✏️ Modifier l\'article';
+                document.getElementById('saveArticleBtn').innerHTML = '💾 Mettre à jour';
                 document.getElementById('articleForm').style.display = 'block';
             }
         };
@@ -188,7 +265,7 @@
         window.deleteArticle = async function(id) {
             if (confirm('Supprimer cet article ?')) {
                 await supabase.from('articles').delete().eq('id', id);
-                loadArticles();
+                displayArticlesList();
                 alert('Article supprimé');
             }
         };
@@ -219,9 +296,9 @@
                 return;
             }
             container.innerHTML = currentImages.map((img, i) => `
-                <div style="position:relative;">
+                <div style="position:relative; display:inline-block;">
                     <img src="${img}" class="preview">
-                    <span onclick="removeImage(${i})" style="position:absolute; top:-8px; right:-8px; background:red; color:white; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:12px;">×</span>
+                    <span onclick="removeImage(${i})" style="position:absolute; top:-8px; right:-8px; background:red; color:white; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; cursor:pointer;">×</span>
                 </div>
             `).join('');
         }
@@ -239,8 +316,8 @@
             document.getElementById('articleContent').value = '';
             currentImages = [];
             updatePreview();
-            document.getElementById('formTitle').innerHTML = 'Publier un article';
-            document.getElementById('saveArticleBtn').innerHTML = 'Publier';
+            document.getElementById('formTitle').innerHTML = '📝 Publier un article';
+            document.getElementById('saveArticleBtn').innerHTML = '💾 Publier';
             document.getElementById('articleForm').style.display = 'none';
         }
         
@@ -271,8 +348,44 @@
                 alert('Article publié');
             }
             resetForm();
-            loadArticles();
+            displayArticlesList();
         });
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // ===== AUTHENTIFICATION =====
+        function checkAuth() {
+            return localStorage.getItem('admin_logged_in') === 'true';
+        }
+        
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            const pwd = document.getElementById('adminPassword').value;
+            if (pwd === ADMIN_PASSWORD) {
+                localStorage.setItem('admin_logged_in', 'true');
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                displayArticlesList();
+            } else {
+                document.getElementById('loginError').innerHTML = '❌ Mot de passe incorrect';
+            }
+        });
+        
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            localStorage.removeItem('admin_logged_in');
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('adminPassword').value = '';
+        });
+        
+        if (checkAuth()) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            displayArticlesList();
+        }
     </script>
 </body>
 </html>
