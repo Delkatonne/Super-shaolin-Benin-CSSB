@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Super Shaolin Bénin | Administration</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', sans-serif; background: #f0f0f0; }
@@ -90,7 +91,7 @@
             border-radius: 5px;
             font-family: inherit;
         }
-        .article-form textarea { height: 120px; }
+        .article-form textarea { height: 120px; resize: vertical; }
         .upload-area {
             border: 2px dashed #FFD700;
             padding: 1rem;
@@ -145,6 +146,14 @@
         .yin-yang::after { bottom: 25%; right: 0; background: #2B2D42; transform: translateX(-50%); }
         @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @media (max-width: 768px) { .admin-container { padding: 1rem; margin-top: 80px; } }
+        .status-badge {
+            background: green;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -168,7 +177,7 @@
         
         <div id="adminPanel" class="admin-panel">
             <div class="admin-header">
-                <h2>👑 Espace administration</h2>
+                <h2>👑 Espace administration <span id="syncStatus" class="status-badge">✅ Connecté</span></h2>
                 <button id="logoutBtn" class="logout-btn">🚪 Déconnexion</button>
             </div>
             <button id="showAddFormBtn" class="btn-add">+ Nouvel article</button>
@@ -178,10 +187,10 @@
                 <select id="articleCategory">
                     <option value="Festival">🎪 Festivals</option>
                     <option value="Championnat">🏆 Championnats</option>
-                    <option value="Stage">🏋🏼‍♂️ Stages</option>
+                    <option value="Stage">🏋️ Stages</option>
                     <option value="Spectacle">🎭 Spectacle</option>
                     <option value="Démonstration">🥋 Démonstrations</option>
-                    <option value="Entraînement">🤸🏼‍♀️ Entraînements</option>
+                    <option value="Entraînement">🤸 Entraînements</option>
                     <option value="Événement">📅 Événements</option>
                     <option value="Info">📢 Informations</option>
                     <option value="Autre">📰 Autres</option>
@@ -198,7 +207,7 @@
                 <button id="cancelFormBtn" style="margin-top:10px; background:#ddd; border:none; padding:8px; border-radius:5px; cursor:pointer;">Annuler</button>
             </div>
             <h3>📰 Articles publiés</h3>
-            <div id="articlesList"></div>
+            <div id="articlesList">Chargement...</div>
         </div>
     </div>
 
@@ -207,47 +216,31 @@
     </footer>
 
     <script>
-        // Configuration simple - stockage local UNIQUEMENT
-        const STORAGE_KEY = 'supershaolin_articles';
+        // ===== CONFIGURATION SUPABASE =====
+        const SUPABASE_URL = 'https://pngyburrixrfaxwbqsny.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_cgdu_2dYJcR7WLzYWQ4-bg_jx8uotBa';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const ADMIN_PASSWORD = 'Shaolin2025';
+        
         let currentImages = [];
         
-        function getArticles() {
-            const articles = localStorage.getItem(STORAGE_KEY);
-            return articles ? JSON.parse(articles) : [];
-        }
-        
-        function saveArticles(articles) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(articles));
-        }
-        
-        function initData() {
-            if (!localStorage.getItem(STORAGE_KEY)) {
-                const initialArticles = [
-                    {
-                        id: 1,
-                        title: "Festival International des Arts Martiaux 2025",
-                        excerpt: "Le Super Shaolin Bénin participera au Festival International des Arts Martiaux à Cotonou.",
-                        content: "Le Festival International des Arts Martiaux se tiendra du 15 au 20 mai 2025 au Stade de l'Amitié de Cotonou. Le Super Shaolin Bénin y participera avec une délégation de 20 athlètes.",
-                        images: [],
-                        category: "Festival",
-                        date: new Date().toISOString(),
-                        author: "Super Shaolin Bénin",
-                        views: 0
-                    }
-                ];
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(initialArticles));
+        async function getArticles() {
+            const { data, error } = await supabase.from('articles').select('*').order('date', { ascending: false });
+            if (error) {
+                console.error('Erreur:', error);
+                return [];
             }
+            return data || [];
         }
         
-        function displayArticlesList() {
-            const articles = getArticles();
+        async function displayArticlesList() {
+            const articles = await getArticles();
             const container = document.getElementById('articlesList');
-            if (articles.length === 0) {
+            if (!articles || articles.length === 0) {
                 container.innerHTML = '<p style="text-align:center; padding:2rem;">📭 Aucun article</p>';
                 return;
             }
-            container.innerHTML = articles.sort((a,b) => new Date(b.date) - new Date(a.date)).map(article => `
+            container.innerHTML = articles.map(article => `
                 <div class="admin-article-item">
                     <div>
                         <strong>${escapeHtml(article.title)}</strong><br>
@@ -262,9 +255,8 @@
             `).join('');
         }
         
-        window.editArticle = function(id) {
-            const articles = getArticles();
-            const article = articles.find(a => a.id === id);
+        window.editArticle = async function(id) {
+            const { data: article, error } = await supabase.from('articles').select('*').eq('id', id).single();
             if (article) {
                 document.getElementById('editArticleId').value = article.id;
                 document.getElementById('articleTitle').value = article.title;
@@ -279,12 +271,10 @@
             }
         };
         
-        window.deleteArticle = function(id) {
+        window.deleteArticle = async function(id) {
             if (confirm('Supprimer cet article ?')) {
-                let articles = getArticles();
-                articles = articles.filter(a => a.id !== id);
-                saveArticles(articles);
-                displayArticlesList();
+                await supabase.from('articles').delete().eq('id', id);
+                await displayArticlesList();
                 alert('✅ Article supprimé');
             }
         };
@@ -338,7 +328,7 @@
             document.getElementById('articleForm').style.display = 'none';
         }
         
-        function saveArticle() {
+        async function saveArticle() {
             const id = document.getElementById('editArticleId').value;
             const title = document.getElementById('articleTitle').value.trim();
             const category = document.getElementById('articleCategory').value;
@@ -350,30 +340,20 @@
                 return;
             }
             
-            const articles = getArticles();
-            
-            if (id) {
-                const index = articles.findIndex(a => a.id == id);
-                if (index !== -1) {
-                    articles[index] = { ...articles[index], title, category, excerpt, content, images: [...currentImages] };
-                    saveArticles(articles);
+            try {
+                if (id) {
+                    await supabase.from('articles').update({ title, category, excerpt, content, images: [...currentImages] }).eq('id', id);
                     alert('✅ Article modifié');
+                } else {
+                    await supabase.from('articles').insert([{ title, category, excerpt, content, images: [...currentImages], date: new Date().toISOString() }]);
+                    alert('✅ Article publié');
                 }
-            } else {
-                const newArticle = {
-                    id: Date.now(),
-                    title, category, excerpt, content,
-                    images: [...currentImages],
-                    date: new Date().toISOString(),
-                    author: 'Super Shaolin Bénin',
-                    views: 0
-                };
-                articles.push(newArticle);
-                saveArticles(articles);
-                alert('✅ Article publié');
+                resetForm();
+                await displayArticlesList();
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('❌ Erreur lors de la sauvegarde');
             }
-            resetForm();
-            displayArticlesList();
         }
         
         function escapeHtml(text) {
@@ -390,7 +370,6 @@
                 localStorage.setItem('admin_logged_in', 'true');
                 document.getElementById('loginSection').style.display = 'none';
                 document.getElementById('adminPanel').style.display = 'block';
-                initData();
                 displayArticlesList();
             } else {
                 document.getElementById('loginError').innerHTML = '❌ Mot de passe incorrect';
@@ -412,11 +391,9 @@
         document.getElementById('cancelFormBtn').addEventListener('click', resetForm);
         document.getElementById('saveArticleBtn').addEventListener('click', saveArticle);
         
-        // Vérifier si déjà connecté
         if (localStorage.getItem('admin_logged_in') === 'true') {
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('adminPanel').style.display = 'block';
-            initData();
             displayArticlesList();
         }
     </script>
