@@ -5,22 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Super Shaolin Bénin | Article</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        :root {
-            --rouge: #E63946;
-            --or: #FFD700;
-            --gris-fonce: #2B2D42;
-            --gris-clair: #F8F9FA;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--gris-clair);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --rouge: #E63946; --or: #FFD700; --gris-fonce: #2B2D42; --gris-clair: #F8F9FA; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--gris-clair); }
+
         .header {
             background: linear-gradient(135deg, var(--gris-fonce) 0%, #1a1a2e 100%);
             color: white;
@@ -30,269 +20,68 @@
             top: 0;
             z-index: 1000;
         }
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .logo a {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            text-decoration: none;
-            color: white;
-        }
-        .logo h1 {
-            font-size: 1.3rem;
-        }
-        .logo span {
-            color: var(--or);
-        }
-        .logo-icon {
-            border-radius: 50%;
-            height: 50px;
-            width: 50px;
-            object-fit: cover;
-        }
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-        .nav-menu a {
-            color: white;
-            text-decoration: none;
-        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; }
+        .logo a { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: white; }
+        .logo h1 { font-size: 1.3rem; }
+        .logo span { color: var(--or); }
+        .logo-icon { border-radius: 50%; height: 50px; width: 50px; object-fit: cover; }
+        .nav-menu { display: flex; list-style: none; gap: 2rem; }
+        .nav-menu a { color: white; text-decoration: none; }
+
         .menu-toggle {
             display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--or);
-        }
-        .article-page {
-            max-width: 900px;
-            margin: 120px auto 0;
-            padding: 0 1rem 3rem;
-        }
-        .article-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .article-header .category {
-            display: inline-block;
-            background: var(--rouge);
-            color: white;
-            padding: 0.3rem 1rem;
-            border-radius: 25px;
-            font-size: 0.8rem;
-            margin-bottom: 1rem;
-        }
-        .article-header h1 {
-            font-size: 2rem;
-            color: var(--gris-fonce);
-            margin-bottom: 1rem;
-        }
-        .article-meta {
-            color: #888;
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-        .article-gallery {
-            margin: 1.5rem 0;
-        }
-        .gallery-title {
-            font-size: 1.1rem;
-            color: var(--rouge);
-            margin-bottom: 1rem;
-        }
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-        }
-        .gallery-item {
-            border-radius: 10px;
-            overflow: hidden;
-            cursor: pointer;
-            aspect-ratio: 16/9;
-        }
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-        .gallery-item:hover img {
-            transform: scale(1.05);
-        }
-        .article-content-full {
-            line-height: 1.8;
-            color: #444;
-            font-size: 1rem;
-        }
-        .article-content-full p {
-            margin-bottom: 1rem;
-        }
-        .comments-section {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 2px solid #eee;
-        }
-        .comments-section h3 {
-            color: var(--gris-fonce);
-            margin-bottom: 1.5rem;
-        }
-        .comment-form {
-            background: var(--gris-clair);
-            padding: 1.5rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-        }
-        .comment-form input, .comment-form textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #eee;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-family: inherit;
-        }
-        .comment-form textarea {
-            height: 100px;
-            resize: vertical;
-        }
-        .btn-submit-comment {
-            background: var(--rouge);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            cursor: pointer;
-        }
-        .comments-list {
-            margin-top: 2rem;
-        }
-        .comment-item {
-            background: white;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-        .comment-header {
-            display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            margin-bottom: 0.5rem;
-            flex-wrap: wrap;
-        }
-        .comment-author {
-            font-weight: bold;
-            color: var(--rouge);
-        }
-        .comment-date {
-            font-size: 0.7rem;
-            color: #888;
-        }
-        .reply-btn {
+            width: 30px;
+            height: 22px;
+            cursor: pointer;
             background: none;
             border: none;
-            color: var(--or);
-            cursor: pointer;
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
+            padding: 0;
         }
-        .replies {
-            margin-left: 2rem;
-            padding-left: 1rem;
-            border-left: 3px solid var(--or);
-        }
-        .reply-form {
-            margin-top: 0.5rem;
-            display: none;
-        }
-        .reply-form.active {
+        .menu-toggle span {
             display: block;
-        }
-        .reply-form input, .reply-form textarea {
             width: 100%;
-            padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-bottom: 0.5rem;
-            font-size: 0.8rem;
-        }
-        .admin-badge {
+            height: 3px;
             background: var(--or);
-            color: var(--gris-fonce);
-            font-size: 0.6rem;
-            padding: 0.2rem 0.5rem;
-            border-radius: 10px;
-            margin-left: 0.5rem;
+            border-radius: 3px;
+            transition: all 0.3s ease;
         }
-        .no-comments {
-            text-align: center;
-            color: #888;
-            padding: 2rem;
-        }
-        .footer {
-            background: #1a1a1a;
-            color: white;
-            text-align: center;
-            padding: 2rem;
-        }
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 10000;
-            justify-content: center;
-            align-items: center;
-        }
-        .lightbox.active { display: flex; }
-        .lightbox img { max-width: 90%; max-height: 90%; }
-        .lightbox-close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-        }
-        .lightbox-prev, .lightbox-next {
-            position: absolute;
-            top: 50%;
-            background: rgba(0,0,0,0.5);
-            color: white;
-            padding: 1rem;
-            cursor: pointer;
-        }
-        .lightbox-prev { left: 20px; }
-        .lightbox-next { right: 20px; }
+        .menu-toggle.open span:nth-child(1) { transform: translateY(9.5px) rotate(45deg); }
+        .menu-toggle.open span:nth-child(2) { opacity: 0; }
+        .menu-toggle.open span:nth-child(3) { transform: translateY(-9.5px) rotate(-45deg); }
+
+        .article-page { max-width: 900px; margin: 120px auto 0; padding: 0 1rem 3rem; }
+        .article-header { text-align: center; margin-bottom: 2rem; }
+        .article-header .category { display: inline-block; background: var(--rouge); color: white; padding: 0.3rem 1rem; border-radius: 25px; font-size: 0.8rem; margin-bottom: 1rem; }
+        .article-header h1 { font-size: 2rem; color: var(--gris-fonce); margin-bottom: 1rem; }
+        .article-meta { color: #888; font-size: 0.9rem; display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+        .article-content-full { line-height: 1.8; color: #444; font-size: 1rem; }
+        .article-content-full p { margin-bottom: 1rem; }
+        .back-link { display: inline-block; margin-top: 2rem; color: var(--rouge); text-decoration: none; }
+        .footer { background: #1a1a1a; color: white; text-align: center; padding: 2rem; margin-top: 2rem; }
+
         @media (max-width: 768px) {
-            .menu-toggle { display: block; }
+            .menu-toggle { display: flex; }
             .nav-menu {
                 position: fixed;
-                top: 70px;
+                top: 80px;
                 left: -100%;
                 width: 100%;
+                height: calc(100vh - 80px);
                 background: var(--gris-fonce);
                 flex-direction: column;
                 align-items: center;
-                padding: 2rem;
-                transition: left 0.3s;
+                justify-content: center;
+                transition: left 0.3s ease;
+                z-index: 999;
+                gap: 2rem;
             }
-            .nav-menu.active { left: 0; }
+            .nav-menu.menu-open { left: 0 !important; }
+            .logo h1 { font-size: 1rem; }
             .article-header h1 { font-size: 1.5rem; }
-            .replies { margin-left: 0.5rem; padding-left: 0.5rem; }
         }
+        .loading { text-align: center; padding: 3rem; }
     </style>
 </head>
 <body>
@@ -304,9 +93,11 @@
                     <h1>Super <span>Shaolin</span> Bénin</h1>
                 </a>
             </div>
-            <div class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
-            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="../index.html">Accueil</a></li>
                 <li><a href="../a-propos.html">À propos</a></li>
@@ -318,274 +109,77 @@
     </header>
 
     <div class="article-page" id="articlePage">
-        <div id="articleContent">
-            <div style="text-align: center; padding: 3rem;">
-                <i class="fas fa-spinner fa-spin"></i>
-                <p>Chargement...</p>
-            </div>
-        </div>
-        <div class="comments-section" id="commentsSection" style="display: none;">
-            <h3>💬 Commentaires</h3>
-            <div class="comment-form">
-                <input type="text" id="commentName" placeholder="Votre nom">
-                <textarea id="commentText" placeholder="Votre commentaire"></textarea>
-                <button class="btn-submit-comment" id="submitComment">📝 Publier</button>
-            </div>
-            <div id="commentsList" class="comments-list"></div>
-        </div>
-    </div>
-
-    <div id="lightbox" class="lightbox">
-        <span class="lightbox-close">&times;</span>
-        <span class="lightbox-prev"><i class="fas fa-chevron-left"></i></span>
-        <img id="lightbox-img" src="">
-        <span class="lightbox-next"><i class="fas fa-chevron-right"></i></span>
+        <div id="articleContent"><div class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div></div>
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Retour aux actualités</a>
     </div>
 
     <footer class="footer">
         <p>© 2026 Super Shaolin du Bénin</p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- MENU : script isolé -->
     <script>
-        // ===== CONFIGURATION SUPABASE =====
+        (function() {
+            var btn = document.getElementById('menuToggle');
+            var nav = document.getElementById('navMenu');
+
+            if (btn && nav) {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    var open = nav.classList.toggle('menu-open');
+                    btn.classList.toggle('open', open);
+                });
+
+                nav.querySelectorAll('a').forEach(function(a) {
+                    a.addEventListener('click', function() {
+                        nav.classList.remove('menu-open');
+                        btn.classList.remove('open');
+                    });
+                });
+
+                document.addEventListener('click', function(e) {
+                    if (!nav.contains(e.target) && !btn.contains(e.target)) {
+                        nav.classList.remove('menu-open');
+                        btn.classList.remove('open');
+                    }
+                });
+            }
+        })();
+    </script>
+
+    <!-- SUPABASE : contenu de l'article -->
+    <script>
         const SUPABASE_URL = 'https://pngyburrixrfaxwbqsny.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_cgdu_2dYJcR7WLzYWQ4-bg_jx8uotBa';
-        
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         
         const urlParams = new URLSearchParams(window.location.search);
         const articleId = parseInt(urlParams.get('id'));
         
-        let currentImages = [];
-        
-        // Menu mobile
-        const menuToggle = document.getElementById('menuToggle');
-        const navMenu = document.getElementById('navMenu');
-        menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
-        document.querySelectorAll('.nav-menu a').forEach(link => {
-            link.addEventListener('click', () => navMenu.classList.remove('active'));
-        });
-        
-        async function incrementViews() {
-            const { data: article } = await supabase
-                .from('articles')
-                .select('views')
-                .eq('id', articleId)
-                .single();
-            
-            if (article) {
-                await supabase
-                    .from('articles')
-                    .update({ views: (article.views || 0) + 1 })
-                    .eq('id', articleId);
-            }
-        }
-        
-        function formatDate(dateStr) {
-            if (!dateStr) return 'Date inconnue';
-            return new Date(dateStr).toLocaleDateString('fr-FR');
-        }
-        
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
-        function displayImages(images) {
-            const container = document.getElementById('articleGallery');
-            if (!container) return;
-            if (images && images.length > 0) {
-                currentImages = images;
-                container.innerHTML = `
-                    <div class="gallery-title">📸 Galerie (${images.length})</div>
-                    <div class="gallery-grid">
-                        ${images.map((img, i) => `
-                            <div class="gallery-item" data-index="${i}">
-                                <img src="${img}" loading="lazy">
-                            </div>
-                        `).join('')}
-                    </div>
-                `;
-                document.querySelectorAll('.gallery-item').forEach(item => {
-                    item.addEventListener('click', () => openLightbox(parseInt(item.dataset.index)));
-                });
-            }
-        }
-        
-        function openLightbox(index) {
-            const lightbox = document.getElementById('lightbox');
-            if (currentImages[index]) {
-                document.getElementById('lightbox-img').src = currentImages[index];
-                lightbox.dataset.currentIndex = index;
-                lightbox.classList.add('active');
-            }
-        }
-        
-        function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); }
-        function nextImage() {
-            let idx = parseInt(document.getElementById('lightbox').dataset.currentIndex || 0);
-            if (idx + 1 < currentImages.length) {
-                document.getElementById('lightbox-img').src = currentImages[idx + 1];
-                document.getElementById('lightbox').dataset.currentIndex = idx + 1;
-            }
-        }
-        function prevImage() {
-            let idx = parseInt(document.getElementById('lightbox').dataset.currentIndex || 0);
-            if (idx - 1 >= 0) {
-                document.getElementById('lightbox-img').src = currentImages[idx - 1];
-                document.getElementById('lightbox').dataset.currentIndex = idx - 1;
-            }
-        }
-        
-        document.getElementById('lightbox').addEventListener('click', (e) => {
-            if (e.target === document.getElementById('lightbox')) closeLightbox();
-        });
-        document.querySelector('.lightbox-close')?.addEventListener('click', closeLightbox);
-        document.querySelector('.lightbox-next')?.addEventListener('click', nextImage);
-        document.querySelector('.lightbox-prev')?.addEventListener('click', prevImage);
-        
         async function loadArticle() {
-            const { data: article, error } = await supabase
-                .from('articles')
-                .select('*')
-                .eq('id', articleId)
-                .single();
-            
+            const { data: article, error } = await supabase.from('articles').select('*').eq('id', articleId).single();
             if (error || !article) {
-                document.getElementById('articleContent').innerHTML = `
-                    <div style="text-align:center; padding:3rem;">
-                        <i class="fas fa-exclamation-triangle" style="font-size:3rem; color:var(--rouge);"></i>
-                        <h2>Article non trouvé</h2>
-                        <a href="index.html" class="btn-readmore">← Retour</a>
-                    </div>
-                `;
-                return false;
+                document.getElementById('articleContent').innerHTML = `<div style="text-align:center; padding:3rem;"><h2>Article non trouvé</h2><a href="index.html">← Retour</a></div>`;
+                return;
             }
-            
             document.getElementById('articleContent').innerHTML = `
                 <div class="article-header">
-                    <span class="category">${getCategoryIcon(article.category)} ${article.category}</span>
-                    <h1>${escapeHtml(article.title)}</h1>
+                    <span class="category">${article.category}</span>
+                    <h1>${article.title}</h1>
                     <div class="article-meta">
-                        <span>📅 ${formatDate(article.date)}</span>
-                        <span>👤 ${escapeHtml(article.author)}</span>
+                        <span>📅 ${new Date(article.date).toLocaleDateString('fr-FR')}</span>
+                        <span>👤 Par ${article.author}</span>
                         <span>👁️ ${article.views || 0} vues</span>
                     </div>
                 </div>
-                <div id="articleGallery" class="article-gallery"></div>
                 <div class="article-content-full">
-                    ${escapeHtml(article.content).split('\n').map(p => `<p>${p}</p>`).join('')}
+                    ${article.content.split('\n').map(p => `<p>${p}</p>`).join('')}
                 </div>
             `;
-            
-            displayImages(article.images || []);
-            return true;
         }
         
-        function getCategoryIcon(category) {
-            const icons = { 'Festival':'🎪','Championnat':'🏆','Stage':'🥋','Info':'📢','Événement':'📅','Démonstration':'🥋','Entraînement':'🤸🏼‍♀️','Autre':'📰' };
-            return icons[category] || '📰';
-        }
-        
-        async function loadComments() {
-            const { data: comments, error } = await supabase
-                .from('comments')
-                .select('*')
-                .eq('article_id', articleId)
-                .order('date', { ascending: true });
-            
-            if (error) return;
-            
-            const container = document.getElementById('commentsList');
-            if (!comments || comments.length === 0) {
-                container.innerHTML = '<div class="no-comments">💬 Soyez le premier à commenter !</div>';
-                return;
-            }
-            
-            const mainComments = comments.filter(c => !c.parent_id);
-            const replies = comments.filter(c => c.parent_id);
-            
-            function buildComment(c) {
-                const commentReplies = replies.filter(r => r.parent_id === c.id);
-                const isAdmin = c.author === 'Super Shaolin Bénin';
-                return `
-                    <div class="comment-item">
-                        <div class="comment-header">
-                            <span class="comment-author">${escapeHtml(c.author)}${isAdmin ? '<span class="admin-badge">🏆 Club</span>' : ''}</span>
-                            <span class="comment-date">${formatDate(c.date)}</span>
-                        </div>
-                        <div class="comment-text">${escapeHtml(c.text)}</div>
-                        <button class="reply-btn" data-id="${c.id}">💬 Répondre</button>
-                        <div class="replies" id="replies-${c.id}">${commentReplies.map(r => buildComment(r)).join('')}</div>
-                        <div class="reply-form" id="reply-form-${c.id}">
-                            <input type="text" id="replyName-${c.id}" placeholder="Nom" value="Visiteur">
-                            <textarea id="replyText-${c.id}" placeholder="Votre réponse" rows="2"></textarea>
-                            <button class="btn-submit-comment" onclick="submitReply(${c.id})" style="padding:0.3rem 1rem;">Envoyer</button>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            container.innerHTML = mainComments.map(c => buildComment(c)).join('');
-            document.querySelectorAll('.reply-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const form = document.getElementById(`reply-form-${btn.dataset.id}`);
-                    form.classList.toggle('active');
-                });
-            });
-        }
-        
-        window.submitReply = async function(parentId) {
-            const name = document.getElementById(`replyName-${parentId}`).value.trim();
-            const text = document.getElementById(`replyText-${parentId}`).value.trim();
-            if (!name || !text) { alert('Remplissez tous les champs'); return; }
-            
-            const { error } = await supabase.from('comments').insert([{
-                article_id: articleId,
-                author: name,
-                text: text,
-                parent_id: parentId,
-                date: new Date().toISOString()
-            }]);
-            
-            if (error) { alert('Erreur'); return; }
-            document.getElementById(`replyName-${parentId}`).value = 'Visiteur';
-            document.getElementById(`replyText-parentId`).value = '';
-            document.getElementById(`reply-form-${parentId}`).classList.remove('active');
-            loadComments();
-        };
-        
-        document.getElementById('submitComment')?.addEventListener('click', async () => {
-            const name = document.getElementById('commentName').value.trim();
-            const text = document.getElementById('commentText').value.trim();
-            if (!name || !text) { alert('Remplissez tous les champs'); return; }
-            
-            const { error } = await supabase.from('comments').insert([{
-                article_id: articleId,
-                author: name,
-                text: text,
-                date: new Date().toISOString()
-            }]);
-            
-            if (error) { alert('Erreur'); return; }
-            document.getElementById('commentName').value = '';
-            document.getElementById('commentText').value = '';
-            loadComments();
-        });
-        
-        if (articleId) {
-            incrementViews();
-            const exists = await loadArticle();
-            if (exists) {
-                document.getElementById('commentsSection').style.display = 'block';
-                loadComments();
-            }
-        } else {
-            window.location.href = 'index.html';
-        }
+        if (articleId) loadArticle();
+        else window.location.href = 'index.html';
     </script>
 </body>
 </html>

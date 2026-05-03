@@ -6,21 +6,10 @@
     <title>Super Shaolin Bénin | Actualités</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        :root {
-            --rouge: #E63946;
-            --or: #FFD700;
-            --gris-fonce: #2B2D42;
-            --gris-clair: #F8F9FA;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--gris-clair);
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --rouge: #E63946; --or: #FFD700; --gris-fonce: #2B2D42; --gris-clair: #F8F9FA; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--gris-clair); }
+
         .header {
             background: linear-gradient(135deg, var(--gris-fonce) 0%, #1a1a2e 100%);
             color: white;
@@ -30,213 +19,95 @@
             top: 0;
             z-index: 1000;
         }
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .logo a {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            text-decoration: none;
-            color: white;
-        }
-        .logo h1 {
-            font-size: 1.3rem;
-        }
-        .logo span {
-            color: var(--or);
-        }
-        .logo-icon {
-            border-radius: 50%;
-            height: 50px;
-            width: 50px;
-            object-fit: cover;
-        }
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-        .nav-menu a {
-            color: white;
-            text-decoration: none;
-        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; }
+        .logo a { display: flex; align-items: center; gap: 1rem; text-decoration: none; color: white; }
+        .logo h1 { font-size: 1.3rem; }
+        .logo span { color: var(--or); }
+        .logo-icon { border-radius: 50%; height: 50px; width: 50px; object-fit: cover; }
+        .nav-menu { display: flex; list-style: none; gap: 2rem; }
+        .nav-menu a { color: white; text-decoration: none; }
+
         .menu-toggle {
             display: none;
-            font-size: 1.5rem;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 22px;
             cursor: pointer;
-            color: var(--or);
+            background: none;
+            border: none;
+            padding: 0;
         }
+        .menu-toggle span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: var(--or);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        .menu-toggle.open span:nth-child(1) { transform: translateY(9.5px) rotate(45deg); }
+        .menu-toggle.open span:nth-child(2) { opacity: 0; }
+        .menu-toggle.open span:nth-child(3) { transform: translateY(-9.5px) rotate(-45deg); }
+
         .blog-header {
             background: linear-gradient(135deg, var(--gris-fonce), #1a1a2e);
             color: white;
             text-align: center;
             padding: 120px 2rem 3rem;
-            margin-top: 0;
         }
         .yin-yang {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+            width: 60px; height: 60px; border-radius: 50%;
             background: linear-gradient(to bottom, var(--or) 50%, var(--gris-fonce) 50%);
-            position: relative;
-            margin: 0 auto 1rem;
+            position: relative; margin: 0 auto 1rem;
             animation: rotate 10s linear infinite;
         }
-        .yin-yang::before {
-            content: '';
-            position: absolute;
-            top: 25%;
-            left: 0;
-            width: 25%;
-            height: 25%;
-            background: var(--or);
-            border-radius: 50%;
-            transform: translateX(50%);
-        }
-        .yin-yang::after {
-            content: '';
-            position: absolute;
-            bottom: 25%;
-            right: 0;
-            width: 25%;
-            height: 25%;
-            background: var(--gris-fonce);
-            border-radius: 50%;
-            transform: translateX(-50%);
-        }
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .blog-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        .filter-section {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-            padding: 2rem 1rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .filter-btn {
-            background: #eee;
-            border: none;
-            padding: 0.5rem 1.2rem;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .filter-btn.active {
-            background: var(--rouge);
-            color: white;
-        }
-        .articles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 5% 3rem;
-        }
-        .article-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-        .article-card:hover {
-            transform: translateY(-5px);
-        }
-        .article-image {
-            height: 200px;
-            background: #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #999;
-        }
-        .article-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .article-content {
-            padding: 1.5rem;
-        }
-        .article-category {
-            display: inline-block;
-            background: var(--rouge);
-            color: white;
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-        }
-        .article-date {
-            color: #888;
-            font-size: 0.8rem;
-            margin: 0.5rem 0;
-        }
-        .article-title {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
-        }
-        .article-title a {
-            color: inherit;
-            text-decoration: none;
-        }
-        .article-title a:hover {
-            color: var(--rouge);
-        }
-        .article-excerpt {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-        .btn-readmore {
-            display: inline-block;
-            background: var(--rouge);
-            color: white;
-            padding: 0.5rem 1.2rem;
-            border-radius: 25px;
-            text-decoration: none;
-            font-size: 0.8rem;
-        }
-        .footer {
-            background: #1a1a1a;
-            color: white;
-            text-align: center;
-            padding: 2rem;
-        }
+        .yin-yang::before, .yin-yang::after { content: ''; position: absolute; width: 25%; height: 25%; border-radius: 50%; }
+        .yin-yang::before { top: 25%; left: 0; background: var(--or); transform: translateX(50%); }
+        .yin-yang::after { bottom: 25%; right: 0; background: var(--gris-fonce); transform: translateX(-50%); }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .blog-header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+
+        .filter-section { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; padding: 2rem 1rem; max-width: 1200px; margin: 0 auto; }
+        .filter-btn { background: #eee; border: none; padding: 0.5rem 1.2rem; border-radius: 25px; cursor: pointer; }
+        .filter-btn.active { background: var(--rouge); color: white; }
+
+        .articles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 2rem; max-width: 1400px; margin: 0 auto; padding: 0 5% 3rem; }
+        .article-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); transition: transform 0.3s; }
+        .article-card:hover { transform: translateY(-5px); }
+        .article-image { height: 200px; background: #ddd; display: flex; align-items: center; justify-content: center; color: #999; }
+        .article-image img { width: 100%; height: 100%; object-fit: cover; }
+        .article-content { padding: 1.5rem; }
+        .article-category { display: inline-block; background: var(--rouge); color: white; padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.7rem; }
+        .article-date { color: #888; font-size: 0.8rem; margin: 0.5rem 0; }
+        .article-title { font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .article-title a { color: inherit; text-decoration: none; }
+        .article-excerpt { color: #666; font-size: 0.9rem; margin-bottom: 1rem; }
+        .btn-readmore { display: inline-block; background: var(--rouge); color: white; padding: 0.5rem 1.2rem; border-radius: 25px; text-decoration: none; font-size: 0.8rem; }
+        .footer { background: #1a1a1a; color: white; text-align: center; padding: 2rem; }
+
         @media (max-width: 768px) {
-            .menu-toggle { display: block; }
+            .menu-toggle { display: flex; }
             .nav-menu {
                 position: fixed;
-                top: 70px;
+                top: 80px;
                 left: -100%;
                 width: 100%;
+                height: calc(100vh - 80px);
                 background: var(--gris-fonce);
                 flex-direction: column;
                 align-items: center;
-                padding: 2rem;
-                transition: left 0.3s;
+                justify-content: center;
+                transition: left 0.3s ease;
+                z-index: 999;
+                gap: 2rem;
             }
-            .nav-menu.active { left: 0; }
+            .nav-menu.menu-open { left: 0 !important; }
             .articles-grid { grid-template-columns: 1fr; }
             .blog-header h1 { font-size: 1.8rem; }
+            .logo h1 { font-size: 1rem; }
         }
-        .loading {
-            text-align: center;
-            padding: 3rem;
-        }
+        .loading { text-align: center; padding: 3rem; }
     </style>
 </head>
 <body>
@@ -248,9 +119,11 @@
                     <h1>Super <span>Shaolin</span> Bénin</h1>
                 </a>
             </div>
-            <div class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
-            </div>
+            <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="../index.html">Accueil</a></li>
                 <li><a href="../a-propos.html">À propos</a></li>
@@ -271,11 +144,11 @@
         <button class="filter-btn active" data-filter="all">Tous</button>
         <button class="filter-btn" data-filter="Festival">🎪 Festivals</button>
         <button class="filter-btn" data-filter="Championnat">🏆 Championnats</button>
-        <button class="filter-btn" data-filter="Stage">🏋🏼‍♂️ Stages</button>
+        <button class="filter-btn" data-filter="Stage">🏋️ Stages</button>
         <button class="filter-btn" data-filter="Info">📢 Informations</button>
         <button class="filter-btn" data-filter="Événement">📅 Événements</button>
         <button class="filter-btn" data-filter="Démonstration">🥋 Démonstrations</button>
-        <button class="filter-btn" data-filter="Entraînement">🤸🏼‍♀️ Entraînements</button>
+        <button class="filter-btn" data-filter="Entraînement">🤸 Entraînements</button>
         <button class="filter-btn" data-filter="Autre">📰 Autres</button>
     </div>
 
@@ -284,94 +157,69 @@
     </div>
 
     <footer class="footer">
-        <p>© 2026 Super Shaolin du Bénin - Tous droits réservés</p>
+        <p>© 2026 Super Shaolin du Bénin</p>
     </footer>
 
+    <!-- MENU : script isolé placé après le HTML, avant Supabase -->
+    <script>
+        (function() {
+            var btn = document.getElementById('menuToggle');
+            var nav = document.getElementById('navMenu');
+
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                var open = nav.classList.toggle('menu-open');
+                btn.classList.toggle('open', open);
+            });
+
+            nav.querySelectorAll('a').forEach(function(a) {
+                a.addEventListener('click', function() {
+                    nav.classList.remove('menu-open');
+                    btn.classList.remove('open');
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!nav.contains(e.target) && !btn.contains(e.target)) {
+                    nav.classList.remove('menu-open');
+                    btn.classList.remove('open');
+                }
+            });
+        })();
+    </script>
+
+    <!-- SUPABASE : dans son propre script, séparé -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // ===== CONFIGURATION SUPABASE =====
         const SUPABASE_URL = 'https://pngyburrixrfaxwbqsny.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_cgdu_2dYJcR7WLzYWQ4-bg_jx8uotBa';
-        
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
         let currentFilter = 'all';
-        
-        // Menu mobile
-        const menuToggle = document.getElementById('menuToggle');
-        const navMenu = document.getElementById('navMenu');
-        menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
-        document.querySelectorAll('.nav-menu a').forEach(link => {
-            link.addEventListener('click', () => navMenu.classList.remove('active'));
-        });
-        
+
         async function loadArticles() {
             let query = supabase.from('articles').select('*').order('date', { ascending: false });
-            
-            if (currentFilter !== 'all') {
-                query = query.eq('category', currentFilter);
-            }
-            
+            if (currentFilter !== 'all') query = query.eq('category', currentFilter);
             const { data, error } = await query;
-            
-            if (error) {
-                console.error('Erreur:', error);
-                document.getElementById('articlesGrid').innerHTML = '<div class="loading">❌ Erreur de chargement</div>';
+            if (error || !data || data.length === 0) {
+                document.getElementById('articlesGrid').innerHTML = '<div class="loading">📭 Aucun article</div>';
                 return;
             }
-            
-            if (!data || data.length === 0) {
-                document.getElementById('articlesGrid').innerHTML = '<div class="loading">📭 Aucun article pour le moment</div>';
-                return;
-            }
-            
             document.getElementById('articlesGrid').innerHTML = data.map(article => `
                 <div class="article-card">
                     <div class="article-image">
-                        ${article.images && article.images[0] ? 
-                            `<img src="${article.images[0]}" alt="${article.title}">` : 
-                            '<i class="fas fa-image" style="font-size: 3rem;"></i>'}
+                        ${article.images && article.images[0] ? `<img src="${article.images[0]}">` : '<i class="fas fa-image" style="font-size:3rem;"></i>'}
                     </div>
                     <div class="article-content">
-                        <span class="article-category">${getCategoryIcon(article.category)} ${article.category}</span>
-                        <div class="article-date"><i class="far fa-calendar"></i> ${formatDate(article.date)}</div>
-                        <h3 class="article-title"><a href="article.html?id=${article.id}">${escapeHtml(article.title)}</a></h3>
-                        <p class="article-excerpt">${escapeHtml(article.excerpt.substring(0, 120))}...</p>
+                        <span class="article-category">${article.category}</span>
+                        <div class="article-date">${new Date(article.date).toLocaleDateString('fr-FR')}</div>
+                        <h3 class="article-title"><a href="article.html?id=${article.id}">${article.title}</a></h3>
+                        <p class="article-excerpt">${article.excerpt.substring(0, 120)}...</p>
                         <a href="article.html?id=${article.id}" class="btn-readmore">Lire la suite →</a>
                     </div>
                 </div>
             `).join('');
         }
-        
-        function getCategoryIcon(category) {
-            const icons = { 
-                'Festival': '🎪', 
-                'Championnat': '🏆', 
-                'Stage': '🏋🏼‍♂️', 
-                'Info': '📢',
-                'Événement': '📅',
-                'Démonstration': '🥋',
-                'Entraînement': '🤸🏼‍♀️',
-                'Autre': '📰',
-                'Spectacle': '🎭'
 
-            };
-            return icons[category] || '📰';
-        }
-        
-        function formatDate(dateStr) {
-            if (!dateStr) return 'Date inconnue';
-            return new Date(dateStr).toLocaleDateString('fr-FR');
-        }
-        
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
-        // Filtres
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -380,7 +228,7 @@
                 loadArticles();
             });
         });
-        
+
         loadArticles();
     </script>
 </body>
