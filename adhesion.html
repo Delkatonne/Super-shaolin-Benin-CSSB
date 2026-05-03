@@ -4,283 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Super Shaolin Bénin | Adhésion - Devenez membre</title>
-    <meta name="description" content="Devenez membre du Super Shaolin Bénin. Formulaire d'adhésion en ligne - 10 000 FCFA avec tee-shirt, casquette et carte de membre.">
+    <meta name="description" content="Devenez membre du Super Shaolin Bénin. Formulaire d'adhésion en ligne - 10 000 FCFA">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
-    <!-- jsPDF pour générer le PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        .adhesion-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-        }
-        
-        .adhesion-form-container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        
-        .form-header {
-            background: linear-gradient(135deg, var(--rouge), #c1121f);
-            color: white;
-            padding: 2rem;
-            text-align: center;
-        }
-        
-        .form-header h3 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .form-header p {
-            opacity: 0.9;
-            font-size: 0.9rem;
-        }
-        
-        .form-body {
-            padding: 2rem;
-        }
-        
-        .form-section {
-            margin-bottom: 2rem;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 1.5rem;
-        }
-        
-        .form-section h4 {
-            color: var(--rouge);
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .form-group-full {
-            margin-bottom: 1rem;
-        }
-        
-        .form-group-full label,
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--gris-fonce);
-        }
-        
-        .form-group-full input,
-        .form-group-full select,
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #eee;
-            border-radius: 8px;
-            transition: var(--transition);
-            font-family: inherit;
-        }
-        
-        .form-group-full input:focus,
-        .form-group-full select:focus,
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: var(--or);
-        }
-        
-        .radio-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-top: 0.5rem;
-        }
-        
-        .radio-group label {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: normal;
-            cursor: pointer;
-        }
-        
-        .radio-group input[type="radio"] {
-            width: auto;
-            accent-color: var(--rouge);
-        }
-        
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-        
-        .checkbox-group input {
-            width: auto;
-        }
-        
-        .benefits-box {
-            background: linear-gradient(135deg, #fff9e6, #fff3cc);
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin: 1.5rem 0;
-            border-left: 4px solid var(--or);
-        }
-        
-        .benefits-box h4 {
-            color: var(--rouge);
-            margin-bottom: 1rem;
-        }
-        
-        .benefits-list {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .benefits-list li {
-            padding: 0.5rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-        }
-        
-        .benefits-list li i {
-            color: var(--or);
-            font-size: 1.2rem;
-        }
-        
-        .btn-submit-adhesion {
-            background: var(--rouge);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            width: 100%;
-            font-size: 1.1rem;
-            margin-top: 1rem;
-        }
-        
-        .btn-submit-adhesion:hover {
-            background: var(--gris-fonce);
-            transform: translateY(-2px);
-        }
-        
-        .signature-area {
-            border: 2px dashed #ddd;
-            padding: 1rem;
-            text-align: center;
-            border-radius: 8px;
-            margin-top: 0.5rem;
-        }
-        
-        .signature-area canvas {
-            border-radius: 5px;
-            background: white;
-            border: 1px solid #ddd;
-            max-width: 100%;
-            cursor: crosshair;
-        }
-        
-        .btn-small {
-            background: #ddd;
-            border: none;
-            padding: 0.3rem 0.8rem;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 0.5rem;
-            font-size: 0.8rem;
-        }
-        
-        .btn-small:hover {
-            background: #ccc;
-        }
-        
-        @media screen and (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-            
-            .form-body {
-                padding: 1.5rem;
-            }
-            
-            .radio-group {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-        }
-        
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.85);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .loading-overlay.active {
-            display: flex;
-        }
-        
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid var(--or);
-            border-top-color: var(--rouge);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .loading-overlay p {
-            color: white;
-            font-size: 1.2rem;
-        }
-        
-        .form-message {
-            margin-top: 1rem;
-            padding: 1rem;
-            border-radius: 8px;
-            text-align: center;
-        }
-        
-        .form-message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .form-message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
+        /* Styles existants... */
+        .adhesion-section { background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); }
+        .adhesion-form-container { max-width: 900px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden; }
+        .form-header { background: linear-gradient(135deg, var(--rouge), #c1121f); color: white; padding: 2rem; text-align: center; }
+        .form-header h3 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        .form-header p { opacity: 0.9; font-size: 0.9rem; }
+        .form-body { padding: 2rem; }
+        .form-section { margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem; }
+        .form-section h4 { color: var(--rouge); margin-bottom: 1rem; font-size: 1.2rem; display: flex; align-items: center; gap: 0.5rem; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+        .form-group-full { margin-bottom: 1rem; }
+        .form-group-full label, .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--gris-fonce); }
+        .form-group-full input, .form-group-full select, .form-group input, .form-group select { width: 100%; padding: 0.8rem; border: 2px solid #eee; border-radius: 8px; font-family: inherit; }
+        .radio-group { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 0.5rem; }
+        .radio-group label { display: flex; align-items: center; gap: 0.5rem; font-weight: normal; cursor: pointer; }
+        .radio-group input[type="radio"] { width: auto; accent-color: var(--rouge); }
+        .checkbox-group { display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0; }
+        .checkbox-group input { width: auto; }
+        .benefits-box { background: linear-gradient(135deg, #fff9e6, #fff3cc); border-radius: 10px; padding: 1.5rem; margin: 1.5rem 0; border-left: 4px solid var(--or); }
+        .benefits-box h4 { color: var(--rouge); margin-bottom: 1rem; }
+        .benefits-list { list-style: none; padding: 0; }
+        .benefits-list li { padding: 0.5rem 0; display: flex; align-items: center; gap: 0.8rem; }
+        .benefits-list li i { color: var(--or); font-size: 1.2rem; }
+        .btn-submit-adhesion { background: var(--rouge); color: white; border: none; padding: 1rem 2rem; border-radius: 50px; cursor: pointer; font-weight: 600; transition: var(--transition); width: 100%; font-size: 1.1rem; margin-top: 1rem; }
+        .btn-submit-adhesion:hover { background: var(--gris-fonce); transform: translateY(-2px); }
+        .signature-area { border: 2px dashed #ddd; padding: 1rem; text-align: center; border-radius: 8px; margin-top: 0.5rem; }
+        .signature-area canvas { border-radius: 5px; background: white; border: 1px solid #ddd; max-width: 100%; cursor: crosshair; }
+        .btn-small { background: #ddd; border: none; padding: 0.3rem 0.8rem; border-radius: 5px; cursor: pointer; margin-top: 0.5rem; font-size: 0.8rem; }
+        .btn-small:hover { background: #ccc; }
+        @media screen and (max-width: 768px) { .form-row { grid-template-columns: 1fr; } .form-body { padding: 1.5rem; } .radio-group { flex-direction: column; gap: 0.5rem; } }
+        .loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 9999; flex-direction: column; gap: 1rem; }
+        .loading-overlay.active { display: flex; }
+        .spinner { width: 50px; height: 50px; border: 4px solid var(--or); border-top-color: var(--rouge); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-overlay p { color: white; font-size: 1.2rem; }
+        .form-message { margin-top: 1rem; padding: 1rem; border-radius: 8px; text-align: center; }
+        .form-message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .form-message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        #logoCache { display: none; }
     </style>
 </head>
 <body>
+    <!-- Logo caché pour le PDF -->
+    <img id="logoCache" src="medias/logo cssb.jpg" alt="logo" style="display: none;">
+    
     <!-- HEADER -->
     <header class="header">
         <div class="nav-container">
@@ -325,131 +98,66 @@
             
             <div class="form-body">
                 <form id="adhesionForm">
-                    <!-- Section 1: Informations personnelles -->
                     <div class="form-section">
                         <h4><i class="fas fa-user"></i> 1. Informations personnelles</h4>
-                        
                         <div class="form-row">
-                            <div class="form-group">
-                                <label>Nom *</label>
-                                <input type="text" id="nom" name="nom" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Prénoms *</label>
-                                <input type="text" id="prenoms" name="prenoms" required>
-                            </div>
+                            <div class="form-group"><label>Nom *</label><input type="text" id="nom" required></div>
+                            <div class="form-group"><label>Prénoms *</label><input type="text" id="prenoms" required></div>
                         </div>
-                        
                         <div class="form-row">
-                            <div class="form-group">
-                                <label>Date de naissance *</label>
-                                <input type="date" id="dateNaissance" name="dateNaissance" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Lieu de naissance *</label>
-                                <input type="text" id="lieuNaissance" name="lieuNaissance" required>
-                            </div>
+                            <div class="form-group"><label>Date de naissance *</label><input type="date" id="dateNaissance" required></div>
+                            <div class="form-group"><label>Lieu de naissance *</label><input type="text" id="lieuNaissance" required></div>
                         </div>
-                        
                         <div class="form-row">
-                            <div class="form-group">
-                                <label>Nationalité *</label>
-                                <input type="text" id="nationalite" name="nationalite" value="Béninoise" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Profession / École *</label>
-                                <input type="text" id="profession" name="profession" required>
-                            </div>
+                            <div class="form-group"><label>Nationalité *</label><input type="text" id="nationalite" value="Béninoise" required></div>
+                            <div class="form-group"><label>Profession / École *</label><input type="text" id="profession" required></div>
                         </div>
-                        
-                        <div class="form-group-full">
-                            <label>Adresse *</label>
-                            <input type="text" id="adresse" name="adresse" required>
-                        </div>
-                        
+                        <div class="form-group-full"><label>Adresse *</label><input type="text" id="adresse" required></div>
                         <div class="form-row">
-                            <div class="form-group">
-                                <label>Ville / Quartier *</label>
-                                <input type="text" id="ville" name="ville" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Téléphone *</label>
-                                <input type="tel" id="telephone" name="telephone" required>
-                            </div>
+                            <div class="form-group"><label>Ville / Quartier *</label><input type="text" id="ville" required></div>
+                            <div class="form-group"><label>Téléphone *</label><input type="tel" id="telephone" required></div>
                         </div>
-                        
-                        <div class="form-group-full">
-                            <label>Email *</label>
-                            <input type="email" id="emailAdhesion" name="email" required>
-                        </div>
+                        <div class="form-group-full"><label>Email *</label><input type="email" id="emailAdhesion" required></div>
                     </div>
                     
-                    <!-- Section 2: Statut du membre -->
                     <div class="form-section">
                         <h4><i class="fas fa-tag"></i> 2. Statut du membre</h4>
-                        
                         <div class="radio-group">
-                            <label>
-                                <input type="radio" name="statut" value="Élève pratiquant (Shaolin Kung-Fu / Wushu)" required>
-                                Élève pratiquant (Shaolin Kung-Fu / Wushu)
-                            </label>
-                            <label>
-                                <input type="radio" name="statut" value="Membre adhérent">
-                                Membre adhérent
-                            </label>
-                            <label>
-                                <input type="radio" name="statut" value="Membre bienfaiteur">
-                                Membre bienfaiteur
-                            </label>
-                            <label>
-                                <input type="radio" name="statut" value="Donateur / Soutien SUPER SHAOLIN BENIN">
-                                Donateur / Soutien SUPER SHAOLIN BENIN
-                            </label>
+                            <label><input type="radio" name="statut" value="Élève pratiquant (Shaolin Kung-Fu / Wushu)" required> Élève pratiquant (Shaolin Kung-Fu / Wushu)</label>
+                            <label><input type="radio" name="statut" value="Membre adhérent"> Membre adhérent</label>
+                            <label><input type="radio" name="statut" value="Membre bienfaiteur"> Membre bienfaiteur</label>
+                            <label><input type="radio" name="statut" value="Donateur / Soutien SUPER SHAOLIN BENIN"> Donateur / Soutien SUPER SHAOLIN BENIN</label>
                         </div>
                     </div>
                     
-                    <!-- Section 3: Engagement -->
                     <div class="form-section">
                         <h4><i class="fas fa-handshake"></i> 3. Engagement de l'adhérent</h4>
-                        
-                        <p style="margin-bottom: 1rem;">Je soussigné(e) <strong id="nomSignataire">___________</strong> déclare adhérer au Super Shaolin Bénin et m'engage à respecter les règles, la discipline et les valeurs du SSB promues : <strong>Respect - Discipline - Maîtrise de soi - Excellence - Harmonie</strong>.</p>
-                        
+                        <p style="margin-bottom: 1rem;">Je soussigné(e) <strong id="nomSignataire">___________</strong> déclare adhérer au Super Shaolin Bénin et m'engage à respecter les règles, la discipline et les valeurs du SSB.</p>
                         <div class="form-row">
-                            <div class="form-group">
-                                <label>Date d'engagement *</label>
-                                <input type="date" id="dateEngagement" name="dateEngagement" required>
-                            </div>
+                            <div class="form-group"><label>Date d'engagement *</label><input type="date" id="dateEngagement" required></div>
                         </div>
-                        
                         <div class="checkbox-group">
-                            <input type="checkbox" id="mineur" name="mineur">
+                            <input type="checkbox" id="mineur">
                             <label for="mineur">L'adhérent est mineur (signature parent/tuteur requise)</label>
                         </div>
-                        
                         <div id="signatureParentSection" style="display: none;">
                             <div class="form-group-full">
-                                <label>Signature du parent/tuteur (cliquez et glissez pour signer)</label>
+                                <label>Signature du parent/tuteur</label>
                                 <div class="signature-area">
                                     <canvas id="signatureParentCanvas" width="400" height="120" style="width:100%; height:auto; background:white; border:1px solid #ddd;"></canvas>
-                                    <div>
-                                        <button type="button" id="clearParentSignature" class="btn-small">Effacer</button>
-                                    </div>
+                                    <div><button type="button" id="clearParentSignature" class="btn-small">Effacer</button></div>
                                 </div>
                             </div>
                         </div>
-                        
                         <div class="form-group-full">
-                            <label>Signature de l'adhérent (cliquez et glissez pour signer)</label>
+                            <label>Signature de l'adhérent</label>
                             <div class="signature-area">
                                 <canvas id="signatureCanvas" width="400" height="120" style="width:100%; height:auto; background:white; border:1px solid #ddd;"></canvas>
-                                <div>
-                                    <button type="button" id="clearSignature" class="btn-small">Effacer</button>
-                                </div>
+                                <div><button type="button" id="clearSignature" class="btn-small">Effacer</button></div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Section avantages -->
                     <div class="benefits-box">
                         <h4><i class="fas fa-gift"></i> Adhésion SUPER SHAOLIN BÉNIN</h4>
                         <p style="font-size: 1.2rem; font-weight: bold; color: var(--rouge);">10 000 FCFA</p>
@@ -458,7 +166,7 @@
                             <li><i class="fas fa-hat-cowboy"></i> Une casquette SUPER SHAOLIN BÉNIN</li>
                             <li><i class="fas fa-book"></i> Un cahier</li>
                             <li><i class="fas fa-id-card"></i> Une carte de membre</li>
-                            <li><i class="fas fa-ticket-alt"></i> Accès à tous nos spectacles pendant 1 an, renouvelable</li>
+                            <li><i class="fas fa-ticket-alt"></i> Accès à tous nos spectacles pendant 1 an</li>
                         </ul>
                         <p style="margin-top: 1rem; font-style: italic;"><i class="fas fa-quote-left"></i> « La lumière dissipe les ténèbres »</p>
                     </div>
@@ -468,69 +176,50 @@
                         <label for="acceptConditions">Je certifie l'exactitude des informations fournies et j'accepte les conditions d'adhésion *</label>
                     </div>
                     
-                    <button type="submit" class="btn-submit-adhesion">
-                        <i class="fas fa-paper-plane"></i> Envoyer ma demande d'adhésion
-                    </button>
-                    
+                    <button type="submit" class="btn-submit-adhesion"><i class="fas fa-paper-plane"></i> Envoyer ma demande d'adhésion</button>
                     <div id="formMessage" class="form-message" style="display: none;"></div>
                 </form>
             </div>
         </div>
     </section>
     
-    <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
-        <p>Génération du PDF et envoi en cours...</p>
-        <p style="font-size: 0.9rem;">Veuillez patienter</p>
+        <p>Génération du PDF...</p>
     </div>
 
-    <!-- FOOTER -->
     <footer class="footer">
         <div class="yin-yang"></div>
-        <p>copyright © 2026 Super Shaolin du Bénin - Tous droits réservés</p>
-        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Siège : Akpro-Missérété  Maison des Jeunes | Porto-Novo : CEMAAC Koutongbé</p>
-        <p style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.7;">📧 supershaolin229@gmail.com | 📞 +229 01 96 23 61 66</p>
+        <p>© 2026 Super Shaolin du Bénin</p>
     </footer>
 
     <script>
-        // ==================== MENU MOBILE ====================
+        // MENU MOBILE
         const menuToggle = document.getElementById('menuToggle');
         const navMenu = document.getElementById('navMenu');
-        
-        if (menuToggle && navMenu) {
-            menuToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                navMenu.classList.toggle('active');
-            });
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => navMenu.classList.toggle('active'));
         }
-        
         document.querySelectorAll('.nav-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                if (navMenu) navMenu.classList.remove('active');
-            });
+            link.addEventListener('click', () => navMenu.classList.remove('active'));
         });
         
-        // ==================== MISE À JOUR NOM SIGNAIRE ====================
+        // Mise à jour du nom
         const nomInput = document.getElementById('nom');
         const prenomsInput = document.getElementById('prenoms');
         const nomSignataire = document.getElementById('nomSignataire');
-        
         function updateSignataire() {
-            const nom = nomInput.value || '_____';
-            const prenoms = prenomsInput.value || '_____';
-            nomSignataire.textContent = `${nom} ${prenoms}`;
+            nomSignataire.textContent = `${nomInput.value || '_____'} ${prenomsInput.value || '_____'}`;
         }
-        
         nomInput.addEventListener('input', updateSignataire);
         prenomsInput.addEventListener('input', updateSignataire);
         
-        // ==================== SIGNATURE ADHÉRENT ====================
+        // SIGNATURE ADHÉRENT
         const signatureCanvas = document.getElementById('signatureCanvas');
-        let signatureCtx = signatureCanvas.getContext('2d');
+        let sigCtx = signatureCanvas.getContext('2d');
         let isDrawing = false;
         
-        function setupSignature(canvas, ctx) {
+        function setupCanvas(canvas, ctx) {
             canvas.width = 400;
             canvas.height = 120;
             ctx.fillStyle = 'white';
@@ -538,155 +227,103 @@
             ctx.strokeStyle = '#2B2D42';
             ctx.lineWidth = 2;
             ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
             
-            canvas.addEventListener('mousedown', (e) => {
+            const start = (e) => {
                 isDrawing = true;
-                const pos = getMousePos(canvas, e);
+                const pos = getPos(canvas, e);
                 ctx.beginPath();
                 ctx.moveTo(pos.x, pos.y);
-            });
-            
-            canvas.addEventListener('mousemove', (e) => {
+            };
+            const draw = (e) => {
                 if (!isDrawing) return;
                 e.preventDefault();
-                const pos = getMousePos(canvas, e);
+                const pos = getPos(canvas, e);
                 ctx.lineTo(pos.x, pos.y);
                 ctx.stroke();
-            });
+            };
+            const stop = () => isDrawing = false;
             
-            canvas.addEventListener('mouseup', () => { isDrawing = false; });
-            canvas.addEventListener('mouseleave', () => { isDrawing = false; });
-            
-            canvas.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                isDrawing = true;
-                const pos = getTouchPos(canvas, e);
-                ctx.beginPath();
-                ctx.moveTo(pos.x, pos.y);
-            });
-            
-            canvas.addEventListener('touchmove', (e) => {
-                if (!isDrawing) return;
-                e.preventDefault();
-                const pos = getTouchPos(canvas, e);
-                ctx.lineTo(pos.x, pos.y);
-                ctx.stroke();
-            });
-            
-            canvas.addEventListener('touchend', () => { isDrawing = false; });
+            canvas.addEventListener('mousedown', start);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stop);
+            canvas.addEventListener('mouseleave', stop);
+            canvas.addEventListener('touchstart', (e) => { e.preventDefault(); start(e); });
+            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+            canvas.addEventListener('touchend', stop);
         }
         
-        function getMousePos(canvas, e) {
+        function getPos(canvas, e) {
             const rect = canvas.getBoundingClientRect();
             const scaleX = canvas.width / rect.width;
             const scaleY = canvas.height / rect.height;
-            const x = (e.clientX - rect.left) * scaleX;
-            const y = (e.clientY - rect.top) * scaleY;
+            let clientX, clientY;
+            if (e.touches) {
+                clientX = e.touches[0].clientX;
+                clientY = e.touches[0].clientY;
+            } else {
+                clientX = e.clientX;
+                clientY = e.clientY;
+            }
+            const x = (clientX - rect.left) * scaleX;
+            const y = (clientY - rect.top) * scaleY;
             return { x: Math.max(0, Math.min(canvas.width, x)), y: Math.max(0, Math.min(canvas.height, y)) };
         }
         
-        function getTouchPos(canvas, e) {
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            const touch = e.touches[0];
-            const x = (touch.clientX - rect.left) * scaleX;
-            const y = (touch.clientY - rect.top) * scaleY;
-            return { x: Math.max(0, Math.min(canvas.width, x)), y: Math.max(0, Math.min(canvas.height, y)) };
-        }
-        
-        setupSignature(signatureCanvas, signatureCtx);
-        
+        setupCanvas(signatureCanvas, sigCtx);
         document.getElementById('clearSignature').addEventListener('click', () => {
-            signatureCtx.fillStyle = 'white';
-            signatureCtx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+            sigCtx.fillStyle = 'white';
+            sigCtx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height);
         });
         
-        // ==================== SIGNATURE PARENT ====================
+        // SIGNATURE PARENT
         const parentCanvas = document.getElementById('signatureParentCanvas');
         let parentCtx = parentCanvas.getContext('2d');
         let parentDrawing = false;
-        
-        function setupParentSignature() {
-            parentCanvas.width = 400;
-            parentCanvas.height = 120;
-            parentCtx.fillStyle = 'white';
-            parentCtx.fillRect(0, 0, parentCanvas.width, parentCanvas.height);
-            parentCtx.strokeStyle = '#2B2D42';
-            parentCtx.lineWidth = 2;
-            parentCtx.lineCap = 'round';
-            
-            parentCanvas.addEventListener('mousedown', (e) => {
-                parentDrawing = true;
-                const pos = getMousePos(parentCanvas, e);
-                parentCtx.beginPath();
-                parentCtx.moveTo(pos.x, pos.y);
-            });
-            
-            parentCanvas.addEventListener('mousemove', (e) => {
-                if (!parentDrawing) return;
-                e.preventDefault();
-                const pos = getMousePos(parentCanvas, e);
-                parentCtx.lineTo(pos.x, pos.y);
-                parentCtx.stroke();
-            });
-            
-            parentCanvas.addEventListener('mouseup', () => { parentDrawing = false; });
-            parentCanvas.addEventListener('mouseleave', () => { parentDrawing = false; });
-            
-            parentCanvas.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                parentDrawing = true;
-                const pos = getTouchPos(parentCanvas, e);
-                parentCtx.beginPath();
-                parentCtx.moveTo(pos.x, pos.y);
-            });
-            
-            parentCanvas.addEventListener('touchmove', (e) => {
-                if (!parentDrawing) return;
-                e.preventDefault();
-                const pos = getTouchPos(parentCanvas, e);
-                parentCtx.lineTo(pos.x, pos.y);
-                parentCtx.stroke();
-            });
-            
-            parentCanvas.addEventListener('touchend', () => { parentDrawing = false; });
-        }
-        
-        setupParentSignature();
-        
+        setupCanvas(parentCanvas, parentCtx);
         document.getElementById('clearParentSignature').addEventListener('click', () => {
             parentCtx.fillStyle = 'white';
             parentCtx.fillRect(0, 0, parentCanvas.width, parentCanvas.height);
         });
         
-        // ==================== AFFICHAGE SIGNATURE PARENT SI MINEUR ====================
         const mineurCheckbox = document.getElementById('mineur');
         const signatureParentSection = document.getElementById('signatureParentSection');
-        
         mineurCheckbox.addEventListener('change', () => {
             signatureParentSection.style.display = mineurCheckbox.checked ? 'block' : 'none';
         });
         
-        // ==================== GÉNÉRATION NUMÉRO ADHÉRENT ====================
         function generateNumeroAdherent() {
-            const date = new Date();
-            const year = date.getFullYear();
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const day = date.getDate().toString().padStart(2, '0');
-            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
-            return `SSB-${year}${month}${day}-${random}`;
+            const d = new Date();
+            return `SSB-${d.getFullYear()}${(d.getMonth()+1).toString().padStart(2,'0')}${d.getDate().toString().padStart(2,'0')}-${Math.floor(Math.random()*1000).toString().padStart(3,'0')}`;
         }
         
-        // ==================== GÉNÉRATION DU PDF AVEC jspdf ====================
-        function generatePDF(formData, signatureDataURL, parentSignatureDataURL) {
+        // GÉNÉRATION DU PDF AVEC LOGO
+        async function generatePDF(formData, signatureDataURL, parentSignatureDataURL) {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
+            let y = 25;
             
-            let y = 20;
+            // Récupérer le logo
+            const logoImg = document.getElementById('logoCache');
+            let logoDataURL = null;
+            if (logoImg && logoImg.complete && logoImg.naturalWidth > 0) {
+                const canvas = document.createElement('canvas');
+                canvas.width = logoImg.naturalWidth;
+                canvas.height = logoImg.naturalHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(logoImg, 0, 0);
+                logoDataURL = canvas.toDataURL('image/png');
+            } else {
+                // Fallback : attendre ou utiliser une image par défaut
+                console.log("Logo non trouvé");
+            }
             
-            // En-tête
+            // Ajouter le logo en haut (gauche et droite)
+            if (logoDataURL) {
+                doc.addImage(logoDataURL, 'PNG', 15, 15, 25, 25);
+                doc.addImage(logoDataURL, 'PNG', 170, 15, 25, 25);
+            }
+            
+            // Titre
             doc.setFontSize(18);
             doc.setFont(undefined, "bold");
             doc.text("SUPER SHAOLIN BÉNIN", 105, y, { align: "center" });
@@ -698,14 +335,12 @@
             doc.setFont(undefined, "normal");
             doc.text("Association N° 2016/141/SG/SAG/SA du 16 Novembre 2016", 105, y, { align: "center" });
             y += 6;
-            doc.text("Sièges : Akpro-Missérété - Maison des Jeunes | Cotonou PK10 - Plage Von Owolobè | Centre CEMAAC Koutongbé", 105, y, { align: "center" });
+            doc.text("Sièges : Akpro-Missérété - Maison des Jeunes | Cotonou PK10 | Centre CEMAAC Koutongbé - Porto-Novo", 105, y, { align: "center" });
             y += 8;
-            
-            // Ligne séparatrice
             doc.line(20, y, 190, y);
             y += 10;
             
-            // 1. Informations personnelles
+            // 1. Informations
             doc.setFontSize(11);
             doc.setFont(undefined, "bold");
             doc.text("1. INFORMATIONS PERSONNELLES", 20, y);
@@ -714,7 +349,7 @@
             doc.setFont(undefined, "normal");
             doc.text(`Nom : ${formData.nom} ${formData.prenoms}`, 20, y);
             y += 6;
-            doc.text(`Date de naissance : ${formData.dateNaissance}  |  Lieu : ${formData.lieuNaissance}`, 20, y);
+            doc.text(`Date naissance : ${formData.dateNaissance}  |  Lieu : ${formData.lieuNaissance}`, 20, y);
             y += 6;
             doc.text(`Nationalité : ${formData.nationalite}  |  Profession : ${formData.profession}`, 20, y);
             y += 6;
@@ -748,35 +383,29 @@
             doc.text("SIGNATURES", 20, y);
             y += 7;
             doc.setFont(undefined, "normal");
-            doc.text("Signature de l'adhérent :", 20, y);
-            
-            // Ajout de la signature si disponible
+            doc.text("Adhérent :", 20, y);
             if (signatureDataURL) {
-                try {
-                    doc.addImage(signatureDataURL, 'PNG', 80, y - 5, 60, 25);
-                } catch(e) { console.log("Erreur signature"); }
+                try { doc.addImage(signatureDataURL, 'PNG', 60, y - 5, 60, 25); } catch(e) {}
             }
-            y += 25;
+            y += 22;
             
             if (formData.mineur) {
-                doc.text("Signature du parent/tuteur :", 20, y);
+                doc.text("Parent/tuteur :", 20, y);
                 if (parentSignatureDataURL) {
-                    try {
-                        doc.addImage(parentSignatureDataURL, 'PNG', 80, y - 5, 60, 25);
-                    } catch(e) { console.log("Erreur signature parent"); }
+                    try { doc.addImage(parentSignatureDataURL, 'PNG', 60, y - 5, 60, 25); } catch(e) {}
                 }
-                y += 25;
+                y += 22;
             }
             
             // Avantages
             doc.setFillColor(255, 249, 230);
             doc.rect(20, y, 170, 35, "F");
             doc.setFont(undefined, "bold");
-            doc.text("ADHÉSION SUPER SHAOLIN BÉNIN - 10 000 FCFA", 25, y + 8);
+            doc.text("ADHÉSION - 10 000 FCFA", 25, y + 8);
             doc.setFont(undefined, "normal");
-            doc.text("✓ Un tee-shirt et une casquette SUPER SHAOLIN BÉNIN", 25, y + 16);
-            doc.text("✓ Un cahier", 25, y + 24);
-            doc.text("✓ Une carte de membre (accès à tous les spectacles pendant 1 an)", 25, y + 32);
+            doc.text("✓ Tee-shirt + Casquette SUPER SHAOLIN BÉNIN", 25, y + 16);
+            doc.text("✓ Cahier + Carte de membre", 25, y + 24);
+            doc.text("✓ Accès à tous les spectacles pendant 1 an", 25, y + 32);
             y += 45;
             
             // Numéro adhérent
@@ -785,45 +414,38 @@
             y += 8;
             doc.text(`Date de la demande : ${new Date().toLocaleDateString()}`, 20, y);
             
-            // Sauvegarde du PDF
             doc.save(`Adhesion_${formData.nom}_${formData.prenoms}.pdf`);
         }
         
-        // ==================== ENVOI DU FORMULAIRE ====================
-        const adhesionForm = document.getElementById('adhesionForm');
+        // SOUMISSION
+        const form = document.getElementById('adhesionForm');
         const loadingOverlay = document.getElementById('loadingOverlay');
         const formMessage = document.getElementById('formMessage');
         
-        function getSignatureDataURL(canvas) {
-            return canvas.toDataURL('image/png');
-        }
-        
-        adhesionForm.addEventListener('submit', async (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Vérifier la signature
-            const signatureCanvasEmpty = signatureCtx.getImageData(0, 0, signatureCanvas.width, signatureCanvas.height).data.some(channel => channel !== 255);
-            if (!signatureCanvasEmpty) {
+            // Vérifier signature
+            const sigEmpty = sigCtx.getImageData(0, 0, signatureCanvas.width, signatureCanvas.height).data.some(c => c !== 255);
+            if (!sigEmpty) {
                 formMessage.style.display = 'block';
                 formMessage.className = 'form-message error';
-                formMessage.innerHTML = '❌ Veuillez signer dans la zone de signature de l\'adhérent';
-                setTimeout(() => { formMessage.style.display = 'none'; }, 3000);
+                formMessage.innerHTML = '❌ Veuillez signer';
+                setTimeout(() => formMessage.style.display = 'none', 3000);
                 return;
             }
             
-            // Vérifier signature parent si mineur
             if (mineurCheckbox.checked) {
-                const parentCanvasEmpty = parentCtx.getImageData(0, 0, parentCanvas.width, parentCanvas.height).data.some(channel => channel !== 255);
-                if (!parentCanvasEmpty) {
+                const parentEmpty = parentCtx.getImageData(0, 0, parentCanvas.width, parentCanvas.height).data.some(c => c !== 255);
+                if (!parentEmpty) {
                     formMessage.style.display = 'block';
                     formMessage.className = 'form-message error';
-                    formMessage.innerHTML = '❌ L\'adhérent est mineur, veuillez faire signer le parent/tuteur';
-                    setTimeout(() => { formMessage.style.display = 'none'; }, 3000);
+                    formMessage.innerHTML = '❌ Signature parent requise';
+                    setTimeout(() => formMessage.style.display = 'none', 3000);
                     return;
                 }
             }
             
-            // Récupérer les données
             const formData = {
                 nom: document.getElementById('nom').value,
                 prenoms: document.getElementById('prenoms').value,
@@ -841,13 +463,12 @@
                 numeroAdherent: generateNumeroAdherent()
             };
             
-            // Vérifier tous les champs
             for (let key in formData) {
                 if (key !== 'mineur' && !formData[key]) {
                     formMessage.style.display = 'block';
                     formMessage.className = 'form-message error';
-                    formMessage.innerHTML = '❌ Veuillez remplir tous les champs obligatoires';
-                    setTimeout(() => { formMessage.style.display = 'none'; }, 3000);
+                    formMessage.innerHTML = '❌ Remplissez tous les champs';
+                    setTimeout(() => formMessage.style.display = 'none', 3000);
                     return;
                 }
             }
@@ -855,94 +476,62 @@
             loadingOverlay.classList.add('active');
             
             try {
-                const signatureDataURL = getSignatureDataURL(signatureCanvas);
-                const parentSignatureDataURL = mineurCheckbox.checked ? getSignatureDataURL(parentCanvas) : '';
+                const sigData = signatureCanvas.toDataURL('image/png');
+                const parentSigData = mineurCheckbox.checked ? parentCanvas.toDataURL('image/png') : '';
                 
-                // Générer et télécharger le PDF
-                generatePDF(formData, signatureDataURL, parentSignatureDataURL);
+                await generatePDF(formData, sigData, parentSigData);
                 
-                // Envoyer les données par email via FormSubmit
-                const formDataToSend = new FormData();
-                formDataToSend.append('_subject', `[SUPER SHAOLIN] Nouvelle adhésion - ${formData.nom} ${formData.prenoms}`);
-                formDataToSend.append('_template', 'table');
-                formDataToSend.append('_captcha', 'false');
-                formDataToSend.append('Nom', formData.nom);
-                formDataToSend.append('Prénoms', formData.prenoms);
-                formDataToSend.append('Téléphone', formData.telephone);
-                formDataToSend.append('Email', formData.email);
-                formDataToSend.append('Statut', formData.statut);
-                formDataToSend.append("Numéro d'adhérent", formData.numeroAdherent);
-                
-                await fetch('https://formsubmit.co/ajax/supershaolin229@gmail.com', {
-                    method: 'POST',
-                    body: formDataToSend
-                });
+                const emailData = new FormData();
+                emailData.append('_subject', `Adhésion ${formData.nom} ${formData.prenoms}`);
+                emailData.append('Nom', formData.nom);
+                emailData.append('Prénoms', formData.prenoms);
+                emailData.append('Téléphone', formData.telephone);
+                emailData.append('Email', formData.email);
+                emailData.append('Statut', formData.statut);
+                emailData.append('Numéro', formData.numeroAdherent);
+                await fetch('https://formsubmit.co/ajax/supershaolin229@gmail.com', { method: 'POST', body: emailData });
                 
                 loadingOverlay.classList.remove('active');
-                
                 formMessage.style.display = 'block';
                 formMessage.className = 'form-message success';
-                formMessage.innerHTML = `
-                    <i class="fas fa-check-circle"></i> 
-                    <strong>Demande d'adhésion envoyée avec succès !</strong><br>
-                    Numéro d'adhérent : <strong>${formData.numeroAdherent}</strong><br>
-                    Le PDF a été téléchargé sur votre appareil.<br>
-                    <br>
-                    <strong>Prochaines étapes :</strong><br>
-                    - Un responsable vous contactera sous 48h<br>
-                    - Vous recevrez votre kit lors de votre prochain passage au club
-                `;
+                formMessage.innerHTML = `✅ Demande envoyée !<br>Numéro : ${formData.numeroAdherent}<br>PDF téléchargé.`;
                 
-                // Réinitialiser le formulaire
-                adhesionForm.reset();
-                signatureCtx.fillStyle = 'white';
-                signatureCtx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+                form.reset();
+                sigCtx.fillStyle = 'white';
+                sigCtx.fillRect(0, 0, signatureCanvas.width, signatureCanvas.height);
                 if (parentCtx) {
                     parentCtx.fillStyle = 'white';
                     parentCtx.fillRect(0, 0, parentCanvas.width, parentCanvas.height);
                 }
-                signatureParentSection.style.display = 'none';
                 mineurCheckbox.checked = false;
-                
-                setTimeout(() => {
-                    formMessage.style.display = 'none';
-                }, 10000);
-                
+                signatureParentSection.style.display = 'none';
+                setTimeout(() => formMessage.style.display = 'none', 8000);
             } catch (error) {
-                console.error('Erreur:', error);
                 loadingOverlay.classList.remove('active');
                 formMessage.style.display = 'block';
                 formMessage.className = 'form-message error';
-                formMessage.innerHTML = '❌ Une erreur est survenue. Veuillez réessayer ou contacter directement le club au +229 96 23 61 66';
-                setTimeout(() => { formMessage.style.display = 'none'; }, 5000);
+                formMessage.innerHTML = '❌ Erreur, contactez le club';
+                setTimeout(() => formMessage.style.display = 'none', 5000);
             }
         });
         
-        // ==================== ANIMATIONS ====================
+        // Animations
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
+            entries.forEach(e => e.isIntersecting && e.target.classList.add('visible'));
         }, { threshold: 0.1 });
-        
         document.querySelectorAll('.section, .adhesion-form-container').forEach(el => {
             el.classList.add('fade-in');
             observer.observe(el);
         });
         
-        // Header transparent au scroll
         const header = document.querySelector('.header');
-        if (header) {
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 100) {
-                    header.style.background = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)';
-                } else {
-                    header.style.background = 'linear-gradient(135deg, var(--gris-fonce) 0%, #1a1a2e 100%)';
-                }
-            });
-        }
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.style.background = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)';
+            } else {
+                header.style.background = 'linear-gradient(135deg, var(--gris-fonce) 0%, #1a1a2e 100%)';
+            }
+        });
     </script>
 </body>
 </html>
