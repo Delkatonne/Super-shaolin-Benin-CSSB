@@ -2,776 +2,55 @@
 <html lang="fr">
 <head>
     <meta name="google-site-verification" content="GsUZ0bT-KSxKGc-wUcgsC7K077Xtz_hMO4umte0Exv0" />
-    <title> Super Shaolin Bénin  | Kung-fu  wushu & Arts Martiaux</title>
-    
-
+    <title>Super Shaolin Bénin | Accueil - Kung-fu Wushu & Arts Martiaux</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <meta name="description" content="Super Shaolin Bénin  : entraînement de Kung-fu Shaolin, discipline, self-défense et développement personnel au Bénin.">
-
-    <meta name="keywords" content="Shaolin, Kung-fu, Bénin, arts martiaux, self-défense, Super Shaolin, club shaolin">
-
+    <meta name="description" content="Super Shaolin Bénin : entraînement de Kung-fu Shaolin, discipline, self-défense et développement personnel au Bénin. Cours d'essai gratuit !">
+    <meta name="keywords" content="Shaolin, Kung-fu, Bénin, arts martiaux, self-défense, Super Shaolin">
     <meta name="author" content="Club Super Shaolin Bénin">
-
-    <!-- Open Graph (Facebook / WhatsApp) -->
-    <meta property="og:title" content="Club Super Shaolin Bénin (CSSB)">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Club Super Shaolin Bénin - Accueil">
     <meta property="og:description" content="Rejoignez le club Shaolin au Bénin : discipline, force et maîtrise de soi.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://club-super-shaolin-benin-cssb.vercel.app/">
-    <!-- Font Awesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* ===== VARIABLES & RESET ===== */
-        :root {
-            --rouge: #E63946;
-            --or: #FFD700;
-            --gris-fonce: #2B2D42;
-            --gris-clair: #F8F9FA;
-            --noir: #1a1a1a;
-            --yin-yang: #FFFFFF;
-            --transition: all 0.3s ease;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: var(--gris-fonce);
-            overflow-x: hidden;
-        }
-
-        /* ===== YIN YANG SYMBOL ===== */
-        .yin-yang {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(to bottom, var(--or) 50%, var(--gris-fonce) 50%);
-            position: relative;
-            margin: 0 auto;
-            animation: rotate 10s linear infinite;
-        }
-
-        .yin-yang::before {
-            content: '';
-            position: absolute;
-            top: 25%;
-            left: 0;
-            width: 25%;
-            height: 25%;
-            background: var(--or);
-            border-radius: 50%;
-            transform: translateX(50%);
-        }
-
-        .yin-yang::after {
-            content: '';
-            position: absolute;
-            bottom: 25%;
-            right: 0;
-            width: 25%;
-            height: 25%;
-            background: var(--gris-fonce);
-            border-radius: 50%;
-            transform: translateX(-50%);
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* ===== HEADER & NAVIGATION ===== */
-        .header {
-            background: linear-gradient(135deg, var(--gris-fonce) 0%, #1a1a2e 100%);
-            color: white;
-            padding: 1rem 5%;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .logo-icon {
-            font-size: 2rem;
-            color: var(--or);
-        }
-
-        .logo h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-
-        .logo span {
-            color: var(--or);
-            font-style: italic;
-        }
-
-        .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-menu a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: var(--transition);
-            position: relative;
-            padding: 0.5rem 0;
-        }
-
-        .nav-menu a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--or);
-            transition: var(--transition);
-        }
-
-        .nav-menu a:hover::after {
-            width: 100%;
-        }
-
-        .menu-toggle {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--or);
-        }
-
-        /* ===== HERO SECTION ===== */
-        .hero {
-            height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                        url(medias/couverture.jpg);
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            padding: 0 1rem;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            animation: fadeInUp 1.5s ease;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .yin-yang-hero {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 2rem;
-        }
-
-        .hero h2 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .hero h2 span {
-            color: var(--or);
-            border-bottom: 3px solid var(--rouge);
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 1rem 2.5rem;
-            background: var(--rouge);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 600;
-            transition: var(--transition);
-            border: 2px solid transparent;
-            margin: 0.5rem;
-        }
-
-        .btn:hover {
-            background: transparent;
-            border-color: var(--or);
-            color: var(--or);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--or);
-        }
-
-        /* ===== SECTION GÉNÉRIQUE ===== */
-        .section {
-            padding: 80px 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-title h2 {
-            font-size: 2.5rem;
-            color: var(--gris-fonce);
-            position: relative;
-            display: inline-block;
-            padding-bottom: 1rem;
-        }
-
-        .section-title h2::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--rouge), var(--or));
-        }
-
-        .section-title .yin-yang-small {
-            width: 30px;
-            height: 30px;
-            margin: 1rem auto 0;
-        }
-
-        /* ===== MAÎTRE SECTION ===== */
-        .maitre {
-            background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%);
-        }
-
-        .maitre-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .maitre-image {
-            position: relative;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-
-        .maitre-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-            transition: var(--transition);
-        }
-
-        .maitre-image:hover img {
-            transform: scale(1.05);
-        }
-
-        .maitre-content h3 {
-            font-size: 2rem;
-            color: var(--rouge);
-            margin-bottom: 0.5rem;
-        }
-
-        .maitre-content h4 {
-            font-size: 1.3rem;
-            color: var(--gris-fonce);
-            margin-bottom: 1rem;
-            font-weight: 400;
-        }
-
-        .maitre-content .badge-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .badge {
-            background: var(--or);
-            color: var(--gris-fonce);
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            display: inline-block;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-
-        .badge-rouge {
-            background: var(--rouge);
-            color: white;
-        }
-
-        .maitre-content p {
-            margin-bottom: 1.5rem;
-            color: #555;
-        }
-
-        .maitre-quote {
-            font-style: italic;
-            font-size: 1.1rem;
-            color: var(--rouge);
-            border-left: 4px solid var(--or);
-            padding-left: 1rem;
-            margin: 1.5rem 0;
-        }
-
-        /* ===== DISCIPLINES ===== */
-        .disciplines-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-
-        .discipline-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-            transition: var(--transition);
-            position: relative;
-            cursor: pointer;
-        }
-
-        .discipline-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(230, 57, 70, 0.2);
-        }
-
-        .discipline-img {
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .discipline-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .discipline-card:hover .discipline-img img {
-            transform: scale(1.1);
-        }
-
-        .discipline-content {
-            padding: 1.5rem;
-            text-align: center;
-        }
-
-        .discipline-content h3 {
-            color: var(--rouge);
-            margin-bottom: 0.5rem;
-        }
-
-        .discipline-icon {
-            font-size: 2rem;
-            color: var(--or);
-            margin-bottom: 1rem;
-        }
-
-        /* ===== HORAIRES & LOCALISATION ===== */
-        .infos-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-        }
-
-        .info-box {
-            background: var(--gris-clair);
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .info-box h3 {
-            color: var(--rouge);
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .info-box i {
-            color: var(--or);
-        }
-
-        .horaire-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.8rem 0;
-            border-bottom: 1px dashed #ddd;
-        }
-
-        .horaire-item:last-child {
-            border-bottom: none;
-        }
-
-        .jour {
-            font-weight: 600;
-        }
-
-        .adresse {
-            margin-bottom: 1.5rem;
-            padding: 1rem;
-            background: white;
-            border-radius: 5px;
-            border-left: 4px solid var(--or);
-        }
-
-        .adresse p {
-            margin: 0.5rem 0;
-        }
-
-        .adresse i {
-            color: var(--rouge);
-            width: 25px;
-        }
-
-        /* ===== GALERIE ===== */
-        .galerie {
-            background: var(--gris-clair);
-        }
-
-        .galerie-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .galerie-item {
-            position: relative;
-            border-radius: 10px;
-            overflow: hidden;
-            height: 250px;
-            cursor: pointer;
-        }
-
-        .galerie-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: var(--transition);
-        }
-
-        .galerie-item:hover img {
-            transform: scale(1.1);
-        }
-
-        .galerie-overlay {
-            position: absolute;
-            bottom: -100%;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(230, 57, 70, 0.9));
-            color: white;
-            padding: 1rem;
-            transition: var(--transition);
-        }
-
-        .galerie-item:hover .galerie-overlay {
-            bottom: 0;
-        }
-
-        /* ===== CONTACT ===== */
-        .contact-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-        }
-
-        .contact-form {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #eee;
-            border-radius: 5px;
-            transition: var(--transition);
-            font-family: inherit;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--or);
-        }
-
-        .form-group textarea {
-            height: 150px;
-            resize: vertical;
-        }
-
-        .btn-submit {
-            background: var(--rouge);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: var(--transition);
-            width: 100%;
-        }
-
-        .btn-submit:hover {
-            background: var(--gris-fonce);
-            transform: translateY(-2px);
-        }
-
-        .contact-info {
-            background: var(--gris-fonce);
-            color: white;
-            padding: 2rem;
-            border-radius: 10px;
-        }
-
-        .contact-info h3 {
-            color: var(--or);
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .contact-detail {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .contact-detail i {
-            color: var(--or);
-            font-size: 1.2rem;
-            width: 25px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .social-links a {
-            color: white;
-            background: rgba(255,255,255,0.1);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-
-        .social-links a:hover {
-            background: var(--or);
-            color: var(--gris-fonce);
-            transform: translateY(-3px);
-        }
-
-        /* ===== FOOTER ===== */
-        .footer {
-            background: var(--noir);
-            color: white;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .footer .yin-yang {
-            width: 30px;
-            height: 30px;
-            margin: 1rem auto;
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media screen and (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
-
-            .nav-menu {
-                position: fixed;
-                top: 80px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 80px);
-                background: var(--gris-fonce);
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                transition: var(--transition);
-                z-index: 999;
-            }
-
-            .nav-menu.active {
-                left: 0;
-            }
-
-            .hero h2 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .maitre-container,
-            .infos-container,
-            .contact-container {
-                grid-template-columns: 1fr;
-            }
-
-            .section-title h2 {
-                font-size: 2rem;
-            }
-        }
-
-        /* ===== ANIMATIONS ===== */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <!-- HEADER -->
     <header class="header">
         <div class="nav-container">
             <div class="logo">
-                <a href="#accueil" style="display: flex; align-items: center; gap: 1rem; text-decoration: none; color: white;">
-                     <img src="medias/logo cssb.jpg" alt="logo du CSSB" class="logo-icon" height="70px"  width="70px" >
-                <h1>Super <span>Shaolin</span> <span>Benin</span></h1>
+                <a href="index.html" style="display: flex; align-items: center; gap: 1rem; text-decoration: none; color: white;">
+                    <img src="medias/logo cssb.jpg" alt="logo du CSSB" class="logo-icon" height="60px" width="60px">
+                    <h1>Super <span>Shaolin</span> <span>Bénin</span></h1>
                 </a>
-               
             </div>
             <div class="menu-toggle" id="menuToggle">
                 <i class="fas fa-bars"></i>
             </div>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="#accueil">Accueil</a></li>
-                <li><a href="#maitre">Le Maître</a></li>
-                <li><a href="#disciplines">Disciplines</a></li>
-                <li><a href="#infos">Infos</a></li>
-                <li><a href="#galerie">Galerie</a></li>
-                <li><a href="#contact">Contact</a></li>
+                <li><a href="index.html" class="active">Accueil</a></li>
+                <li><a href="a-propos.html">À propos</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="adhesion.html">Adhésion</a></li>  
+                <li><a href="blog/index.html">Actualités</a></li>
             </ul>
         </div>
     </header>
 
     <!-- HERO SECTION -->
-    <section id="accueil" class="hero">
+    <section class="hero">
         <div class="hero-content">
             <div class="yin-yang yin-yang-hero"></div>
             <h2>Super<span> Shaolin</span> Bénin</h2>
             <p>Discipline, Santé et Tradition - L'harmonie du corps et de l'esprit</p>
-            <a href="#contact" class="btn">Premier cours gratuit <i class="fas fa-arrow-right"></i></a>
-            <a href="#disciplines" class="btn btn-outline">Découvrir nos disciplines</a>
+            <a href="contact.html" class="btn">Premier cours gratuit <i class="fas fa-arrow-right"></i></a>
+            <a href="a-propos.html#disciplines" class="btn btn-outline">Découvrir nos disciplines</a>
         </div>
     </section>
 
-    <!-- SECTION MAÎTRE -->
-    <section id="maitre" class="section maitre">
-        <div class="section-title">
-            <h2>Notre Fondateur</h2>
-            <div class="yin-yang yin-yang-small"></div>
-        </div>
-        <div class="maitre-container">
-            <div class="maitre-image">
-                <img src="medias/sifu.jpg" alt="Maître Damien DEGBO">
-            </div>
-            <div class="maitre-content">
-                <div class="badge-container">
-                    <span class="badge">Ambassadeur de la Chine au Bénin</span>
-                    <span class="badge badge-rouge">Maître d'arts martiaux</span>
-                    <span class="badge">Acteur</span>
-                    <span class="badge badge-rouge">Promoteur culturel sino-béninois</span>
-                </div>
-                <h3>Damien DEGBO</h3>
-                <h4>Fondateur du Super Shaolin Bénin</h4>
-                
-                <p><strong>Super Shaolin Bénin</strong> est né de la vision de Maître Damien DEGBO : créer un pont culturel entre la Chine et le Bénin à travers les arts martiaux. Ambassadeur de la Chine au Bénin, il incarne parfaitement cette mission de rapprochement entre les deux cultures.</p>
-                
-                <div class="maitre-quote">
-                    <i class="fas fa-quote-left"></i> Le véritable guerrier cultive la paix intérieure avant la force extérieure. Le Yin et le Yang doivent être en équilibre.
-                </div>
-                
-                <p>Acteur et promoteur culturel sino-béninois reconnu, Maître Damien DEGBO utilise les arts martiaux comme outil d'éducation et de développement personnel. Son enseignement va bien au-delà de la technique : il transmet une philosophie de vie basée sur le respect, l'harmonie et la persévérance.</p>
-                
-                <p><i class="fas fa-hand-sparkles" style="color: var(--or);"></i> <strong>Disponible également pour des massages bien-être</strong> - Alliant les techniques traditionnelles chinoises à son savoir-faire unique.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION DISCIPLINES -->
+    <!-- DISCIPLINES SECTION -->
     <section id="disciplines" class="section">
         <div class="section-title">
             <h2>Nos Disciplines</h2>
@@ -784,7 +63,7 @@
                 </div>
                 <div class="discipline-content">
                     <i class="fas fa-dragon discipline-icon"></i>
-                    <h3>Kung Fu Wushu</h3>
+                    <h3>Kung Fu Shaolin</h3>
                     <p>L'art martial chinois par excellence : enchaînements acrobatiques, souplesse, grâce et puissance.</p>
                 </div>
             </div>
@@ -804,7 +83,7 @@
                 </div>
                 <div class="discipline-content">
                     <i class="fas fa-feather-alt discipline-icon"></i>
-                    <h3>Tai Chi Chuan</h3>
+                    <h3>Tai Chi Quan</h3>
                     <p>Mouvements lents et fluides pour la santé, l'équilibre et la méditation en mouvement.</p>
                 </div>
             </div>
@@ -831,7 +110,7 @@
         </div>
     </section>
 
-    <!-- SECTION HORAIRES & LOCALISATION -->
+    <!-- HORAIRES & LOCALISATION -->
     <section id="infos" class="section" style="background: var(--gris-clair);">
         <div class="section-title">
             <h2>Horaires & Localisation</h2>
@@ -885,8 +164,8 @@
         </div>
     </section>
 
-    <!-- SECTION GALERIE -->
-    <section id="galerie" class="section galerie">
+    <!-- GALERIE -->
+    <section class="section galerie">
         <div class="section-title">
             <h2>Galerie</h2>
             <div class="yin-yang yin-yang-small"></div>
@@ -951,221 +230,96 @@
         </div>
     </section>
 
-    <!-- SECTION CONTACT -->
-<section id="contact" class="section">
-    <div class="section-title">
-        <h2>Contactez-nous</h2>
-        <div class="yin-yang yin-yang-small"></div>
-    </div>
-    <div class="contact-container">
-        <div class="contact-form">
-            <form id="contactForm">
-                <div class="form-group">
-                    <input type="text" id="nom" placeholder="Votre nom complet" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" id="email" placeholder="Votre email" required>
-                </div>
-                <div class="form-group">
-                    <input type="tel" id="telephone" placeholder="Votre téléphone" required>
-                </div>
-                <div class="form-group">
-                    <textarea id="message" placeholder="Votre message (ex: Je souhaite essayer un cours, informations sur les massages...)" required></textarea>
-                </div>
-                <button type="submit" class="btn-submit">Envoyer le message <i class="fab fa-whatsapp"></i></button>
-            </form>
-            <div id="formMessage" style="margin-top: 1rem; text-align: center;"></div>
-        </div>
-        
-        <div class="contact-info">
-            <h3><i class="fas fa-yin-yang"></i> Informations de contact</h3>
-            
-            <div class="contact-detail">
-                <i class="fas fa-phone-alt"></i>
-                <div>
-                    <a href="tel:+22996236166" style="color: white; text-decoration: none;">
-                        <strong>Téléphone :</strong><br>
-                        +229 96 23 61 66
-                    </a>
-                </div>
-            </div>
-            
-            <div class="contact-detail">
-                <i class="fab fa-whatsapp"></i>
-                <div>
-                    <a href="https://wa.me/22996236166" target="_blank" style="color: white; text-decoration: none;">
-                        <strong>WhatsApp direct :</strong><br>
-                        +229 96 23 61 66
-                    </a>
-                </div>
-            </div>
-            
-            <div class="contact-detail">
-                <i class="fas fa-envelope"></i>
-                <div>
-                    <a href="mailto:supershaolin229@gmail.com" style="color: white; text-decoration: none;">
-                        <strong>Email :</strong><br>
-                        supershaolin229@gmail.com
-                    </a>
-                </div>
-            </div>
-            
-            <div class="contact-detail">
-                <i class="fab fa-facebook-f"></i>
-                <div>
-                    <a href="https://web.facebook.com/profile.php?id=100063459019887" target="_blank" style="color: white; text-decoration: none;">
-                        <strong>Facebook :</strong><br>
-                        Club Super Shaolin du Bénin
-                    </a>
-                </div>
-            </div>
-            
-            <div class="contact-detail">
-                <i class="fas fa-clock"></i>
-                <div>
-                    <strong>Accueil téléphonique :</strong><br>
-                    Lun-Sam : 9h-12h | 16h-20h
-                </div>
-            </div>
-            
-            <div class="social-links">
-                <a href="https://web.facebook.com/profile.php?id=100063459019887" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://wa.me/22997230546" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://www.instagram.com/maitreshaolin229?igsh=MW4yOWNreHN2Nm85Yg%3D%3D&utm_source=qr" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="https://youtube.com/@supershaolintv?si=tmZoseGhYX8j_dE6" target="_blank"><i class="fab fa-youtube"></i></a>
-                <a href="https://www.tiktok.com/@maitre.shaolin229" target="_blank"><i class="fab fa-tiktok"></i></a>
-            </div>            
-            <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.8;">
-                <i class="fas fa-yin-yang"></i> "Ambassadeur de la Chine au Bénin, Maître d'arts martiaux, acteur et promoteur culturel sino-béninois"
-            </p>
-        </div>
-    </div>
-</section>
-
     <!-- FOOTER -->
     <footer class="footer">
         <div class="yin-yang"></div>
-        <p>copyright © 2026 Super Shaolin du Bénin  - Tous droits réservés</p>
+        <p>copyright © 2026 Super Shaolin du Bénin - Tous droits réservés</p>
         <p style="margin-top: 0.5rem; font-size: 0.9rem;">Siège : Missérété (à côté Maison des Jeunes) | Porto-Novo : CEMAAC Koutongbé</p>
         <p style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.7;">📧 supershaolin229@gmail.com | 📞 +229 01 96 23 61 66</p>
         <p style="margin-top: 1rem; font-size: 0.8rem;">Ambassadeur de la Chine au Bénin - Promoteur culturel sino-béninois</p>
     </footer>
 
-    <!-- JAVASCRIPT -->
     <script>
-        // Menu mobile toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const navMenu = document.getElementById('navMenu');
+    // Menu mobile toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navMenu');
 
-        menuToggle.addEventListener('click', () => {
+    if (menuToggle && navMenu) {
+        menuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
             navMenu.classList.toggle('active');
+            console.log('Menu toggled'); // Pour debug
         });
-
-        // Fermer le menu quand on clique sur un lien
-        document.querySelectorAll('.nav-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
-            });
-        });
-
-        // Animation fade-in au scroll
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.section, .maitre-container, .disciplines-grid, .infos-container, .galerie-grid').forEach(el => {
-            el.classList.add('fade-in');
-            observer.observe(el);
-        });
-
-        // Gestion du formulaire de contact - Envoi DIRECT vers WhatsApp
-const contactForm = document.getElementById('contactForm');
-const formMessage = document.getElementById('formMessage');
-
-contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    // Récupération des valeurs
-    const nom = document.getElementById('nom').value;
-    const email = document.getElementById('email').value;
-    const telephone = document.getElementById('telephone').value;
-    const message = document.getElementById('message').value;
-
-    // Validation simple
-    if (!nom || !email || !telephone || !message) {
-        formMessage.innerHTML = '<p style="color: red;">❌ Veuillez remplir tous les champs</p>';
-        return;
     }
 
-    // Numéro WhatsApp (format international sans le +)
-    const whatsappNumber = '22996236166';
-    
-    // Création du message pour WhatsApp (propre et bien formaté)
-    const texteWhatsApp = `*🥋 Club Super Shaolin du Bénin*%0A%0A*Nouveau message du site web*%0A%0A👤 *Nom:* ${nom}%0A📧 *Email:* ${email}%0A📞 *Téléphone:* ${telephone}%0A💬 *Message:* ${message}`;
-    
-    // URL WhatsApp qui ouvre DIRECTEMENT l'application avec le message pré-rempli
-    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${texteWhatsApp}`;
-    
-    // Redirection directe vers WhatsApp
-    window.location.href = whatsappURL;
-    
-    // Petit message de confirmation (optionnel)
-    formMessage.innerHTML = '<p style="color: green;">✅ Redirection vers WhatsApp...</p>';
-    
-    // Réinitialisation du formulaire
-    setTimeout(() => {
-        contactForm.reset();
-        formMessage.innerHTML = '';
-    }, 2000);
-});
+    // Fermer le menu quand on clique sur un lien
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (navMenu) {
+                navMenu.classList.remove('active');
+            }
+        });
+    });
+
+    // Fermer le menu en cliquant à l'extérieur
+    document.addEventListener('click', function(event) {
+        if (navMenu && navMenu.classList.contains('active')) {
+            const isClickInside = navMenu.contains(event.target) || menuToggle.contains(event.target);
+            if (!isClickInside) {
+                navMenu.classList.remove('active');
+            }
+        }
+    });
+
+    // Animation fade-in au scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.section, .maitre-container, .disciplines-grid, .infos-container, .galerie-grid, .histoire-container, .parcours-container').forEach(el => {
+        el.classList.add('fade-in');
+        observer.observe(el);
+    });
+
+    // Gestion du formulaire de contact
+    const contactForm = document.getElementById('contactForm');
+    const formMessage = document.getElementById('formMessage');
+
+    if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            // Récupération des valeurs
-            const nom = document.getElementById('nom').value;
-            const email = document.getElementById('email').value;
-            const telephone = document.getElementById('telephone').value;
-            const message = document.getElementById('message').value;
+            const nom = document.getElementById('nom')?.value;
+            const email = document.getElementById('email')?.value;
+            const telephone = document.getElementById('telephone')?.value;
+            const message = document.getElementById('message')?.value;
 
-            // Validation simple
             if (!nom || !email || !telephone || !message) {
-                formMessage.innerHTML = '<p style="color: red;">❌ Veuillez remplir tous les champs</p>';
+                if (formMessage) {
+                    formMessage.innerHTML = '<p style="color: red;">❌ Veuillez remplir tous les champs</p>';
+                }
                 return;
             }
 
-            // Ici vous pourrez ajouter l'envoi vers un serveur plus tard
-            // Pour l'instant, simulation d'envoi
-            formMessage.innerHTML = '<p style="color: green;">✅ Message envoyé ! Nous vous contacterons bientôt sur WhatsApp au +229 96 23 61 66</p>';
+            const whatsappNumber = '22996236166';
+            const texteWhatsApp = `*🥋 Club Super Shaolin du Bénin*%0A%0A*Nouveau message du site web*%0A%0A👤 *Nom:* ${nom}%0A📧 *Email:* ${email}%0A📞 *Téléphone:* ${telephone}%0A💬 *Message:* ${message}`;
+            const whatsappURL = `https://wa.me/${whatsappNumber}?text=${texteWhatsApp}`;
             
-            // Réinitialisation du formulaire
-            contactForm.reset();
-
-            // Effacer le message après 5 secondes
-            setTimeout(() => {
-                formMessage.innerHTML = '';
-            }, 5000);
+            window.location.href = whatsappURL;
+            
+            if (formMessage) {
+                formMessage.innerHTML = '<p style="color: green;">✅ Redirection vers WhatsApp...</p>';
+            }
         });
+    }
 
-        // Smooth scroll pour les ancres
-        document.querySelectorAll('a[href^="+229 96236166"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Header transparent au scroll
-        const header = document.querySelector('.header');
+    // Header transparent au scroll
+    const header = document.querySelector('.header');
+    if (header) {
         window.addEventListener('scroll', () => {
             if (window.scrollY > 100) {
                 header.style.background = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)';
@@ -1173,6 +327,7 @@ contactForm.addEventListener('submit', (e) => {
                 header.style.background = 'linear-gradient(135deg, var(--gris-fonce) 0%, #1a1a2e 100%)';
             }
         });
-    </script>
+    }
+</script>
 </body>
 </html>

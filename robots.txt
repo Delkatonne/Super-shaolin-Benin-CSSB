@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://club-super-shaolin-benin-cssb.vercel.app/sitemap.xml
