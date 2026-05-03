@@ -6,362 +6,105 @@
     <title>Super Shaolin Bénin | Administration</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        :root {
-            --rouge: #E63946;
-            --or: #FFD700;
-            --gris-fonce: #2B2D42;
-            --gris-clair: #F8F9FA;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--gris-clair);
-        }
-        .header {
-            background: linear-gradient(135deg, var(--gris-fonce) 0%, #1a1a2e 100%);
-            color: white;
-            padding: 1rem 5%;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .logo a {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            text-decoration: none;
-            color: white;
-        }
-        .logo h1 {
-            font-size: 1.3rem;
-        }
-        .logo span {
-            color: var(--or);
-        }
-        .logo-icon {
-            border-radius: 50%;
-            height: 50px;
-            width: 50px;
-            object-fit: cover;
-        }
-        .admin-container {
-            max-width: 1000px;
-            margin: 120px auto 0;
-            padding: 2rem;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f0f0f0; }
         .login-box {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            padding: 2rem;
             max-width: 400px;
-            margin: 0 auto;
+            margin: 100px auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
             text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
         .login-box input {
             width: 100%;
-            padding: 0.8rem;
-            margin: 1rem 0;
-            border: 2px solid #eee;
-            border-radius: 8px;
-        }
-        .admin-panel {
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            padding: 2rem;
-        }
-        .admin-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #eee;
-        }
-        .btn-add {
-            background: var(--rouge);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-bottom: 1rem;
-        }
-        .article-form {
-            background: var(--gris-clair);
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-            display: none;
-        }
-        .article-form.active {
-            display: block;
-        }
-        .article-form input, .article-form select, .article-form textarea {
-            width: 100%;
-            padding: 0.8rem;
-            margin-bottom: 1rem;
-            border: 2px solid #eee;
-            border-radius: 8px;
-            font-family: inherit;
-        }
-        .article-form textarea {
-            height: 150px;
-            resize: vertical;
-        }
-        .upload-area {
-            border: 2px dashed var(--or);
-            border-radius: 10px;
-            padding: 1.5rem;
-            text-align: center;
-            margin-bottom: 1rem;
-            background: #fff9e6;
-            cursor: pointer;
-        }
-        .upload-area:hover {
-            background: #fff3cc;
-        }
-        .image-preview-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-        .preview-item {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 2px solid var(--or);
-        }
-        .preview-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .remove-image {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: var(--rouge);
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 10px;
-        }
-        .articles-list {
-            margin-top: 2rem;
-        }
-        .admin-article-item {
-            background: var(--gris-clair);
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        .admin-article-info h4 {
-            margin-bottom: 0.3rem;
-        }
-        .admin-article-info p {
-            font-size: 0.8rem;
-            color: #888;
-        }
-        .admin-article-images {
-            display: flex;
-            gap: 0.3rem;
-            margin-top: 0.3rem;
-        }
-        .admin-article-images img {
-            width: 30px;
-            height: 30px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
             border-radius: 5px;
-            object-fit: cover;
         }
-        .admin-article-actions button {
-            background: none;
+        .login-box button {
+            background: #E63946;
+            color: white;
             border: none;
-            cursor: pointer;
-            font-size: 1.2rem;
-            margin-left: 0.5rem;
-        }
-        .btn-delete { color: var(--rouge); }
-        .btn-edit { color: var(--or); }
-        .logout-btn {
-            background: #ddd;
-            border: none;
-            padding: 0.5rem 1rem;
+            padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
+            width: 100%;
         }
-        .error-msg { color: var(--rouge); margin-top: 1rem; }
-        .form-actions { display: flex; gap: 1rem; margin-top: 1rem; }
-        .btn-cancel {
-            background: #ddd;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            cursor: pointer;
-        }
-        .btn-submit {
-            background: var(--rouge);
-            color: white;
-            border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            cursor: pointer;
-        }
-        .status-badge {
-            background: green;
-            color: white;
-            padding: 0.2rem 0.5rem;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            margin-left: 1rem;
-        }
-        .footer {
-            background: #1a1a1a;
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 2rem;
-        }
-        @media (max-width: 768px) {
-            .admin-container { padding: 1rem; margin-top: 100px; }
-            .admin-panel { padding: 1rem; }
-        }
-        .yin-yang {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(to bottom, var(--or) 50%, var(--gris-fonce) 50%);
-            position: relative;
-            margin: 0 auto 1rem;
-            animation: rotate 10s linear infinite;
-        }
-        .yin-yang::before {
-            content: '';
-            position: absolute;
-            top: 25%;
-            left: 0;
-            width: 25%;
-            height: 25%;
-            background: var(--or);
-            border-radius: 50%;
-            transform: translateX(50%);
-        }
-        .yin-yang::after {
-            content: '';
-            position: absolute;
-            bottom: 25%;
-            right: 0;
-            width: 25%;
-            height: 25%;
-            background: var(--gris-fonce);
-            border-radius: 50%;
-            transform: translateX(-50%);
-        }
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+        .error { color: red; margin-top: 10px; }
+        .admin-panel { display: none; max-width: 1000px; margin: 100px auto; background: white; padding: 2rem; border-radius: 10px; }
+        .btn-add { background: #E63946; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-bottom: 20px; }
+        .article-form { display: none; background: #f9f9f9; padding: 1rem; margin-bottom: 20px; border-radius: 5px; }
+        .article-form input, .article-form select, .article-form textarea { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        .upload-area { border: 2px dashed #FFD700; padding: 1rem; text-align: center; cursor: pointer; margin-bottom: 10px; background: #fff9e6; }
+        .image-preview { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+        .preview { width: 80px; height: 80px; object-fit: cover; border-radius: 5px; border: 2px solid #FFD700; }
+        .btn-submit { background: #E63946; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; }
+        .admin-article-item { background: #f9f9f9; padding: 1rem; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between; }
+        .btn-edit { color: #FFD700; background: none; border: none; cursor: pointer; font-size: 1.2rem; margin-right: 10px; }
+        .btn-delete { color: #E63946; background: none; border: none; cursor: pointer; font-size: 1.2rem; }
+        .logout-btn { background: #ddd; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+        .header { background: #2B2D42; color: white; padding: 1rem; position: fixed; top: 0; width: 100%; }
+        .logo a { color: white; text-decoration: none; }
+        .footer { background: #1a1a1a; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
     </style>
 </head>
 <body>
     <header class="header">
-        <div class="nav-container">
-            <div class="logo">
-                <a href="../index.html">
-                    <img src="../medias/logo cssb.jpg" alt="logo" class="logo-icon">
-                    <h1>Super <span>Shaolin</span> Bénin</h1>
-                </a>
-            </div>
+        <div class="logo">
+            <a href="../index.html">Super Shaolin Bénin</a>
         </div>
     </header>
 
-    <div class="admin-container">
-        <!-- Login Section -->
-        <div id="loginSection">
-            <div class="login-box">
-                <div class="yin-yang"></div>
-                <h2>Administration</h2>
-                <p>Accès réservé au club</p>
-                <input type="password" id="adminPassword" placeholder="Mot de passe">
-                <button id="loginBtn" class="btn-submit">Se connecter</button>
-                <div id="loginError" class="error-msg"></div>
-            </div>
+    <div id="loginSection">
+        <div class="login-box">
+            <h2>Administration</h2>
+            <p>Accès réservé au club</p>
+            <input type="password" id="adminPassword" placeholder="Mot de passe">
+            <button id="loginBtn">Se connecter</button>
+            <div id="loginError" class="error"></div>
+        </div>
+    </div>
+
+    <div id="adminPanel" class="admin-panel">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+            <h2>Espace administration</h2>
+            <button id="logoutBtn" class="logout-btn">Déconnexion</button>
         </div>
         
-        <!-- Admin Panel -->
-        <div id="adminPanel" style="display: none;">
-            <div class="admin-panel">
-                <div class="admin-header">
-                    <h2><i class="fas fa-crown"></i> Espace d'administration <span id="syncStatus" class="status-badge">✅ Connecté</span></h2>
-                    <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
-                </div>
-                
-                <button id="showAddFormBtn" class="btn-add"><i class="fas fa-plus"></i> + Nouvel article</button>
-                
-                <div id="articleForm" class="article-form">
-                    <h3 id="formTitle">📝 Publier un nouvel article</h3>
-                    <input type="text" id="articleTitle" placeholder="Titre de l'article *">
-                    <select id="articleCategory">
-                        <option value="Festival">🎪 Festival</option>
-                        <option value="Championnat">🏆 Championnat</option>
-                        <option value="Stage">🥋 Stage</option>
-                        <option value="Info">📢 Information</option>
-                        <option value="Événement">📅 Événement</option>
-                        <option value="Démonstration">🥋 Démonstration</option>
-                        <option value="Entraînement">🤸🏼‍♀️ Entraînement</option>
-                        <option value="Autre">📰 Autre</options>
-                    </select>
-                    
-                    <div class="upload-area" id="uploadArea">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>📸 Cliquez pour choisir des photos (plusieurs possibles)</p>
-                        <input type="file" id="imageInput" multiple accept="image/*" style="display: none;">
-                    </div>
-                    <div id="imagePreviewContainer" class="image-preview-container"></div>
-                    
-                    <textarea id="articleExcerpt" placeholder="Résumé court *" rows="3"></textarea>
-                    <textarea id="articleContent" placeholder="Contenu complet *" rows="8"></textarea>
-                    
-                    <input type="hidden" id="editArticleId" value="">
-                    <div class="form-actions">
-                        <button id="saveArticleBtn" class="btn-submit"><i class="fas fa-save"></i> Publier</button>
-                        <button id="cancelFormBtn" type="button" class="btn-cancel">Annuler</button>
-                    </div>
-                </div>
-                
-                <div class="articles-list">
-                    <h3><i class="fas fa-newspaper"></i> Articles publiés</h3>
-                    <div id="articlesList">Chargement...</div>
-                </div>
+        <button id="showAddFormBtn" class="btn-add">+ Nouvel article</button>
+        
+        <div id="articleForm" class="article-form">
+            <h3 id="formTitle">Publier un article</h3>
+            <input type="text" id="articleTitle" placeholder="Titre">
+            <select id="articleCategory">
+                <option value="Festival">Festival</option>
+                <option value="Championnat">Championnat</option>
+                <option value="Stage">Stage</option>
+                <option value="demonstration">Démonstrations</option>
+                <option value="Info">Inforations</option>
+                <option value="Entrainement">Entraînement</option>
+                <option value="Evenement">Événement</option>
+                <option value="Autre">Autre</option>
+            </select>
+            
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-cloud-upload-alt"></i> Cliquez pour ajouter des photos
+                <input type="file" id="imageInput" multiple accept="image/*" style="display:none">
             </div>
+            <div id="imagePreview" class="image-preview"></div>
+            
+            <textarea id="articleExcerpt" placeholder="Résumé" rows="3"></textarea>
+            <textarea id="articleContent" placeholder="Contenu" rows="6"></textarea>
+            <input type="hidden" id="editArticleId">
+            <button id="saveArticleBtn" class="btn-submit">Publier</button>
+            <button id="cancelFormBtn" style="margin-top:10px; background:#ddd; border:none; padding:10px; border-radius:5px; cursor:pointer;">Annuler</button>
         </div>
+        
+        <h3>Articles publiés</h3>
+        <div id="articlesList">Chargement...</div>
     </div>
 
     <footer class="footer">
@@ -370,51 +113,53 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // ===== CONFIGURATION SUPABASE =====
         const SUPABASE_URL = 'https://pngyburrixrfaxwbqsny.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_cgdu_2dYJcR7WLzYWQ4-bg_jx8uotBa';
-        
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        
         const ADMIN_PASSWORD = 'Shaolin2025';
+        
         let currentImages = [];
         
-        async function getArticles() {
-            const { data, error } = await supabase.from('articles').select('*').order('date', { ascending: false });
-            if (error) return [];
-            return data;
+        // Vérifier si déjà connecté
+        if (localStorage.getItem('admin_logged_in') === 'true') {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminPanel').style.display = 'block';
+            loadArticles();
         }
         
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+        // Bouton connexion
+        document.getElementById('loginBtn').addEventListener('click', function() {
+            const pwd = document.getElementById('adminPassword').value;
+            if (pwd === ADMIN_PASSWORD) {
+                localStorage.setItem('admin_logged_in', 'true');
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('adminPanel').style.display = 'block';
+                loadArticles();
+            } else {
+                document.getElementById('loginError').innerHTML = 'Mot de passe incorrect';
+            }
+        });
         
-        function getCategoryIcon(category) {
-            const icons = { 'Festival':'🎪','Championnat':'🏆','Stage':'🥋','Info':'📢','Événement':'📅','Démonstration':'🥋','Entraînement':'🤸🏼‍♀️','Autre':'📰' };
-            return icons[category] || '📰';
-        }
+        // Déconnexion
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('admin_logged_in');
+            document.getElementById('loginSection').style.display = 'block';
+            document.getElementById('adminPanel').style.display = 'none';
+        });
         
-        async function displayArticlesList() {
-            const articles = await getArticles();
+        async function loadArticles() {
+            const { data } = await supabase.from('articles').select('*').order('date', { ascending: false });
             const container = document.getElementById('articlesList');
-            
-            if (articles.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:#888;">📭 Aucun article publié</p>';
+            if (!data || data.length === 0) {
+                container.innerHTML = '<p>Aucun article</p>';
                 return;
             }
-            
-            container.innerHTML = articles.map(article => `
+            container.innerHTML = data.map(article => `
                 <div class="admin-article-item">
                     <div>
-                        <h4>${escapeHtml(article.title)}</h4>
-                        <p>${getCategoryIcon(article.category)} ${article.category} - ${new Date(article.date).toLocaleDateString('fr-FR')}</p>
-                        <div class="admin-article-images">
-                            ${(article.images || []).slice(0, 3).map(img => `<img src="${img}" alt="mini">`).join('')}
-                            ${(article.images || []).length > 3 ? `<span>+${article.images.length - 3}</span>` : ''}
-                        </div>
+                        <strong>${article.title}</strong><br>
+                        <small>${article.category} - ${new Date(article.date).toLocaleDateString()}</small>
+                        ${article.images && article.images[0] ? `<div><img src="${article.images[0]}" style="width:50px; height:50px; object-fit:cover; margin-top:5px;"></div>` : ''}
                     </div>
                     <div>
                         <button class="btn-edit" onclick="editArticle(${article.id})"><i class="fas fa-edit"></i></button>
@@ -424,64 +169,8 @@
             `).join('');
         }
         
-        function setupImageUpload() {
-            const uploadArea = document.getElementById('uploadArea');
-            const imageInput = document.getElementById('imageInput');
-            
-            uploadArea.addEventListener('click', () => imageInput.click());
-            imageInput.addEventListener('change', (e) => {
-                const files = Array.from(e.target.files);
-                files.forEach(file => {
-                    if (file.type.startsWith('image/')) {
-                        const reader = new FileReader();
-                        reader.onload = (event) => {
-                            currentImages.push(event.target.result);
-                            updateImagePreview();
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-                imageInput.value = '';
-            });
-        }
-        
-        function updateImagePreview() {
-            const container = document.getElementById('imagePreviewContainer');
-            if (currentImages.length === 0) {
-                container.innerHTML = '';
-                return;
-            }
-            container.innerHTML = currentImages.map((img, index) => `
-                <div class="preview-item">
-                    <img src="${img}">
-                    <div class="remove-image" data-index="${index}"><i class="fas fa-times"></i></div>
-                </div>
-            `).join('');
-            document.querySelectorAll('.remove-image').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    const index = parseInt(btn.dataset.index);
-                    currentImages.splice(index, 1);
-                    updateImagePreview();
-                });
-            });
-        }
-        
-        function resetImages() { currentImages = []; updateImagePreview(); }
-        function resetForm() {
-            document.getElementById('editArticleId').value = '';
-            document.getElementById('articleTitle').value = '';
-            document.getElementById('articleCategory').value = 'Festival';
-            document.getElementById('articleExcerpt').value = '';
-            document.getElementById('articleContent').value = '';
-            resetImages();
-            document.getElementById('formTitle').innerHTML = '📝 Publier un nouvel article';
-            document.getElementById('saveArticleBtn').innerHTML = 'Publier';
-            document.getElementById('articleForm').classList.remove('active');
-        }
-        
         window.editArticle = async function(id) {
-            const { data: article, error } = await supabase.from('articles').select('*').eq('id', id).single();
+            const { data: article } = await supabase.from('articles').select('*').eq('id', id).single();
             if (article) {
                 document.getElementById('editArticleId').value = article.id;
                 document.getElementById('articleTitle').value = article.title;
@@ -489,81 +178,101 @@
                 document.getElementById('articleExcerpt').value = article.excerpt;
                 document.getElementById('articleContent').value = article.content;
                 currentImages = article.images || [];
-                updateImagePreview();
-                document.getElementById('formTitle').innerHTML = '✏️ Modifier l\'article';
+                updatePreview();
+                document.getElementById('formTitle').innerHTML = 'Modifier l\'article';
                 document.getElementById('saveArticleBtn').innerHTML = 'Mettre à jour';
-                document.getElementById('articleForm').classList.add('active');
+                document.getElementById('articleForm').style.display = 'block';
             }
         };
         
         window.deleteArticle = async function(id) {
             if (confirm('Supprimer cet article ?')) {
                 await supabase.from('articles').delete().eq('id', id);
-                await displayArticlesList();
+                loadArticles();
                 alert('Article supprimé');
             }
         };
         
-        async function saveArticle() {
+        // Upload images
+        document.getElementById('uploadArea').addEventListener('click', () => {
+            document.getElementById('imageInput').click();
+        });
+        
+        document.getElementById('imageInput').addEventListener('change', (e) => {
+            const files = Array.from(e.target.files);
+            files.forEach(file => {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        currentImages.push(event.target.result);
+                        updatePreview();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+        
+        function updatePreview() {
+            const container = document.getElementById('imagePreview');
+            if (currentImages.length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+            container.innerHTML = currentImages.map((img, i) => `
+                <div style="position:relative;">
+                    <img src="${img}" class="preview">
+                    <span onclick="removeImage(${i})" style="position:absolute; top:-8px; right:-8px; background:red; color:white; border-radius:50%; width:20px; height:20px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:12px;">×</span>
+                </div>
+            `).join('');
+        }
+        
+        window.removeImage = function(index) {
+            currentImages.splice(index, 1);
+            updatePreview();
+        };
+        
+        function resetForm() {
+            document.getElementById('editArticleId').value = '';
+            document.getElementById('articleTitle').value = '';
+            document.getElementById('articleCategory').value = 'Festival';
+            document.getElementById('articleExcerpt').value = '';
+            document.getElementById('articleContent').value = '';
+            currentImages = [];
+            updatePreview();
+            document.getElementById('formTitle').innerHTML = 'Publier un article';
+            document.getElementById('saveArticleBtn').innerHTML = 'Publier';
+            document.getElementById('articleForm').style.display = 'none';
+        }
+        
+        document.getElementById('showAddFormBtn').addEventListener('click', () => {
+            resetForm();
+            document.getElementById('articleForm').style.display = 'block';
+        });
+        
+        document.getElementById('cancelFormBtn').addEventListener('click', resetForm);
+        
+        document.getElementById('saveArticleBtn').addEventListener('click', async () => {
             const id = document.getElementById('editArticleId').value;
             const title = document.getElementById('articleTitle').value.trim();
             const category = document.getElementById('articleCategory').value;
             const excerpt = document.getElementById('articleExcerpt').value.trim();
             const content = document.getElementById('articleContent').value.trim();
-            const images = [...currentImages];
             
             if (!title || !excerpt || !content) {
-                alert('❌ Veuillez remplir tous les champs');
+                alert('Veuillez remplir tous les champs');
                 return;
             }
             
             if (id) {
-                const { error } = await supabase.from('articles').update({ title, category, excerpt, content, images }).eq('id', id);
-                if (error) { alert('Erreur modification'); return; }
-                alert('✅ Article modifié !');
+                await supabase.from('articles').update({ title, category, excerpt, content, images: currentImages }).eq('id', id);
+                alert('Article modifié');
             } else {
-                const { error } = await supabase.from('articles').insert([{ title, category, excerpt, content, images, date: new Date().toISOString() }]);
-                if (error) { alert('Erreur publication'); return; }
-                alert('✅ Article publié !');
+                await supabase.from('articles').insert([{ title, category, excerpt, content, images: currentImages, date: new Date().toISOString() }]);
+                alert('Article publié');
             }
             resetForm();
-            await displayArticlesList();
-        }
-        
-        function initAuth() {
-            document.getElementById('loginBtn').addEventListener('click', () => {
-                const pwd = document.getElementById('adminPassword').value;
-                if (pwd === ADMIN_PASSWORD) {
-                    localStorage.setItem('admin_logged_in', 'true');
-                    document.getElementById('loginSection').style.display = 'none';
-                    document.getElementById('adminPanel').style.display = 'block';
-                    displayArticlesList();
-                } else {
-                    document.getElementById('loginError').innerHTML = '❌ Mot de passe incorrect';
-                }
-            });
-            document.getElementById('logoutBtn').addEventListener('click', () => {
-                localStorage.removeItem('admin_logged_in');
-                document.getElementById('loginSection').style.display = 'block';
-                document.getElementById('adminPanel').style.display = 'none';
-                document.getElementById('adminPassword').value = '';
-            });
-            if (localStorage.getItem('admin_logged_in') === 'true') {
-                document.getElementById('loginSection').style.display = 'none';
-                document.getElementById('adminPanel').style.display = 'block';
-                displayArticlesList();
-            }
-        }
-        
-        function init() {
-            setupImageUpload();
-            initAuth();
-            document.getElementById('showAddFormBtn').addEventListener('click', () => { resetForm(); document.getElementById('articleForm').classList.add('active'); });
-            document.getElementById('cancelFormBtn').addEventListener('click', resetForm);
-            document.getElementById('saveArticleBtn').addEventListener('click', saveArticle);
-        }
-        
-        init();
+            loadArticles();
+        });
     </script>
 </body>
 </html>
