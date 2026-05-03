@@ -271,7 +271,7 @@
         <button class="filter-btn active" data-filter="all">Tous</button>
         <button class="filter-btn" data-filter="Festival">🎪 Festivals</button>
         <button class="filter-btn" data-filter="Championnat">🏆 Championnats</button>
-        <button class="filter-btn" data-filter="Stage">🥋 Stages</button>
+        <button class="filter-btn" data-filter="Stage">🏋🏼‍♂️ Stages</button>
         <button class="filter-btn" data-filter="Info">📢 Informations</button>
         <button class="filter-btn" data-filter="Événement">📅 Événements</button>
         <button class="filter-btn" data-filter="Démonstration">🥋 Démonstrations</button>
@@ -347,11 +347,14 @@
             const icons = { 
                 'Festival': '🎪', 
                 'Championnat': '🏆', 
-                'Stage': '🥋', 
+                'Stage': '🏋🏼‍♂️', 
                 'Info': '📢',
                 'Événement': '📅',
                 'Démonstration': '🥋',
-                'Entraînement': '🤸🏼‍♀️'
+                'Entraînement': '🤸🏼‍♀️',
+                'Autre': '📰',
+                'Spectacle': '🎭'
+
             };
             return icons[category] || '📰';
         }
