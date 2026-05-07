@@ -20,26 +20,10 @@
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
         .form-group-full { margin-bottom: 1rem; }
         .form-group-full label, .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--gris-fonce); }
-        .form-group-full input, .form-group-full select, .form-group input, .form-group select { width: 100%; padding: 0.8rem; border: 2px solid #eee; border-radius: 8px; font-family: inherit; }
-        .checkbox-group { display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0; }
-        .checkbox-group input { width: auto; }
+        .form-group-full input, .form-group input { width: 100%; padding: 0.8rem; border: 2px solid #eee; border-radius: 8px; font-family: inherit; }
         
-        /* Cartes tarifs */
-        .pricing-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
-        }
-        .pricing-card {
-            background: white;
-            border-radius: 12px;
-            padding: 1.5rem;
-            text-align: center;
-            border: 2px solid #eee;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
+        .pricing-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+        .pricing-card { background: white; border-radius: 12px; padding: 1.5rem; text-align: center; border: 2px solid #eee; transition: all 0.3s ease; cursor: pointer; }
         .pricing-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .pricing-card.selected { border-color: var(--or); background: #fff9e6; }
         .pricing-card h3 { color: var(--rouge); font-size: 1.3rem; margin-bottom: 0.5rem; }
@@ -50,40 +34,15 @@
         .pricing-card ul li i { color: var(--or); width: 20px; }
         .pricing-card input[type="radio"] { margin-top: 1rem; accent-color: var(--rouge); }
         
-        /* Mode de paiement */
-        .payment-methods {
-            display: flex;
-            gap: 1.5rem;
-            margin: 1rem 0;
-            flex-wrap: wrap;
-        }
-        .payment-method {
-            flex: 1;
-            padding: 1rem;
-            border: 2px solid #eee;
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+        .payment-methods { display: flex; gap: 1.5rem; margin: 1rem 0; flex-wrap: wrap; }
+        .payment-method { flex: 1; padding: 1rem; border: 2px solid #eee; border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
         .payment-method.selected { border-color: var(--or); background: #fff9e6; }
         .payment-method i { font-size: 2rem; color: var(--or); margin-bottom: 0.5rem; }
         .payment-method h4 { margin-bottom: 0.3rem; }
         .payment-method p { font-size: 0.8rem; color: #666; }
         
-        .momento-info {
-            background: #e8f5e9;
-            border-radius: 10px;
-            padding: 1rem;
-            margin-top: 1rem;
-            text-align: center;
-            border-left: 4px solid #4CAF50;
-        }
-        .momento-number {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #2E7D32;
-        }
+        .momento-info { background: #e8f5e9; border-radius: 10px; padding: 1rem; margin-top: 1rem; text-align: center; border-left: 4px solid #4CAF50; }
+        .momento-number { font-size: 1.3rem; font-weight: bold; color: #2E7D32; }
         
         .btn-submit-adhesion { background: var(--rouge); color: white; border: none; padding: 1rem 2rem; border-radius: 50px; cursor: pointer; font-weight: 600; transition: var(--transition); width: 100%; font-size: 1.1rem; margin-top: 1rem; }
         .btn-submit-adhesion:hover { background: var(--gris-fonce); transform: translateY(-2px); }
@@ -103,11 +62,13 @@
         .form-message { margin-top: 1rem; padding: 1rem; border-radius: 8px; text-align: center; }
         .form-message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .form-message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        #logoCache { display: none; }
+        #logoCache, #flagBenin { display: none; }
     </style>
 </head>
 <body>
+    <!-- Images cachées pour le PDF -->
     <img id="logoCache" src="medias/logo cssb.jpg" alt="logo" style="display: none;">
+    <img id="flagBenin" src="https://flagcdn.com/bj.svg" alt="drapeau Bénin" style="display: none;">
     
     <header class="header">
         <div class="nav-container">
@@ -254,7 +215,7 @@
 
     <footer class="footer">
         <div class="yin-yang"></div>
-        <p>© 2026 Super Shaolin Bénin</p>
+        <p>© 2026 Super Shaolin Bénin - Tous droits réservés</p>
     </footer>
 
     <script>
@@ -316,136 +277,171 @@
             return `SSB-${d.getFullYear()}${(d.getMonth()+1).toString().padStart(2,'0')}${d.getDate().toString().padStart(2,'0')}-${Math.floor(Math.random()*1000).toString().padStart(3,'0')}`;
         }
         
-        // GÉNÉRATION PDF
+        // GÉNÉRATION PDF AVEC DRAPEAU ET LOGO
         async function generatePDF(formData) {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    let y = 25;
-    
-    // Récupérer le logo
-    const logoImg = document.getElementById('logoCache');
-    let logoDataURL = null;
-    if (logoImg && logoImg.complete && logoImg.naturalWidth > 0) {
-        const canvas = document.createElement('canvas');
-        canvas.width = logoImg.naturalWidth;
-        canvas.height = logoImg.naturalHeight;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(logoImg, 0, 0);
-        logoDataURL = canvas.toDataURL('image/png');
-    }
-    
-    if (logoDataURL) {
-        doc.addImage(logoDataURL, 'PNG', 15, 15, 25, 25);
-        doc.addImage(logoDataURL, 'PNG', 170, 15, 25, 25);
-    }
-    
-    // === EN-TÊTE COLORÉ ===
-    doc.setFillColor(230, 57, 70);
-    doc.rect(0, 0, 210, 50, "F");
-    
-    doc.setTextColor(255, 215, 0);  // OR pour le titre
-    doc.setFontSize(20);
-    doc.setFont(undefined, "bold");
-    doc.text("SUPER SHAOLIN BÉNIN", 105, 28, { align: "center" });
-    
-    doc.setTextColor(255, 255, 255);  // Blanc pour sous-titre
-    doc.setFontSize(12);
-    doc.text("FICHE D'ADHÉSION 2026", 105, 40, { align: "center" });
-    
-    doc.setTextColor(0, 0, 0);
-    y = 65;
-    
-    // === SECTION 1 ===
-    doc.setFillColor(240, 248, 255);  // Bleu clair
-    doc.rect(20, y, 170, 55, "F");
-    
-    doc.setTextColor(230, 57, 70);  // Rouge
-    doc.setFontSize(12);
-    doc.setFont(undefined, "bold");
-    doc.text("1. INFORMATIONS PERSONNELLES", 25, y + 7);
-    
-    doc.setTextColor(50, 50, 50);  // Gris foncé
-    doc.setFontSize(10);
-    doc.setFont(undefined, "normal");
-    doc.text(`Nom : ${formData.nom} ${formData.prenoms}`, 25, y + 17);
-    doc.text(`Date de naissance : ${formData.dateNaissance}`, 25, y + 25);
-    doc.text(`Nationalité : ${formData.nationalite}`, 25, y + 33);
-    doc.text(`Profession : ${formData.profession}`, 25, y + 41);
-    doc.text(`Adresse : ${formData.adresse}, ${formData.ville}`, 25, y + 49);
-    doc.text(`Téléphone : ${formData.telephone}`, 25, y + 57);
-    doc.text(`Email : ${formData.email}`, 25, y + 65);
-    y += 75;
-    
-    // === SECTION 2 ===
-    doc.setFillColor(255, 248, 225);  // Jaune clair
-    doc.rect(20, y, 170, 35, "F");
-    
-    doc.setTextColor(230, 57, 70);
-    doc.setFontSize(12);
-    doc.setFont(undefined, "bold");
-    doc.text("2. FORMULE CHOISIE", 25, y + 7);
-    
-    doc.setFontSize(11);
-    if (formData.statut === 'Membre donateur') {
-        doc.setTextColor(212, 175, 55);  // Doré
-    } else if (formData.statut === 'Membre bienfaiteur') {
-        doc.setTextColor(0, 100, 0);  // Vert
-    } else {
-        doc.setTextColor(33, 33, 33);
-    }
-    doc.text(`${formData.statut}`, 25, y + 18);
-    
-    doc.setTextColor(230, 57, 70);
-    doc.setFont(undefined, "bold");
-    doc.text(`${formData.montant.toLocaleString()} FCFA`, 25, y + 28);
-    y += 45;
-    
-    // === SECTION 3 ===
-    doc.setFillColor(232, 245, 233);  // Vert clair
-    doc.rect(20, y, 170, 30, "F");
-    
-    doc.setTextColor(230, 57, 70);
-    doc.setFontSize(12);
-    doc.setFont(undefined, "bold");
-    doc.text("3. MODE DE PAIEMENT", 25, y + 7);
-    
-    doc.setFontSize(11);
-    if (formData.paiement === 'MTN Mobile Money') {
-        doc.setTextColor(76, 175, 80);  // Vert MTN
-    } else {
-        doc.setTextColor(33, 33, 33);
-    }
-    doc.setFont(undefined, "normal");
-    doc.text(formData.paiement, 25, y + 18);
-    y += 40;
-    
-    // === RÉCAPITULATIF ===
-    doc.setFillColor(230, 57, 70);
-    doc.rect(20, y, 170, 50, "F");
-    
-    doc.setTextColor(255, 215, 0);  // OR
-    doc.setFontSize(12);
-    doc.setFont(undefined, "bold");
-    doc.text("RÉCAPITULATIF", 105, y + 10, { align: "center" });
-    
-    doc.setTextColor(255, 255, 255);  // Blanc
-    doc.setFontSize(11);
-    doc.text(`Montant : ${formData.montant.toLocaleString()} FCFA`, 105, y + 22, { align: "center" });
-    doc.text(`Numéro adhérent : ${formData.numeroAdherent}`, 105, y + 32, { align: "center" });
-    doc.text(`Date : ${new Date().toLocaleDateString()}`, 105, y + 42, { align: "center" });
-    y += 60;
-    
-    // === PIED DE PAGE ===
-    doc.setFillColor(50, 50, 50);
-    doc.rect(0, 280, 210, 20, "F");
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(9);
-    doc.text("Association N° 2016/141/SG/SAG/SA du 16 Novembre 2016", 105, 292, { align: "center" });
-    
-    // Sauvegarde
-    doc.save(`Adhesion_${formData.nom}_${formData.prenoms}.pdf`);
-}
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            let y = 25;
             
+            // Récupérer le logo du club
+            const logoClub = document.getElementById('logoCache');
+            let logoClubDataURL = null;
+            if (logoClub && logoClub.complete && logoClub.naturalWidth > 0) {
+                const canvas = document.createElement('canvas');
+                canvas.width = logoClub.naturalWidth;
+                canvas.height = logoClub.naturalHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(logoClub, 0, 0);
+                logoClubDataURL = canvas.toDataURL('image/png');
+            }
+            
+            // Récupérer le drapeau du Bénin
+            const flagBenin = document.getElementById('flagBenin');
+            let flagBeninDataURL = null;
+            if (flagBenin && flagBenin.complete && flagBenin.naturalWidth > 0) {
+                const canvas = document.createElement('canvas');
+                canvas.width = flagBenin.naturalWidth;
+                canvas.height = flagBenin.naturalHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(flagBenin, 0, 0);
+                flagBeninDataURL = canvas.toDataURL('image/png');
+            } else {
+                // Drapeau par défaut
+                const canvas = document.createElement('canvas');
+                canvas.width = 100;
+                canvas.height = 70;
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#008751';
+                ctx.fillRect(0, 0, 100, 23);
+                ctx.fillStyle = '#FCD116';
+                ctx.fillRect(0, 23, 100, 23);
+                ctx.fillStyle = '#E8112D';
+                ctx.fillRect(0, 46, 100, 24);
+                ctx.fillStyle = '#E8112D';
+                ctx.fillRect(0, 0, 35, 70);
+                flagBeninDataURL = canvas.toDataURL('image/png');
+            }
+            
+            // Ajouter le drapeau à gauche
+            if (flagBeninDataURL) {
+                doc.addImage(flagBeninDataURL, 'PNG', 15, 15, 25, 18);
+            }
+            
+            // Ajouter le logo du club à droite
+            if (logoClubDataURL) {
+                doc.addImage(logoClubDataURL, 'PNG', 170, 15, 25, 25);
+            }
+            
+            // EN-TÊTE COLORÉ
+            doc.setFillColor(230, 57, 70);
+            doc.rect(0, 0, 210, 50, "F");
+            
+            doc.setTextColor(255, 215, 0);
+            doc.setFontSize(18);
+            doc.setFont(undefined, "bold");
+            doc.text("SUPER SHAOLIN BÉNIN", 105, 28, { align: "center" });
+            
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(11);
+            doc.text("FICHE D'ADHÉSION 2026", 105, 40, { align: "center" });
+            
+            doc.setTextColor(0, 0, 0);
+            y = 65;
+            
+            // SECTION 1
+            doc.setFillColor(240, 248, 255);
+            doc.rect(20, y, 170, 70, "F");
+            
+            doc.setTextColor(230, 57, 70);
+            doc.setFontSize(11);
+            doc.setFont(undefined, "bold");
+            doc.text("1. INFORMATIONS PERSONNELLES", 25, y + 7);
+            
+            doc.setTextColor(50, 50, 50);
+            doc.setFontSize(9);
+            doc.setFont(undefined, "normal");
+            doc.text(`Nom : ${formData.nom} ${formData.prenoms}`, 25, y + 17);
+            doc.text(`Date de naissance : ${formData.dateNaissance}`, 25, y + 25);
+            doc.text(`Nationalité : ${formData.nationalite}`, 25, y + 33);
+            doc.text(`Profession : ${formData.profession}`, 25, y + 41);
+            doc.text(`Adresse : ${formData.adresse}, ${formData.ville}`, 25, y + 49);
+            doc.text(`Téléphone : ${formData.telephone}`, 25, y + 57);
+            doc.text(`Email : ${formData.email}`, 25, y + 65);
+            y += 80;
+            
+            // SECTION 2
+            doc.setFillColor(255, 248, 225);
+            doc.rect(20, y, 170, 35, "F");
+            
+            doc.setTextColor(230, 57, 70);
+            doc.setFontSize(11);
+            doc.setFont(undefined, "bold");
+            doc.text("2. FORMULE CHOISIE", 25, y + 7);
+            
+            doc.setFontSize(10);
+            if (formData.statut === 'Membre donateur') {
+                doc.setTextColor(212, 175, 55);
+            } else if (formData.statut === 'Membre bienfaiteur') {
+                doc.setTextColor(0, 100, 0);
+            } else {
+                doc.setTextColor(33, 33, 33);
+            }
+            doc.text(`${formData.statut}`, 25, y + 18);
+            
+            doc.setTextColor(230, 57, 70);
+            doc.setFont(undefined, "bold");
+            doc.text(`${formData.montant.toLocaleString()} FCFA`, 25, y + 28);
+            y += 45;
+            
+            // SECTION 3
+            doc.setFillColor(232, 245, 233);
+            doc.rect(20, y, 170, 30, "F");
+            
+            doc.setTextColor(230, 57, 70);
+            doc.setFontSize(11);
+            doc.setFont(undefined, "bold");
+            doc.text("3. MODE DE PAIEMENT", 25, y + 7);
+            
+            doc.setFontSize(10);
+            if (formData.paiement === 'MTN Mobile Money') {
+                doc.setTextColor(76, 175, 80);
+            } else {
+                doc.setTextColor(33, 33, 33);
+            }
+            doc.setFont(undefined, "normal");
+            doc.text(formData.paiement, 25, y + 18);
+            if (formData.paiement === 'MTN Mobile Money') {
+                doc.setTextColor(33, 33, 33);
+                doc.setFontSize(8);
+                doc.text("Numéro: 0153130940 (MAMERT WILLIAMS EKPANGBO)", 25, y + 26);
+            }
+            y += 45;
+            
+            // RÉCAPITULATIF
+            doc.setFillColor(230, 57, 70);
+            doc.rect(20, y, 170, 45, "F");
+            
+            doc.setTextColor(255, 215, 0);
+            doc.setFontSize(11);
+            doc.setFont(undefined, "bold");
+            doc.text("RÉCAPITULATIF", 105, y + 10, { align: "center" });
+            
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(10);
+            doc.text(`Montant : ${formData.montant.toLocaleString()} FCFA`, 105, y + 22, { align: "center" });
+            doc.text(`Numéro adhérent : ${formData.numeroAdherent}`, 105, y + 32, { align: "center" });
+            doc.text(`Date : ${new Date().toLocaleDateString()}`, 105, y + 42, { align: "center" });
+            y += 55;
+            
+            // PIED DE PAGE
+            doc.setFillColor(50, 50, 50);
+            doc.rect(0, 280, 210, 20, "F");
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(8);
+            doc.text("Association N° 2016/141/SG/SAG/SA du 16 Novembre 2016", 105, 292, { align: "center" });
+            
+            doc.save(`Adhesion_${formData.nom}_${formData.prenoms}.pdf`);
+        }
         
         // ENVOI DU FORMULAIRE
         const form = document.getElementById('adhesionForm');
@@ -498,10 +494,8 @@
             loadingOverlay.classList.add('active');
             
             try {
-                // Générer et télécharger le PDF
                 await generatePDF(formData);
                 
-                // Envoyer email au club
                 const emailData = new FormData();
                 emailData.append('_subject', `[SSB] Nouvelle adhésion - ${formData.nom} ${formData.prenoms}`);
                 emailData.append('_template', 'table');
@@ -559,7 +553,11 @@
         
         const header = document.querySelector('.header');
         window.addEventListener('scroll', () => {
-            header.style.background = window.scrollY > 100 ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' : 'linear-gradient(135deg, var(--gris-fonce) 0%, #1a1a2e 100%)';
+            if (window.scrollY > 100) {
+                header.style.background = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)';
+            } else {
+                header.style.background = 'linear-gradient(135deg, var(--gris-fonce) 0%, #1a1a2e 100%)';
+            }
         });
     </script>
 </body>
