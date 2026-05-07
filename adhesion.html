@@ -7,6 +7,7 @@
     <meta name="description" content="Devenez membre du Super Shaolin Bénin. Adhésion 2026">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         .adhesion-section { background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%); }
         .adhesion-form-container { max-width: 900px; margin: 0 auto; background: white; border-radius: 15px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); overflow: hidden; }
@@ -20,9 +21,6 @@
         .form-group-full { margin-bottom: 1rem; }
         .form-group-full label, .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 500; color: var(--gris-fonce); }
         .form-group-full input, .form-group-full select, .form-group input, .form-group select { width: 100%; padding: 0.8rem; border: 2px solid #eee; border-radius: 8px; font-family: inherit; }
-        .radio-group { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 0.5rem; }
-        .radio-group label { display: flex; align-items: center; gap: 0.5rem; font-weight: normal; cursor: pointer; }
-        .radio-group input[type="radio"] { width: auto; accent-color: var(--rouge); }
         .checkbox-group { display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0; }
         .checkbox-group input { width: auto; }
         
@@ -42,50 +40,15 @@
             transition: all 0.3s ease;
             cursor: pointer;
         }
-        .pricing-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        .pricing-card.selected {
-            border-color: var(--or);
-            background: #fff9e6;
-        }
-        .pricing-card h3 {
-            color: var(--rouge);
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-        }
-        .pricing-card .price {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--gris-fonce);
-            margin: 0.5rem 0;
-        }
-        .pricing-card .price span {
-            font-size: 0.9rem;
-            font-weight: normal;
-        }
-        .pricing-card ul {
-            list-style: none;
-            padding: 0;
-            margin-top: 1rem;
-            text-align: left;
-        }
-        .pricing-card ul li {
-            padding: 0.3rem 0;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .pricing-card ul li i {
-            color: var(--or);
-            width: 20px;
-        }
-        .pricing-card input[type="radio"] {
-            margin-top: 1rem;
-            accent-color: var(--rouge);
-        }
+        .pricing-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .pricing-card.selected { border-color: var(--or); background: #fff9e6; }
+        .pricing-card h3 { color: var(--rouge); font-size: 1.3rem; margin-bottom: 0.5rem; }
+        .pricing-card .price { font-size: 1.8rem; font-weight: bold; color: var(--gris-fonce); margin: 0.5rem 0; }
+        .pricing-card .price span { font-size: 0.9rem; font-weight: normal; }
+        .pricing-card ul { list-style: none; padding: 0; margin-top: 1rem; text-align: left; }
+        .pricing-card ul li { padding: 0.3rem 0; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem; }
+        .pricing-card ul li i { color: var(--or); width: 20px; }
+        .pricing-card input[type="radio"] { margin-top: 1rem; accent-color: var(--rouge); }
         
         /* Mode de paiement */
         .payment-methods {
@@ -103,22 +66,10 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
-        .payment-method.selected {
-            border-color: var(--or);
-            background: #fff9e6;
-        }
-        .payment-method i {
-            font-size: 2rem;
-            color: var(--or);
-            margin-bottom: 0.5rem;
-        }
-        .payment-method h4 {
-            margin-bottom: 0.3rem;
-        }
-        .payment-method p {
-            font-size: 0.8rem;
-            color: #666;
-        }
+        .payment-method.selected { border-color: var(--or); background: #fff9e6; }
+        .payment-method i { font-size: 2rem; color: var(--or); margin-bottom: 0.5rem; }
+        .payment-method h4 { margin-bottom: 0.3rem; }
+        .payment-method p { font-size: 0.8rem; color: #666; }
         
         .momento-info {
             background: #e8f5e9;
@@ -127,9 +78,6 @@
             margin-top: 1rem;
             text-align: center;
             border-left: 4px solid #4CAF50;
-        }
-        .momento-info p {
-            margin: 0.3rem 0;
         }
         .momento-number {
             font-size: 1.3rem;
@@ -155,10 +103,12 @@
         .form-message { margin-top: 1rem; padding: 1rem; border-radius: 8px; text-align: center; }
         .form-message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .form-message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        #logoCache { display: none; }
     </style>
 </head>
 <body>
-    <!-- HEADER -->
+    <img id="logoCache" src="medias/logo cssb.jpg" alt="logo" style="display: none;">
+    
     <header class="header">
         <div class="nav-container">
             <div class="logo">
@@ -180,7 +130,6 @@
         </div>
     </header>
 
-    <!-- PAGE TITLE -->
     <section class="page-hero">
         <div class="page-hero-content">
             <div class="yin-yang yin-yang-hero"></div>
@@ -189,20 +138,17 @@
         </div>
     </section>
 
-    <!-- FORMULAIRE D'ADHÉSION -->
     <section class="section adhesion-section">
         <div class="adhesion-form-container">
             <div class="form-header">
                 <img src="medias/logo cssb.jpg" alt="logo du Super Shaolin Bénin" class="logo-icon" height="80px" width="80px">
                 <h3><i class="fas fa-user-plus"></i> FICHE D'ADHÉSION 2026</h3>
                 <p>Association N° 2016/141/SG/SAG/SA du 16 Novembre 2016</p>
-                <p style="font-size: 0.8rem;">Sièges : Akpro-Missérété - Maison des Jeunes | Cotonou PK10 - Plage Von Owolobè | Centre CEMAAC Koutongbé - Porto-Novo</p>
                 <p style="font-size: 0.8rem;">Tél : (+229) 0196236166 / 0197230546</p>
             </div>
             
             <div class="form-body">
                 <form id="adhesionForm">
-                    <!-- Section 1: Informations personnelles -->
                     <div class="form-section">
                         <h4><i class="fas fa-user"></i> 1. Informations personnelles</h4>
                         <div class="form-row">
@@ -224,7 +170,6 @@
                         <div class="form-group-full"><label>Email *</label><input type="email" id="emailAdhesion" required></div>
                     </div>
                     
-                    <!-- Section 2: Choix du statut et tarif -->
                     <div class="form-section">
                         <h4><i class="fas fa-tag"></i> 2. Choisissez votre formule d'adhésion</h4>
                         <div class="pricing-cards">
@@ -261,12 +206,11 @@
                             </div>
                         </div>
                         <div class="form-group-full" style="margin-top: 1rem;">
-                            <label>Montant supplémentaire (si Donateur) :</label>
-                            <input type="number" id="montantSupplement" placeholder="Laissez 20000 ou mettez plus" value="20000" step="1000">
+                            <label>Montant (minimum 20 000 FCFA) :</label>
+                            <input type="number" id="montantSupplement" value="20000" step="1000" min="20000">
                         </div>
                     </div>
                     
-                    <!-- Section 3: Mode de paiement -->
                     <div class="form-section">
                         <h4><i class="fas fa-money-bill-wave"></i> 3. Mode de paiement</h4>
                         <div class="payment-methods">
@@ -284,17 +228,10 @@
                         <input type="hidden" id="paiementMethod" value="">
                         
                         <div id="momentoInfo" class="momento-info" style="display: none;">
-                            <p><i class="fas fa-external-link-alt"></i> <strong>Paiement par MTN Mobile Money</strong></p>
-                            <p>Effectuez votre paiement sur ce numéro :</p>
-                            <p class="momento-number"><i class="fas fa-phone"></i> 0153130940</p>
-                            <p>Nom : <strong>MAMERT WILLIAMS EKPANGBO</strong></p>
-                            <p style="font-size: 0.8rem; margin-top: 0.5rem;">Après paiement, votre inscription sera validée</p>
-                        </div>
-                    </div>
-                    
-                    <!-- Section 4: Engagement -->
-                    <div class="form-section">
-                            <div class="form-group"><label>Date d'engagement *</label><input type="date" id="dateEngagement" required></div>
+                            <p><strong>Paiement par MTN Mobile Money</strong></p>
+                            <p>Effectuez votre paiement sur :</p>
+                            <p class="momento-number">📞 0153130940</p>
+                            <p><strong>MAMERT WILLIAMS EKPANGBO</strong></p>
                         </div>
                     </div>
                     
@@ -303,7 +240,7 @@
                         <label for="acceptConditions">J'accepte les conditions d'adhésion *</label>
                     </div>
                     
-                    <button type="submit" class="btn-submit-adhesion"><i class="fas fa-paper-plane"></i> Envoyer ma demande d'adhésion</button>
+                    <button type="submit" class="btn-submit-adhesion"><i class="fas fa-paper-plane"></i> Envoyer ma demande</button>
                     <div id="formMessage" class="form-message" style="display: none;"></div>
                 </form>
             </div>
@@ -312,17 +249,16 @@
     
     <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
-        <p>Envoi en cours...</p>
+        <p>Génération du PDF et envoi en cours...</p>
     </div>
 
     <footer class="footer">
         <div class="yin-yang"></div>
-        <p>© 2026 Super Shaolin Bénin - Tous droits réservés</p>
-        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Siège : Akpro-Missérété  Maison des Jeunes | Porto-Novo : CEMAAC Koutongbé</p>
+        <p>© 2026 Super Shaolin Bénin</p>
     </footer>
 
     <script>
-        // ==================== MENU MOBILE ====================
+        // MENU MOBILE
         const menuToggle = document.getElementById('menuToggle');
         const navMenu = document.getElementById('navMenu');
         if (menuToggle) {
@@ -332,9 +268,8 @@
             link.addEventListener('click', () => navMenu.classList.remove('active'));
         });
         
-        // ==================== SÉLECTION DES CARTES TARIFS ====================
+        // SÉLECTION DES CARTES
         const pricingCards = document.querySelectorAll('.pricing-card');
-        const statutRadios = document.querySelectorAll('input[name="statutTarif"]');
         const montantSupplement = document.getElementById('montantSupplement');
         
         pricingCards.forEach(card => {
@@ -356,12 +291,12 @@
             });
         }
         
-        statutRadios.forEach(radio => {
+        document.querySelectorAll('input[name="statutTarif"]').forEach(radio => {
             radio.addEventListener('change', updatePricingSelection);
         });
         updatePricingSelection();
         
-        // ==================== SÉLECTION MODE DE PAIEMENT ====================
+        // MODE DE PAIEMENT
         const paymentMethods = document.querySelectorAll('.payment-method');
         const paiementMethodInput = document.getElementById('paiementMethod');
         const momentoInfo = document.getElementById('momentoInfo');
@@ -370,34 +305,103 @@
             method.addEventListener('click', () => {
                 paymentMethods.forEach(m => m.classList.remove('selected'));
                 method.classList.add('selected');
-                const methodValue = method.dataset.method;
-                paiementMethodInput.value = methodValue;
-                
-                if (methodValue === 'momo') {
-                    momentoInfo.style.display = 'block';
-                } else {
-                    momentoInfo.style.display = 'none';
-                }
+                paiementMethodInput.value = method.dataset.method;
+                momentoInfo.style.display = method.dataset.method === 'momo' ? 'block' : 'none';
             });
         });
         
-        // ==================== MISE À JOUR NOM SIGNAIRE ====================
-        const nomInput = document.getElementById('nom');
-        const prenomsInput = document.getElementById('prenoms');
-        const nomSignataire = document.getElementById('nomSignataire');
-        function updateSignataire() {
-            nomSignataire.textContent = `${nomInput.value || '_____'} ${prenomsInput.value || '_____'}`;
-        }
-        nomInput.addEventListener('input', updateSignataire);
-        prenomsInput.addEventListener('input', updateSignataire);
-        
-        // ==================== NUMÉRO ADHÉRENT ====================
+        // NUMÉRO ADHÉRENT
         function generateNumeroAdherent() {
             const d = new Date();
             return `SSB-${d.getFullYear()}${(d.getMonth()+1).toString().padStart(2,'0')}${d.getDate().toString().padStart(2,'0')}-${Math.floor(Math.random()*1000).toString().padStart(3,'0')}`;
         }
         
-        // ==================== ENVOI DU FORMULAIRE ====================
+        // GÉNÉRATION PDF
+        async function generatePDF(formData) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            let y = 25;
+            
+            const logoImg = document.getElementById('logoCache');
+            let logoDataURL = null;
+            if (logoImg && logoImg.complete && logoImg.naturalWidth > 0) {
+                const canvas = document.createElement('canvas');
+                canvas.width = logoImg.naturalWidth;
+                canvas.height = logoImg.naturalHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(logoImg, 0, 0);
+                logoDataURL = canvas.toDataURL('image/png');
+            }
+            
+            if (logoDataURL) {
+                doc.addImage(logoDataURL, 'PNG', 15, 15, 25, 25);
+                doc.addImage(logoDataURL, 'PNG', 170, 15, 25, 25);
+            }
+            
+            doc.setFontSize(18);
+            doc.setFont(undefined, "bold");
+            doc.text("SUPER SHAOLIN BÉNIN", 105, y, { align: "center" });
+            y += 8;
+            doc.setFontSize(12);
+            doc.text("FICHE D'ADHÉSION 2026", 105, y, { align: "center" });
+            y += 8;
+            doc.setFontSize(9);
+            doc.setFont(undefined, "normal");
+            doc.text("Association N° 2016/141/SG/SAG/SA du 16 Novembre 2016", 105, y, { align: "center" });
+            y += 10;
+            doc.line(20, y, 190, y);
+            y += 10;
+            
+            doc.setFontSize(11);
+            doc.setFont(undefined, "bold");
+            doc.text("1. INFORMATIONS PERSONNELLES", 20, y);
+            y += 7;
+            doc.setFontSize(10);
+            doc.setFont(undefined, "normal");
+            doc.text(`Nom : ${formData.nom} ${formData.prenoms}`, 20, y);
+            y += 6;
+            doc.text(`Date naissance : ${formData.dateNaissance}`, 20, y);
+            y += 6;
+            doc.text(`Nationalité : ${formData.nationalite}  |  Profession : ${formData.profession}`, 20, y);
+            y += 6;
+            doc.text(`Adresse : ${formData.adresse}, ${formData.ville}`, 20, y);
+            y += 6;
+            doc.text(`Téléphone : ${formData.telephone}  |  Email : ${formData.email}`, 20, y);
+            y += 10;
+            
+            doc.setFont(undefined, "bold");
+            doc.text("2. FORMULE CHOISIE", 20, y);
+            y += 7;
+            doc.setFont(undefined, "normal");
+            doc.text(`${formData.statut} - ${formData.montant} FCFA`, 20, y);
+            y += 10;
+            
+            doc.setFont(undefined, "bold");
+            doc.text("3. MODE DE PAIEMENT", 20, y);
+            y += 7;
+            doc.setFont(undefined, "normal");
+            doc.text(formData.paiement, 20, y);
+            y += 15;
+            
+            doc.setFillColor(255, 249, 230);
+            doc.rect(20, y, 170, 35, "F");
+            doc.setFont(undefined, "bold");
+            doc.text("ADHÉSION", 25, y + 8);
+            doc.setFont(undefined, "normal");
+            doc.text(`Montant : ${formData.montant} FCFA`, 25, y + 16);
+            doc.text(`Numéro adhérent : ${formData.numeroAdherent}`, 25, y + 24);
+            doc.text(`Date : ${new Date().toLocaleDateString()}`, 25, y + 32);
+            y += 45;
+            
+            doc.setFont(undefined, "bold");
+            doc.text(`Numéro adhérent : ${formData.numeroAdherent}`, 20, y);
+            y += 8;
+            doc.text(`Date de la demande : ${new Date().toLocaleDateString()}`, 20, y);
+            
+            doc.save(`Adhesion_${formData.nom}_${formData.prenoms}.pdf`);
+        }
+        
+        // ENVOI DU FORMULAIRE
         const form = document.getElementById('adhesionForm');
         const loadingOverlay = document.getElementById('loadingOverlay');
         const formMessage = document.getElementById('formMessage');
@@ -405,26 +409,17 @@
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Vérifier statut sélectionné
             const selectedStatut = document.querySelector('input[name="statutTarif"]:checked');
             if (!selectedStatut) {
-                formMessage.style.display = 'block';
-                formMessage.className = 'form-message error';
-                formMessage.innerHTML = '❌ Veuillez choisir votre formule d\'adhésion';
-                setTimeout(() => formMessage.style.display = 'none', 3000);
+                showMessage('❌ Choisissez votre formule', 'error');
                 return;
             }
             
-            // Vérifier mode de paiement
             if (!paiementMethodInput.value) {
-                formMessage.style.display = 'block';
-                formMessage.className = 'form-message error';
-                formMessage.innerHTML = '❌ Veuillez choisir votre mode de paiement';
-                setTimeout(() => formMessage.style.display = 'none', 3000);
+                showMessage('❌ Choisissez votre mode de paiement', 'error');
                 return;
             }
             
-            // Calcul du montant
             let montant = parseInt(selectedStatut.dataset.price);
             if (selectedStatut.value === 'Membre donateur') {
                 montant = parseInt(montantSupplement.value) || 20000;
@@ -435,7 +430,6 @@
                 nom: document.getElementById('nom').value,
                 prenoms: document.getElementById('prenoms').value,
                 dateNaissance: document.getElementById('dateNaissance').value,
-                lieuNaissance: document.getElementById('lieuNaissance').value,
                 nationalite: document.getElementById('nationalite').value,
                 profession: document.getElementById('profession').value,
                 adresse: document.getElementById('adresse').value,
@@ -445,17 +439,12 @@
                 statut: selectedStatut.value,
                 montant: montant,
                 paiement: paiementMethodInput.value === 'momo' ? 'MTN Mobile Money' : 'Espèces (au club)',
-                dateEngagement: document.getElementById('dateEngagement').value,
                 numeroAdherent: generateNumeroAdherent()
             };
             
-            // Vérifier champs requis
             for (let key in formData) {
-                if (key !== 'mineur' && !formData[key]) {
-                    formMessage.style.display = 'block';
-                    formMessage.className = 'form-message error';
-                    formMessage.innerHTML = '❌ Remplissez tous les champs';
-                    setTimeout(() => formMessage.style.display = 'none', 3000);
+                if (!formData[key]) {
+                    showMessage('❌ Remplissez tous les champs', 'error');
                     return;
                 }
             }
@@ -463,7 +452,10 @@
             loadingOverlay.classList.add('active');
             
             try {
-                // Envoi email via FormSubmit
+                // Générer et télécharger le PDF
+                await generatePDF(formData);
+                
+                // Envoyer email au club
                 const emailData = new FormData();
                 emailData.append('_subject', `[SSB] Nouvelle adhésion - ${formData.nom} ${formData.prenoms}`);
                 emailData.append('_template', 'table');
@@ -471,53 +463,31 @@
                 emailData.append('Nom', formData.nom);
                 emailData.append('Prénoms', formData.prenoms);
                 emailData.append('Date naissance', formData.dateNaissance);
-                emailData.append('Lieu naissance', formData.lieuNaissance);
                 emailData.append('Nationalité', formData.nationalite);
                 emailData.append('Profession', formData.profession);
                 emailData.append('Adresse', formData.adresse);
-                emailData.append('Ville/Quartier', formData.ville);
                 emailData.append('Téléphone', formData.telephone);
                 emailData.append('Email', formData.email);
                 emailData.append('Statut', formData.statut);
                 emailData.append('Montant', `${formData.montant} FCFA`);
-                emailData.append('Mode de paiement', formData.paiement);
-                emailData.append("Date d'engagement", formData.dateEngagement);
-                emailData.append("Numéro d'adhérent", formData.numeroAdherent);
-                
-                if (formData.paiement === 'MTN Mobile Money') {
-                    emailData.append('Infos MoMo', 'Numéro: 0153130940 - MAMERT WILLIAMS EKPANGBO');
-                }
+                emailData.append('Mode paiement', formData.paiement);
+                emailData.append('Numéro adhérent', formData.numeroAdherent);
                 
                 await fetch('https://formsubmit.co/ajax/supershaolin229@gmail.com', { method: 'POST', body: emailData });
                 
                 loadingOverlay.classList.remove('active');
                 
-                let messagePaiement = '';
+                let msgPaiement = '';
                 if (formData.paiement === 'MTN Mobile Money') {
-                    messagePaiement = `<br><br><strong>📱 Paiement Mobile Money :</strong><br>
-                    Effectuez votre paiement de ${formData.montant} FCFA sur :<br>
-                    📞 <strong>0153130940</strong> (MAMERT WILLIAMS EKPANGBO)<br>
-                    Après paiement, votre adhésion sera validée.`;
+                    msgPaiement = `<br><br>📱 Paiement : 0153130940 (MAMERT WILLIAMS EKPANGBO)`;
                 } else {
-                    messagePaiement = `<br><br><strong>💰 Paiement en espèces :</strong><br>
-                    Veuillez payer ${formData.montant} FCFA lors de votre prochaine visite au club.`;
+                    msgPaiement = `<br><br>💰 Paiement en espèces au club`;
                 }
                 
-                formMessage.style.display = 'block';
-                formMessage.className = 'form-message success';
-                formMessage.innerHTML = `
-                    ✅ <strong>Demande d'adhésion envoyée !</strong><br>
-                    Numéro adhérent : <strong>${formData.numeroAdherent}</strong><br>
-                    Montant : ${formData.montant} FCFA<br>
-                    Statut : ${formData.statut}<br>
-                    ${messagePaiement}
-                    <br><br>
-                    Un email de confirmation a été envoyé au club.<br>
-                    Un responsable vous contactera sous 48h.
-                `;
+                showMessage(`✅ Demande envoyée !<br>Numéro : ${formData.numeroAdherent}<br>Montant : ${formData.montant} FCFA${msgPaiement}<br><br>Le PDF a été téléchargé.`, 'success');
                 
                 form.reset();
-                document.querySelector('input[name="statutTarif"]:checked').checked = false;
+                document.querySelectorAll('input[name="statutTarif"]').forEach(r => r.checked = false);
                 updatePricingSelection();
                 paymentMethods.forEach(m => m.classList.remove('selected'));
                 paiementMethodInput.value = '';
@@ -525,26 +495,25 @@
                 
                 setTimeout(() => {
                     formMessage.style.display = 'none';
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    window.scrollTo({ top: 0 });
                 }, 10000);
                 
             } catch (error) {
                 loadingOverlay.classList.remove('active');
-                formMessage.style.display = 'block';
-                formMessage.className = 'form-message error';
-                formMessage.innerHTML = '❌ Erreur, contactez le club au +229 96 23 61 66';
-                setTimeout(() => formMessage.style.display = 'none', 5000);
+                showMessage('❌ Erreur, contactez le club au +229 96 23 61 66', 'error');
             }
         });
         
-        // Header scroll
+        function showMessage(msg, type) {
+            formMessage.style.display = 'block';
+            formMessage.className = `form-message ${type}`;
+            formMessage.innerHTML = msg;
+            setTimeout(() => formMessage.style.display = 'none', 8000);
+        }
+        
         const header = document.querySelector('.header');
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                header.style.background = 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)';
-            } else {
-                header.style.background = 'linear-gradient(135deg, var(--gris-fonce) 0%, #1a1a2e 100%)';
-            }
+            header.style.background = window.scrollY > 100 ? 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' : 'linear-gradient(135deg, var(--gris-fonce) 0%, #1a1a2e 100%)';
         });
     </script>
 </body>
