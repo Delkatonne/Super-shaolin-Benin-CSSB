@@ -317,11 +317,12 @@
         }
         
         // GÉNÉRATION PDF
-        async function generatePDF(formData) {
+                async function generatePDF(formData) {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             let y = 25;
             
+            // Récupérer le logo
             const logoImg = document.getElementById('logoCache');
             let logoDataURL = null;
             if (logoImg && logoImg.complete && logoImg.naturalWidth > 0) {
@@ -338,68 +339,109 @@
                 doc.addImage(logoDataURL, 'PNG', 170, 15, 25, 25);
             }
             
+            // === EN-TÊTE COLORÉ ===
+            doc.setFillColor(230, 57, 70);  // Rouge SSB
+            doc.rect(0, 0, 210, 50, "F");
+            
+            doc.setTextColor(255, 255, 255);  // Blanc
             doc.setFontSize(18);
             doc.setFont(undefined, "bold");
-            doc.text("SUPER SHAOLIN BÉNIN", 105, y, { align: "center" });
-            y += 8;
+            doc.text("SUPER SHAOLIN BÉNIN", 105, 28, { align: "center" });
             doc.setFontSize(12);
-            doc.text("FICHE D'ADHÉSION 2026", 105, y, { align: "center" });
-            y += 8;
-            doc.setFontSize(9);
-            doc.setFont(undefined, "normal");
-            doc.text("Association N° 2016/141/SG/SAG/SA du 16 Novembre 2016", 105, y, { align: "center" });
-            y += 10;
-            doc.line(20, y, 190, y);
-            y += 10;
+            doc.text("FICHE D'ADHÉSION 2026", 105, 38, { align: "center" });
+            
+            // Réinitialiser couleur texte
+            doc.setTextColor(0, 0, 0);
+            y = 60;
+            
+            // === SECTION 1 - Fond gris clair ===
+            doc.setFillColor(248, 249, 250);  // Gris clair
+            doc.rect(20, y, 170, 55, "F");
             
             doc.setFontSize(11);
             doc.setFont(undefined, "bold");
-            doc.text("1. INFORMATIONS PERSONNELLES", 20, y);
-            y += 7;
+            doc.setTextColor(230, 57, 70);  // Rouge
+            doc.text("1. INFORMATIONS PERSONNELLES", 25, y + 7);
+            
+            doc.setTextColor(0, 0, 0);
+            doc.setFont(undefined, "normal");
             doc.setFontSize(10);
-            doc.setFont(undefined, "normal");
-            doc.text(`Nom : ${formData.nom} ${formData.prenoms}`, 20, y);
-            y += 6;
-            doc.text(`Date naissance : ${formData.dateNaissance}`, 20, y);
-            y += 6;
-            doc.text(`Nationalité : ${formData.nationalite}  |  Profession : ${formData.profession}`, 20, y);
-            y += 6;
-            doc.text(`Adresse : ${formData.adresse}, ${formData.ville}`, 20, y);
-            y += 6;
-            doc.text(`Téléphone : ${formData.telephone}  |  Email : ${formData.email}`, 20, y);
-            y += 10;
+            doc.text(`Nom : ${formData.nom} ${formData.prenoms}`, 25, y + 17);
+            doc.text(`Date naissance : ${formData.dateNaissance}`, 25, y + 25);
+            doc.text(`Nationalité : ${formData.nationalite}  |  Profession : ${formData.profession}`, 25, y + 33);
+            doc.text(`Adresse : ${formData.adresse}, ${formData.ville}`, 25, y + 41);
+            doc.text(`Téléphone : ${formData.telephone}  |  Email : ${formData.email}`, 25, y + 49);
+            y += 65;
+            
+            // === SECTION 2 - Fond jaune clair ===
+            doc.setFillColor(255, 249, 230);  // Jaune clair
+            doc.rect(20, y, 170, 30, "F");
             
             doc.setFont(undefined, "bold");
-            doc.text("2. FORMULE CHOISIE", 20, y);
-            y += 7;
+            doc.setTextColor(230, 57, 70);
+            doc.text("2. FORMULE CHOISIE", 25, y + 7);
+            
+            doc.setTextColor(0, 0, 0);
             doc.setFont(undefined, "normal");
-            doc.text(`${formData.statut} - ${formData.montant} FCFA`, 20, y);
-            y += 10;
+            
+            // Couleur selon le statut
+            if (formData.statut === 'Membre donateur') {
+                doc.setTextColor(212, 175, 55);  // Doré
+            } else if (formData.statut === 'Membre bienfaiteur') {
+                doc.setTextColor(0, 100, 0);  // Vert
+            } else {
+                doc.setTextColor(0, 0, 0);  // Noir
+            }
+            doc.text(`${formData.statut} - ${formData.montant.toLocaleString()} FCFA`, 25, y + 17);
+            
+            doc.setTextColor(0, 0, 0);
+            y += 40;
+            
+            // === SECTION 3 ===
+            doc.setFillColor(227, 242, 253);  // Bleu très clair
+            doc.rect(20, y, 170, 25, "F");
             
             doc.setFont(undefined, "bold");
-            doc.text("3. MODE DE PAIEMENT", 20, y);
-            y += 7;
+            doc.setTextColor(230, 57, 70);
+            doc.text("3. MODE DE PAIEMENT", 25, y + 7);
+            
+            doc.setTextColor(0, 0, 0);
             doc.setFont(undefined, "normal");
-            doc.text(formData.paiement, 20, y);
-            y += 15;
             
-            doc.setFillColor(255, 249, 230);
-            doc.rect(20, y, 170, 35, "F");
+            // Couleur selon le mode de paiement
+            if (formData.paiement === 'MTN Mobile Money') {
+                doc.setTextColor(76, 175, 80);  // Vert MTN
+            } else {
+                doc.setTextColor(33, 33, 33);
+            }
+            doc.text(formData.paiement, 25, y + 17);
+            
+            doc.setTextColor(0, 0, 0);
+            y += 35;
+            
+            // === RÉCAPITULATIF COLORÉ ===
+            doc.setFillColor(230, 57, 70);  // Rouge
+            doc.rect(20, y, 170, 45, "F");
+            
+            doc.setTextColor(255, 255, 255);  // Blanc
             doc.setFont(undefined, "bold");
-            doc.text("ADHÉSION", 25, y + 8);
+            doc.text("RÉCAPITULATIF DE L'ADHÉSION", 105, y + 10, { align: "center" });
+            
             doc.setFont(undefined, "normal");
-            doc.text(`Montant : ${formData.montant} FCFA`, 25, y + 16);
-            doc.text(`Numéro adhérent : ${formData.numeroAdherent}`, 25, y + 24);
-            doc.text(`Date : ${new Date().toLocaleDateString()}`, 25, y + 32);
-            y += 45;
+            doc.text(`Montant : ${formData.montant.toLocaleString()} FCFA`, 105, y + 22, { align: "center" });
+            doc.text(`Numéro adhérent : ${formData.numeroAdherent}`, 105, y + 32, { align: "center" });
+            doc.text(`Date : ${new Date().toLocaleDateString()}`, 105, y + 42, { align: "center" });
+            y += 55;
             
-            doc.setFont(undefined, "bold");
-            doc.text(`Numéro adhérent : ${formData.numeroAdherent}`, 20, y);
-            y += 8;
-            doc.text(`Date de la demande : ${new Date().toLocaleDateString()}`, 20, y);
+            // === PIED DE PAGE ===
+            doc.setFontSize(9);
+            doc.setTextColor(128, 128, 128);
+            doc.text("Association N° 2016/141/SG/SAG/SA du 16 Novembre 2016", 105, 285, { align: "center" });
             
+            // Sauvegarde
             doc.save(`Adhesion_${formData.nom}_${formData.prenoms}.pdf`);
         }
+            
         
         // ENVOI DU FORMULAIRE
         const form = document.getElementById('adhesionForm');
