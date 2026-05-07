@@ -399,31 +399,22 @@
             y += 50;
             
             // RÉCAPITULATIF
-            doc.setFillColor(230, 57, 70);
-            doc.rect(20, y, 170, 55, "F");
-            
+                        doc.setFillColor(230, 57, 70);
+            doc.rect(20, y, 170, 50, "F");
+
             doc.setTextColor(255, 215, 0);
-            doc.setFontSize(11);
+            doc.setFontSize(12);
             doc.setFont(undefined, "bold");
             doc.text("RÉCAPITULATIF", 105, y + 10, { align: "center" });
-            
+
             doc.setTextColor(255, 255, 255);
             doc.setFontSize(10);
             doc.setFont(undefined, "normal");
             doc.text(`Montant : ${formData.montant.toLocaleString()} FCFA`, 105, y + 22, { align: "center" });
             doc.text(`Numéro adhérent : ${formData.numeroAdherent}`, 105, y + 33, { align: "center" });
-            // DATE CORRIGÉE - utilisation de la date actuelle
-            doc.text(`Date de la demande : ${new Date().toLocaleDateString('fr-FR')}`, 105, y + 44, { align: "center" });
-            y += 65;
-            
-            // PIED DE PAGE
-            doc.setFillColor(50, 50, 50);
-            doc.rect(0, 280, 210, 20, "F");
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(8);
-            doc.text("Association N° 2016/141/SG/SAG/SA du 16 Novembre 2016", 105, 292, { align: "center" });
-            
-            doc.save(`Adhesion_${formData.nom}_${formData.prenoms}.pdf`);
+            doc.text(`Date de la demande : ${new Date().toLocaleDateString('fr-FR')}`, 95, y + 44, { align: "left" });
+
+            y += 58;
         }
         
         // ENVOI DU FORMULAIRE
