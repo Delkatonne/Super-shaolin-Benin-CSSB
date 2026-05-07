@@ -62,13 +62,12 @@
         .form-message { margin-top: 1rem; padding: 1rem; border-radius: 8px; text-align: center; }
         .form-message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .form-message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        #logoCache, #flagBenin { display: none; }
+        #logoCache { display: none; }
     </style>
 </head>
 <body>
-    <!-- Images cachées pour le PDF -->
+    <!-- Logo caché pour le PDF -->
     <img id="logoCache" src="medias/logo cssb.jpg" alt="logo" style="display: none;">
-    <img id="flagBenin" src="https://flagcdn.com/bj.svg" alt="drapeau Bénin" style="display: none;">
     
     <header class="header">
         <div class="nav-container">
@@ -277,7 +276,7 @@
             return `SSB-${d.getFullYear()}${(d.getMonth()+1).toString().padStart(2,'0')}${d.getDate().toString().padStart(2,'0')}-${Math.floor(Math.random()*1000).toString().padStart(3,'0')}`;
         }
         
-        // GÉNÉRATION PDF AVEC DRAPEAU ET LOGO
+        // GÉNÉRATION PDF AVEC DRAPEAU BÉNIN INTÉGRÉ (sans lien externe)
         async function generatePDF(formData) {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
@@ -288,48 +287,38 @@
             let logoClubDataURL = null;
             if (logoClub && logoClub.complete && logoClub.naturalWidth > 0) {
                 const canvas = document.createElement('canvas');
-                canvas.width = logoClub.naturalWidth;
-                canvas.height = logoClub.naturalHeight;
+                canvas.width = 80;
+                canvas.height = 80;
                 const ctx = canvas.getContext('2d');
-                ctx.drawImage(logoClub, 0, 0);
+                ctx.drawImage(logoClub, 0, 0, 80, 80);
                 logoClubDataURL = canvas.toDataURL('image/png');
             }
             
-            // Récupérer le drapeau du Bénin
-            const flagBenin = document.getElementById('flagBenin');
-            let flagBeninDataURL = null;
-            if (flagBenin && flagBenin.complete && flagBenin.naturalWidth > 0) {
-                const canvas = document.createElement('canvas');
-                canvas.width = flagBenin.naturalWidth;
-                canvas.height = flagBenin.naturalHeight;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(flagBenin, 0, 0);
-                flagBeninDataURL = canvas.toDataURL('image/png');
-            } else {
-                // Drapeau par défaut
-                const canvas = document.createElement('canvas');
-                canvas.width = 100;
-                canvas.height = 70;
-                const ctx = canvas.getContext('2d');
-                ctx.fillStyle = '#008751';
-                ctx.fillRect(0, 0, 100, 23);
-                ctx.fillStyle = '#FCD116';
-                ctx.fillRect(0, 23, 100, 23);
-                ctx.fillStyle = '#E8112D';
-                ctx.fillRect(0, 46, 100, 24);
-                ctx.fillStyle = '#E8112D';
-                ctx.fillRect(0, 0, 35, 70);
-                flagBeninDataURL = canvas.toDataURL('image/png');
-            }
+            // Drapeau du Bénin créé en code (pas de chargement externe)
+            const flagCanvas = document.createElement('canvas');
+            flagCanvas.width = 100;
+            flagCanvas.height = 70;
+            const flagCtx = flagCanvas.getContext('2d');
+            // Vert (haut)
+            flagCtx.fillStyle = '#008751';
+            flagCtx.fillRect(0, 0, 100, 23);
+            // Jaune (milieu)
+            flagCtx.fillStyle = '#FCD116';
+            flagCtx.fillRect(0, 23, 100, 23);
+            // Rouge (bas)
+            flagCtx.fillStyle = '#E8112D';
+            flagCtx.fillRect(0, 46, 100, 24);
+            // Carré rouge à gauche (symbole de l'étoile)
+            flagCtx.fillStyle = '#E8112D';
+            flagCtx.fillRect(0, 0, 35, 70);
+            const flagDataURL = flagCanvas.toDataURL('image/png');
             
             // Ajouter le drapeau à gauche
-            if (flagBeninDataURL) {
-                doc.addImage(flagBeninDataURL, 'PNG', 15, 15, 25, 18);
-            }
+            doc.addImage(flagDataURL, 'PNG', 15, 15, 25, 18);
             
-            // Ajouter le logo du club à droite
+            // Ajouter le logo à droite
             if (logoClubDataURL) {
-                doc.addImage(logoClubDataURL, 'PNG', 170, 15, 25, 25);
+                doc.addImage(logoClubDataURL, 'PNG', 165, 10, 30, 30);
             }
             
             // EN-TÊTE COLORÉ
@@ -395,7 +384,7 @@
             
             // SECTION 3
             doc.setFillColor(232, 245, 233);
-            doc.rect(20, y, 170, 30, "F");
+            doc.rect(20, y, 170, 40, "F");
             
             doc.setTextColor(230, 57, 70);
             doc.setFontSize(11);
@@ -405,17 +394,15 @@
             doc.setFontSize(10);
             if (formData.paiement === 'MTN Mobile Money') {
                 doc.setTextColor(76, 175, 80);
-            } else {
-                doc.setTextColor(33, 33, 33);
-            }
-            doc.setFont(undefined, "normal");
-            doc.text(formData.paiement, 25, y + 18);
-            if (formData.paiement === 'MTN Mobile Money') {
+                doc.text(`${formData.paiement}`, 25, y + 18);
                 doc.setTextColor(33, 33, 33);
                 doc.setFontSize(8);
-                doc.text("Numéro: 0153130940 (MAMERT WILLIAMS EKPANGBO)", 25, y + 26);
+                doc.text("Numéro: 0153130940 (MAMERT WILLIAMS EKPANGBO)", 25, y + 27);
+            } else {
+                doc.setTextColor(33, 33, 33);
+                doc.text(formData.paiement, 25, y + 18);
             }
-            y += 45;
+            y += 50;
             
             // RÉCAPITULATIF
             doc.setFillColor(230, 57, 70);
