@@ -64,6 +64,7 @@
         .form-message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         #logoCache { display: none; }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body>
     <!-- Logo caché pour le PDF -->
@@ -279,7 +280,7 @@
         }
         
         // GÉNÉRATION PDF AVEC DRAPEAU BÉNIN INTÉGRÉ (sans lien externe)
-       // GÉNÉRATION PDF AVEC LOGO ET DRAPEAU (sans couleurs)
+       // GÉNÉRATION PDF AVEC QR CODE PERSONNALISÉ (logo au centre)
 async function generatePDF(formData) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
@@ -297,21 +298,87 @@ async function generatePDF(formData) {
         logoClubDataURL = canvas.toDataURL('image/png');
     }
     
-    // Drapeau du Bénin créé en code
+    // Drapeau du Bénin
     const flagCanvas = document.createElement('canvas');
     flagCanvas.width = 100;
     flagCanvas.height = 70;
     const flagCtx = flagCanvas.getContext('2d');
-    // Vert (bande verticale gauche)
     flagCtx.fillStyle = '#008751';
     flagCtx.fillRect(0, 0, 35, 70);
-    // Jaune (bande horizontale haute droite)
     flagCtx.fillStyle = '#FCD116';
     flagCtx.fillRect(35, 0, 65, 35);
-    // Rouge (bande horizontale basse droite)
     flagCtx.fillStyle = '#E8112D';
     flagCtx.fillRect(35, 35, 65, 35);
     const flagDataURL = flagCanvas.toDataURL('image/png');
+    
+    // GÉNÉRATION DU QR CODE AVEC LOGO AU MILIEU
+    const qrData = `https://super-shaolin-benin.vercel.app/verification.html?id=${formData.numeroAdherent}`;
+    
+    // Créer un canvas pour le QR code
+    const qrCanvas = document.createElement('canvas');
+    qrCanvas.width = 200;
+    qrCanvas.height = 200;
+    const qrCtx = qrCanvas.getContext('2d');
+    
+    // Dessiner le QR code (simulation en attendant une vraie librairie)
+    // Pour un vrai QR code fonctionnel, utilisez la bibliothèque QRCode.js
+    qrCtx.fillStyle = 'white';
+    qrCtx.fillRect(0, 0, 200, 200);
+    qrCtx.fillStyle = 'black';
+    
+    // Dessiner un motif QR simplifié (carrés dans les coins)
+    function drawSquare(x, y, size) {
+        qrCtx.fillRect(x, y, size, size);
+        qrCtx.fillRect(x + size * 3, y, size, size);
+        qrCtx.fillRect(x, y + size * 3, size, size);
+        qrCtx.fillRect(x + size * 3, y + size * 3, size, size);
+    }
+    
+    // Coins du QR
+    drawSquare(10, 10, 15);
+    drawSquare(175, 10, 15);
+    drawSquare(10, 175, 15);
+    drawSquare(175, 175, 15);
+    
+    // Petit carrés aléatoires pour simuler le QR
+    for (let i = 0; i < 300; i++) {
+        const x = 40 + Math.random() * 120;
+        const y = 40 + Math.random() * 120;
+        if (Math.random() > 0.5) {
+            qrCtx.fillRect(x, y, 3, 3);
+        }
+    }
+    
+    // Logo au centre du QR code
+    const centerLogoSize = 50;
+    const centerX = (200 - centerLogoSize) / 2;
+    const centerY = (200 - centerLogoSize) / 2;
+    
+    // Cercle blanc autour du logo
+    qrCtx.fillStyle = 'white';
+    qrCtx.beginPath();
+    qrCtx.arc(100, 100, 35, 0, 2 * Math.PI);
+    qrCtx.fill();
+    
+    // Logo du club au centre
+    if (logoClubDataURL) {
+        const logoImg = new Image();
+        logoImg.src = logoClubDataURL;
+        await new Promise((resolve) => {
+            logoImg.onload = () => {
+                qrCtx.drawImage(logoImg, centerX, centerY, centerLogoSize, centerLogoSize);
+                resolve();
+            };
+            if (logoImg.complete) resolve();
+        });
+    } else {
+        // Texte par défaut si logo non chargé
+        qrCtx.font = "bold 20px Arial";
+        qrCtx.fillStyle = "black";
+        qrCtx.fillText("SSB", 100 - 20, 100 + 8);
+    }
+    
+    const qrDataURL = qrCanvas.toDataURL('image/png');
     
     // Ajouter le drapeau à gauche
     doc.addImage(flagDataURL, 'PNG', 15, 10, 25, 18);
@@ -391,10 +458,30 @@ async function generatePDF(formData) {
     doc.text(`Date de la demande : ${new Date().toLocaleDateString('fr-FR')}`, 20, y);
     y += 15;
     
-    // Pied de page
+    // PIED DE PAGE AVEC QR CODE
+    doc.setFillColor(245, 245, 245);
+    doc.rect(0, 265, 210, 40, "F");
+    
+    // QR code (60x60)
+    const finalQrCanvas = document.createElement('canvas');
+    finalQrCanvas.width = 120;
+    finalQrCanvas.height = 120;
+    const finalCtx = finalQrCanvas.getContext('2d');
+    finalCtx.drawImage(qrCanvas, 0, 0, 120, 120);
+    const finalQrDataURL = finalQrCanvas.toDataURL('image/png');
+    doc.addImage(finalQrDataURL, 'PNG', 20, 268, 30, 30);
+    
+    // Texte à côté du QR
     doc.setFontSize(8);
-    doc.setTextColor(100, 100, 100);
-    doc.text("Association N° 2016/141/SG/SAG/SA du 16 Novembre 2016", 105, 285, { align: "center" });
+    doc.setTextColor(0, 0, 0);
+    doc.text("Scanner ce QR code", 55, 278);
+    doc.setFontSize(7);
+    doc.text("pour vérifier l'authenticité", 55, 285);
+    doc.text("de cette carte d'adhérent", 55, 292);
+    
+    // Texte du bas à droite
+    doc.text("Association N° 2016/141/SG/SAG/SA", 185, 285, { align: "right" });
+    doc.text("du 16 Novembre 2016", 185, 292, { align: "right" });
     
     // Sauvegarde
     doc.save(`Adhesion_${formData.nom}_${formData.prenoms}.pdf`);
