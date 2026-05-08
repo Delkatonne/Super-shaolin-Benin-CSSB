@@ -279,113 +279,90 @@
         }
         
         // GÉNÉRATION PDF AVEC DRAPEAU BÉNIN INTÉGRÉ (sans lien externe)
-        // GÉNÉRATION PDF SIMPLIFIÉE QUI FONCTIONNE
+       // GÉNÉRATION PDF VERSION SIMPLE (sans couleur)
 async function generatePDF(formData) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     let y = 25;
     
-    // EN-TÊTE
-    doc.setFillColor(230, 57, 70);
-    doc.rect(0, 0, 210, 45, "F");
-    
-    doc.setTextColor(255, 215, 0);
+    // Titre
     doc.setFontSize(18);
     doc.setFont(undefined, "bold");
-    doc.text("SUPER SHAOLIN BÉNIN", 105, 25, { align: "center" });
-    
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(11);
-    doc.text("FICHE D'ADHÉSION 2026", 105, 37, { align: "center" });
-    
-    doc.setTextColor(0, 0, 0);
-    y = 60;
-    
-    // SECTION 1
-    doc.setFillColor(240, 248, 255);
-    doc.rect(20, y, 170, 70, "F");
-    
-    doc.setTextColor(230, 57, 70);
-    doc.setFontSize(11);
-    doc.setFont(undefined, "bold");
-    doc.text("1. INFORMATIONS PERSONNELLES", 25, y + 7);
-    
-    doc.setTextColor(50, 50, 50);
+    doc.text("SUPER SHAOLIN BÉNIN", 105, y, { align: "center" });
+    y += 8;
+    doc.setFontSize(12);
+    doc.text("FICHE D'ADHÉSION 2026", 105, y, { align: "center" });
+    y += 8;
     doc.setFontSize(9);
     doc.setFont(undefined, "normal");
-    doc.text(`Nom : ${formData.nom} ${formData.prenoms}`, 25, y + 17);
-    doc.text(`Date de naissance : ${formData.dateNaissance}`, 25, y + 25);
-    doc.text(`Nationalité : ${formData.nationalite}`, 25, y + 33);
-    doc.text(`Profession : ${formData.profession}`, 25, y + 41);
-    doc.text(`Adresse : ${formData.adresse}, ${formData.ville}`, 25, y + 49);
-    doc.text(`Téléphone : ${formData.telephone}`, 25, y + 57);
-    doc.text(`Email : ${formData.email}`, 25, y + 65);
-    y += 80;
+    doc.text("Association N° 2016/141/SG/SAG/SA du 16 Novembre 2016", 105, y, { align: "center" });
+    y += 10;
+    doc.line(20, y, 190, y);
+    y += 10;
     
-    // SECTION 2
-    doc.setFillColor(255, 248, 225);
-    doc.rect(20, y, 170, 35, "F");
-    
-    doc.setTextColor(230, 57, 70);
+    // 1. Informations personnelles
     doc.setFontSize(11);
     doc.setFont(undefined, "bold");
-    doc.text("2. FORMULE CHOISIE", 25, y + 7);
-    
-    doc.setFontSize(10);
-    doc.setTextColor(33, 33, 33);
-    doc.text(`${formData.statut}`, 25, y + 18);
-    
-    doc.setTextColor(230, 57, 70);
-    doc.setFont(undefined, "bold");
-    doc.text(`${formData.montant.toLocaleString()} FCFA`, 25, y + 28);
-    y += 45;
-    
-    // SECTION 3
-    doc.setFillColor(232, 245, 233);
-    doc.rect(20, y, 170, 40, "F");
-    
-    doc.setTextColor(230, 57, 70);
-    doc.setFontSize(11);
-    doc.setFont(undefined, "bold");
-    doc.text("3. MODE DE PAIEMENT", 25, y + 7);
-    
-    doc.setFontSize(10);
-    doc.setTextColor(33, 33, 33);
-    doc.text(formData.paiement, 25, y + 18);
-    
-    if (formData.paiement === 'MTN Mobile Money') {
-        doc.setFontSize(8);
-        doc.text("Numéro: 0153130940 (MAMERT WILLIAMS EKPANGBO)", 25, y + 27);
-    }
-    y += 50;
-    
-    // RÉCAPITULATIF
-    doc.setFillColor(230, 57, 70);
-    doc.rect(20, y, 170, 50, "F");
-    
-    doc.setTextColor(255, 215, 0);
-    doc.setFontSize(12);
-    doc.setFont(undefined, "bold");
-    doc.text("RÉCAPITULATIF", 105, y + 10, { align: "center" });
-    
-    doc.setTextColor(255, 255, 255);
+    doc.text("1. INFORMATIONS PERSONNELLES", 20, y);
+    y += 7;
     doc.setFontSize(10);
     doc.setFont(undefined, "normal");
-    doc.text(`Montant : ${formData.montant.toLocaleString()} FCFA`, 105, y + 22, { align: "center" });
-    doc.text(`Numéro adhérent : ${formData.numeroAdherent}`, 105, y + 33, { align: "center" });
-    doc.text(`Date de la demande : ${new Date().toLocaleDateString('fr-FR')}`, 105, y + 44, { align: "center" });
-    y += 58;
+    doc.text(`Nom : ${formData.nom} ${formData.prenoms}`, 20, y);
+    y += 6;
+    doc.text(`Date de naissance : ${formData.dateNaissance}`, 20, y);
+    y += 6;
+    doc.text(`Nationalité : ${formData.nationalite}  |  Profession : ${formData.profession}`, 20, y);
+    y += 6;
+    doc.text(`Adresse : ${formData.adresse}, ${formData.ville}`, 20, y);
+    y += 6;
+    doc.text(`Téléphone : ${formData.telephone}  |  Email : ${formData.email}`, 20, y);
+    y += 10;
     
-    // PIED DE PAGE
-    doc.setFillColor(50, 50, 50);
-    doc.rect(0, 280, 210, 20, "F");
-    doc.setTextColor(255, 255, 255);
+    // 2. Formule choisie
+    doc.setFont(undefined, "bold");
+    doc.text("2. FORMULE CHOISIE", 20, y);
+    y += 7;
+    doc.setFont(undefined, "normal");
+    doc.text(`${formData.statut}`, 20, y);
+    y += 6;
+    doc.text(`Montant : ${formData.montant.toLocaleString()} FCFA`, 20, y);
+    y += 10;
+    
+    // 3. Mode de paiement
+    doc.setFont(undefined, "bold");
+    doc.text("3. MODE DE PAIEMENT", 20, y);
+    y += 7;
+    doc.setFont(undefined, "normal");
+    doc.text(formData.paiement, 20, y);
+    if (formData.paiement === 'MTN Mobile Money') {
+        y += 5;
+        doc.setFontSize(8);
+        doc.text("Numéro: 0153130940 (MAMERT WILLIAMS EKPANGBO)", 20, y + 5);
+    }
+    y += 15;
+    
+    // Récapitulatif
+    doc.setFontSize(11);
+    doc.setFont(undefined, "bold");
+    doc.text("RÉCAPITULATIF", 20, y);
+    y += 7;
+    doc.setFontSize(10);
+    doc.setFont(undefined, "normal");
+    doc.text(`Montant : ${formData.montant.toLocaleString()} FCFA`, 20, y);
+    y += 6;
+    doc.text(`Numéro adhérent : ${formData.numeroAdherent}`, 20, y);
+    y += 6;
+    doc.text(`Date de la demande : ${new Date().toLocaleDateString('fr-FR')}`, 20, y);
+    y += 15;
+    
+    // Pied de page
     doc.setFontSize(8);
-    doc.text("Association N° 2016/141/SG/SAG/SA du 16 Novembre 2016", 105, 292, { align: "center" });
+    doc.setTextColor(100, 100, 100);
+    doc.text("Association N° 2016/141/SG/SAG/SA du 16 Novembre 2016", 105, 285, { align: "center" });
     
-    // SAUVEGARDE
+    // Sauvegarde
     doc.save(`Adhesion_${formData.nom}_${formData.prenoms}.pdf`);
- }
+}
         
         // ENVOI DU FORMULAIRE
         const form = document.getElementById('adhesionForm');
