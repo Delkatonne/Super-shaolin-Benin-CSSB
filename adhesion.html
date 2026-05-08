@@ -279,11 +279,47 @@
         }
         
         // GÉNÉRATION PDF AVEC DRAPEAU BÉNIN INTÉGRÉ (sans lien externe)
-       // GÉNÉRATION PDF VERSION SIMPLE (sans couleur)
+       // GÉNÉRATION PDF AVEC LOGO ET DRAPEAU (sans couleurs)
 async function generatePDF(formData) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     let y = 25;
+    
+    // Récupérer le logo du club
+    const logoClub = document.getElementById('logoCache');
+    let logoClubDataURL = null;
+    if (logoClub && logoClub.complete && logoClub.naturalWidth > 0) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 80;
+        canvas.height = 80;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(logoClub, 0, 0, 80, 80);
+        logoClubDataURL = canvas.toDataURL('image/png');
+    }
+    
+    // Drapeau du Bénin créé en code
+    const flagCanvas = document.createElement('canvas');
+    flagCanvas.width = 100;
+    flagCanvas.height = 70;
+    const flagCtx = flagCanvas.getContext('2d');
+    // Vert (bande verticale gauche)
+    flagCtx.fillStyle = '#008751';
+    flagCtx.fillRect(0, 0, 35, 70);
+    // Jaune (bande horizontale haute droite)
+    flagCtx.fillStyle = '#FCD116';
+    flagCtx.fillRect(35, 0, 65, 35);
+    // Rouge (bande horizontale basse droite)
+    flagCtx.fillStyle = '#E8112D';
+    flagCtx.fillRect(35, 35, 65, 35);
+    const flagDataURL = flagCanvas.toDataURL('image/png');
+    
+    // Ajouter le drapeau à gauche
+    doc.addImage(flagDataURL, 'PNG', 15, 10, 25, 18);
+    
+    // Ajouter le logo à droite
+    if (logoClubDataURL) {
+        doc.addImage(logoClubDataURL, 'PNG', 170, 8, 25, 25);
+    }
     
     // Titre
     doc.setFontSize(18);
